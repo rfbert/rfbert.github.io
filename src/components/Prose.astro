@@ -1,0 +1,37 @@
+---
+/** Typographic scope for rendered markdown content. */
+---
+
+<div class="prose-scope max-w-[68ch]">
+  <slot />
+</div>
+
+<style>
+  .prose-scope :global(p) {
+    margin-block: 0.8em;
+  }
+  .prose-scope :global(ul) {
+    margin-block: 0.8em;
+    padding-inline-start: 1.1em;
+    list-style: disc;
+  }
+  .prose-scope :global(li) {
+    margin-block: 0.35em;
+    padding-inline-start: 0.2em;
+  }
+  .prose-scope :global(li::marker) {
+    color: var(--c-muted);
+  }
+  .prose-scope :global(strong) {
+    font-weight: 600;
+  }
+  .prose-scope :global(a) {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.28em;
+    text-decoration-color: var(--c-line);
+  }
+  .prose-scope :global(a:hover) {
+    text-decoration-color: var(--c-accent);
+  }
+</style>

@@ -10,8 +10,6 @@ import '@fontsource/schibsted-grotesk/600.css';
 import '@fontsource/spline-sans-mono/400.css';
 import '@fontsource/spline-sans-mono/500.css';
 import '../styles/global.css';
-import Nav from '../components/Nav.astro';
-import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
 
 interface Props {
@@ -19,7 +17,7 @@ interface Props {
   description?: string;
   /** Path of the OG image for this page, e.g. "/og/home.png" */
   ogImage?: string;
-  /** Hide the site chrome (used by design-variant routes during art direction) */
+  /** Kept for design-variant routes; chrome now lives in SiteShell */
   bare?: boolean;
 }
 
@@ -27,7 +25,6 @@ const {
   title = site.title,
   description = site.description,
   ogImage = '/og/home.png',
-  bare = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -68,10 +65,8 @@ const ogImageAbs = new URL(ogImage, Astro.site);
     </script>
   </head>
   <body class="bg-bg text-ink min-h-dvh flex flex-col">
-    {!bare && <Nav />}
     <main id="main" class="flex-1 w-full">
       <slot />
     </main>
-    {!bare && <Footer />}
   </body>
 </html>

@@ -1,0 +1,41 @@
+---
+import { site } from '../data/site';
+import ThemeToggle from './ThemeToggle.astro';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+
+<header class="w-full border-b border-line">
+  <a
+    href="#main"
+    class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-bg focus:px-3 focus:py-2 font-sans text-sm"
+  >
+    Skip to content
+  </a>
+  <nav
+    aria-label="Primary"
+    class="mx-auto flex max-w-4xl items-baseline justify-between gap-6 px-5 py-4"
+  >
+    <a href="/" class="font-sans font-semibold text-ink no-underline whitespace-nowrap">
+      R. Flores Bertolotti
+    </a>
+    <div class="flex items-baseline gap-5 font-sans text-sm">
+      {
+        site.nav.map((item) => (
+          <a
+            href={item.href}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+            class:list={[
+              'no-underline transition-colors',
+              isActive(item.href) ? 'text-accent font-medium' : 'text-muted hover:text-ink',
+            ]}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <ThemeToggle />
+    </div>
+  </nav>
+</header>

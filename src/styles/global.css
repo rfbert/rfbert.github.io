@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Silicon Ochre — see THEME.md. Semantic vars flip with .dark; @theme inline maps them to utilities. */
+:root {
+  --c-bg: oklch(1 0 0);
+  --c-surface: oklch(0.962 0.003 60);
+  --c-ink: oklch(0.21 0.008 262);
+  --c-muted: oklch(0.46 0.01 262);
+  --c-line: oklch(0.885 0.004 60);
+  --c-accent: oklch(0.55 0.124 60);
+}
+
+.dark {
+  --c-bg: oklch(0.165 0.006 265);
+  --c-surface: oklch(0.205 0.007 262);
+  --c-ink: oklch(0.93 0.004 75);
+  --c-muted: oklch(0.7 0.008 262);
+  --c-line: oklch(0.3 0.006 262);
+  --c-accent: oklch(0.74 0.112 62);
+}
+
+@theme inline {
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-ink: var(--c-ink);
+  --color-muted: var(--c-muted);
+  --color-line: var(--c-line);
+  --color-accent: var(--c-accent);
+
+  --font-serif: "STIX Two Text", "Times New Roman", serif;
+  --font-sans: "Schibsted Grotesk", system-ui, sans-serif;
+  --font-mono: "Spline Sans Mono", ui-monospace, monospace;
+}
+
+html {
+  font-family: var(--font-serif);
+  background-color: var(--c-bg);
+  color: var(--c-ink);
+  scrollbar-gutter: stable;
+}
+
+body {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background-color: color-mix(in oklch, var(--c-accent) 25%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

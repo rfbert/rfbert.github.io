@@ -1,0 +1,20 @@
+---
+---
+<button
+  id="theme-toggle"
+  type="button"
+  class="font-sans text-sm text-muted hover:text-ink transition-colors cursor-pointer"
+  aria-label="Switch color theme"
+>
+  <span class="dark:hidden">Dark</span>
+  <span class="hidden dark:inline">Light</span>
+</button>
+
+<script>
+  const btn = document.getElementById('theme-toggle');
+  btn?.addEventListener('click', () => {
+    const nowDark = !document.documentElement.classList.contains('dark');
+    document.documentElement.classList.toggle('dark', nowDark);
+    localStorage.setItem('theme', nowDark ? 'dark' : 'light');
+  });
+</script>

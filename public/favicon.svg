@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="oklch(0.21 0.008 262)"/>
+  <text x="12" y="45" font-family="ui-monospace, Menlo, monospace" font-size="34" font-weight="600" fill="oklch(0.96 0.003 60)">0</text>
+  <text x="33" y="45" font-family="ui-monospace, Menlo, monospace" font-size="34" font-weight="600" fill="oklch(0.74 0.112 62)">1</text>
+  <line x1="30" y1="34" x2="56" y2="34" stroke="oklch(0.74 0.112 62)" stroke-width="3"/>
+</svg>

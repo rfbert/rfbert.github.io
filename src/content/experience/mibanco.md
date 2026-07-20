@@ -1,0 +1,17 @@
+---
+organization: Mibanco
+parent: Credicorp
+role: Artificial Intelligence Intern
+location: Lima, Peru
+start: 2026-06-15
+stack: [Databricks, Python, SQL, Azure AI]
+order: 1
+---
+
+- Built a parallelized audio-ingestion and speech-to-text pipeline on Databricks (Python, SQL) using Azure AI model endpoints, for integration into production workflows at Peru's largest microfinance bank
+- Designed LLM-based interpretation of transcribed speech, orchestrating multiple Azure AI models to extract meaning from recorded audio
+- Coordinated the AI team's project planning while automating routine engineering tasks with LLM-assisted tooling
+
+<!-- TODO after Summer 2026: add one quantified-results bullet here
+     (audio volume processed, runtime before→after parallelization,
+     the shipped use case). Keep verbs matched to personal contribution. -->

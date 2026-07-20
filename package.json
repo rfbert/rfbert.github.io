@@ -1,0 +1,25 @@
+{
+  "name": "rfbert.github.io",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/sitemap": "^3.4.1",
+    "@fontsource/schibsted-grotesk": "^5.2.5",
+    "@fontsource/spline-sans-mono": "^5.2.5",
+    "@fontsource/stix-two-text": "^5.2.5",
+    "@resvg/resvg-js": "^2.6.2",
+    "@tailwindcss/vite": "^4.1.4",
+    "astro": "^5.7.0",
+    "satori": "^0.12.2",
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5.8.3"
+  }
+}

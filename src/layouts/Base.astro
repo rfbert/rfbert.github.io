@@ -1,0 +1,75 @@
+---
+import '@fontsource/stix-two-text/400.css';
+import '@fontsource/stix-two-text/400-italic.css';
+import '@fontsource/stix-two-text/500.css';
+import '@fontsource/stix-two-text/600.css';
+import '@fontsource/stix-two-text/700.css';
+import '@fontsource/schibsted-grotesk/400.css';
+import '@fontsource/schibsted-grotesk/500.css';
+import '@fontsource/schibsted-grotesk/600.css';
+import '@fontsource/spline-sans-mono/400.css';
+import '@fontsource/spline-sans-mono/500.css';
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Path of the OG image for this page, e.g. "/og/home.png" */
+  ogImage?: string;
+  /** Hide the site chrome (used by design-variant routes during art direction) */
+  bare?: boolean;
+}
+
+const {
+  title = site.title,
+  description = site.description,
+  ogImage = '/og/home.png',
+  bare = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImageAbs = new URL(ogImage, Astro.site);
+---
+
+<!doctype html>
+<html lang="en" class="scheme-light dark:scheme-dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="generator" content={Astro.generator} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageAbs} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageAbs} />
+    <script is:inline>
+      // Theme: system default + manual override persisted in localStorage. Runs before paint.
+      (() => {
+        const stored = localStorage.getItem('theme');
+        const dark = stored ? stored === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.classList.toggle('dark', dark);
+      })();
+    </script>
+  </head>
+  <body class="bg-bg text-ink min-h-dvh flex flex-col">
+    {!bare && <Nav />}
+    <main id="main" class="flex-1 w-full">
+      <slot />
+    </main>
+    {!bare && <Footer />}
+  </body>
+</html>

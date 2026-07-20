@@ -58,8 +58,10 @@ const ogImageAbs = new URL(ogImage, Astro.site);
     <meta name="twitter:image" content={ogImageAbs} />
     <script is:inline>
       // Theme: system default + manual override persisted in localStorage. Runs before paint.
+      // ?theme=light|dark wins for the session (used by automated screenshots/tests).
       (() => {
-        const stored = localStorage.getItem('theme');
+        const q = new URLSearchParams(location.search).get('theme');
+        const stored = q === 'light' || q === 'dark' ? q : localStorage.getItem('theme');
         const dark = stored ? stored === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
         document.documentElement.classList.toggle('dark', dark);
       })();

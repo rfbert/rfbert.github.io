@@ -9,11 +9,15 @@ const research = await getCollection('research');
 const experience = await getCollection('experience');
 const projects = await getCollection('projects');
 
-const bitflip = research.find((r) => r.id === 'targeted-bitflip-defense')!;
-const crossScale = research.find((r) => r.id === 'cross-scale-resilience')!;
-const lab = experience.find((e) => e.id === 'true-ai-lab')!;
-const mibanco = experience.find((e) => e.id === 'mibanco')!;
-const scout = projects.find((p) => p.id === 'internship-scout')!;
+function must<T>(value: T | undefined, id: string): T {
+  if (!value) throw new Error(`Home page: required content entry "${id}" is missing`);
+  return value;
+}
+const bitflip = must(research.find((r) => r.id === 'targeted-bitflip-defense'), 'research/targeted-bitflip-defense');
+const crossScale = must(research.find((r) => r.id === 'cross-scale-resilience'), 'research/cross-scale-resilience');
+const lab = must(experience.find((e) => e.id === 'true-ai-lab'), 'experience/true-ai-lab');
+const mibanco = must(experience.find((e) => e.id === 'mibanco'), 'experience/mibanco');
+const scout = must(projects.find((p) => p.id === 'internship-scout'), 'projects/internship-scout');
 
 // Research first: the identity leads with the lab.
 const entries = [

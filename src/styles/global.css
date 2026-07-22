@@ -78,3 +78,20 @@ p {
     scroll-behavior: auto !important;
   }
 }
+
+@media print {
+  nav, header[aria-label='Site'], #theme-toggle, footer {
+    display: none !important;
+  }
+  html {
+    background: #fff;
+    color: #000;
+  }
+  a {
+    text-decoration: none;
+  }
+  #content {
+    border: 0 !important;
+    padding: 0 !important;
+  }
+}

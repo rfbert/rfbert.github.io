@@ -24,13 +24,13 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
     class="lg:hidden flex flex-wrap items-baseline gap-x-5 gap-y-1 border-b border-line py-4 font-sans text-sm"
     aria-label="Primary"
   >
-    <a href="/" class:list={['transition-colors', path === '/' ? 'text-ink font-medium' : 'text-muted hover:text-ink']}>Home</a>
+    <a href="/" class:list={['inline-block py-1.5 transition-colors', path === '/' ? 'text-ink font-medium' : 'text-muted hover:text-ink']}>Home</a>
     {
       site.nav.map((n) => (
         <a
           href={n.href}
           aria-current={isActive(n.href) ? 'page' : undefined}
-          class:list={['transition-colors', isActive(n.href) ? 'text-ink font-medium' : 'text-muted hover:text-ink']}
+          class:list={['inline-block py-1.5 transition-colors', isActive(n.href) ? 'text-ink font-medium' : 'text-muted hover:text-ink']}
         >
           {n.label}
         </a>

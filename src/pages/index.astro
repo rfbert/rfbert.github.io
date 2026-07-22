@@ -120,18 +120,6 @@ const entries = [
     letter-spacing: -0.025em;
   }
 
-  /* The one typographic risk: the surname breaks ranks, hanging left across
-     the structural rule. bg slices the rule so the word punches through it,
-     with breathing room so it reads as a gesture, not a bug. */
-  @media (min-width: 1024px) {
-    .surname {
-      margin-left: -4.5rem; /* column pl 2.75rem → crosses the rule by 1.75rem */
-      background: var(--c-bg);
-      padding-right: 0.75rem;
-      width: fit-content;
-    }
-  }
-
   .standfirst {
     font-size: clamp(1.125rem, 1.05rem + 0.8vw, 1.3rem);
     line-height: 1.5;

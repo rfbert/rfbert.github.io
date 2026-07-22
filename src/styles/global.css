@@ -80,7 +80,7 @@ p {
 }
 
 @media print {
-  nav, header[aria-label='Site'], #theme-toggle, footer {
+  nav, header[aria-label='Site'], .js-theme-toggle, footer {
     display: none !important;
   }
   html {

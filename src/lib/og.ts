@@ -120,23 +120,7 @@ export async function renderOg(label: string): Promise<Buffer> {
                 type: 'div',
                 props: {
                   style: { display: 'flex', gap: 10, alignItems: 'center' },
-                  children: [
-                    ...bits,
-                    caught,
-                    ...rest,
-                    {
-                      type: 'div',
-                      props: {
-                        style: {
-                          fontFamily: 'Schibsted Grotesk',
-                          fontSize: 24,
-                          color: C.muted,
-                          marginLeft: 28,
-                        },
-                        children: '← a flipped bit, caught',
-                      },
-                    },
-                  ],
+                  children: [...bits, caught, ...rest],
                 },
               },
               {

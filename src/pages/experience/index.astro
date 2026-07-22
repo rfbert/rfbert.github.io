@@ -34,8 +34,7 @@ const fmt = (d: Date) =>
                 {entry.data.parent && <span class="font-normal text-muted"> — {entry.data.parent}</span>}
               </h2>
               <span class="font-mono text-xs text-muted">
-                {fmt(entry.data.start)}
-                {entry.data.end ? `–${fmt(entry.data.end)}` : '–present'}
+                {fmt(entry.data.start)}{entry.data.end ? `–${fmt(entry.data.end)}` : '–present'}
               </span>
             </div>
             <p class="mt-0.5 font-sans text-sm text-muted">

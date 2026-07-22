@@ -51,6 +51,11 @@ h1, h2, h3 {
   text-wrap: balance;
 }
 
+/* Semibold is the site's single emphasis weight; browser-default 700 is not loaded. */
+b, strong {
+  font-weight: 600;
+}
+
 p {
   text-wrap: pretty;
 }

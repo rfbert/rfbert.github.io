@@ -1,9 +1,9 @@
 export const site = {
   name: 'Rodrigo Flores Bertolotti',
-  title: 'Rodrigo Flores Bertolotti — LLM Reliability',
+  title: 'Rodrigo Flores Bertolotti — AI Systems',
   description:
-    'CS undergraduate at Oregon State University working on LLM reliability: fault-resilient LLM inference at the TRUE AI Lab, and production speech-to-text AI at Mibanco (Credicorp).',
-  focus: 'I work on LLM reliability: what happens to large language models when hardware fails, and how to defend them.',
+    'CS undergraduate at Oregon State University building AI systems: LLM research at the TRUE AI Lab, production speech AI at Mibanco (Credicorp), and self-built tools.',
+  focus: 'I build AI systems: research at OSU\'s TRUE AI Lab, a speech pipeline in production at Mibanco (Credicorp), and tools of my own.',
   education: {
     line: 'B.S. Computer Science, Oregon State University — expected June 2028. GPA 4.0, Honors College.',
     coursework:

@@ -51,7 +51,7 @@ const { class: className = '' } = Astro.props;
   @keyframes bit-corrupt {
     0%, 18% { opacity: 0; }
     22%, 55% { opacity: 1; }
-    60%, 100% { opacity: 0.55; }
+    60%, 100% { opacity: 0; }
   }
   @keyframes bit-recover {
     0%, 18% { opacity: 1; }
@@ -64,7 +64,7 @@ const { class: className = '' } = Astro.props;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .bit-bad { opacity: 0.55; animation: none; }
+    .bit-bad { opacity: 0; animation: none; }
     .bit-good { opacity: 1; animation: none; }
     .bit-x::after { transform: scaleX(1); animation: none; }
   }

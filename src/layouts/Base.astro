@@ -13,6 +13,8 @@ interface Props {
   description?: string;
   /** Path of the OG image for this page, e.g. "/og/home.png" */
   ogImage?: string;
+  /** Keep the page out of search indexes (404) */
+  noindex?: boolean;
   /** Kept for design-variant routes; chrome now lives in SiteShell */
   bare?: boolean;
 }
@@ -21,10 +23,25 @@ const {
   title = site.title,
   description = site.description,
   ogImage = '/og/home.png',
+  noindex = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImageAbs = new URL(ogImage, Astro.site);
+const isHome = Astro.url.pathname === '/';
+
+// Person schema (home only): recruiter/PI name-search disambiguation.
+const personLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': 'https://rfbert.github.io/#person',
+  name: 'Rodrigo Flores Bertolotti',
+  jobTitle: 'Undergraduate Researcher',
+  affiliation: { '@type': 'CollegeOrUniversity', name: 'Oregon State University' },
+  url: 'https://rfbert.github.io',
+  email: 'mailto:rf.bertolotti@gmail.com',
+  sameAs: ['https://github.com/rfbert', 'https://www.linkedin.com/in/rodrigo-bertolotti'],
+});
 ---
 
 <!doctype html>
@@ -49,6 +66,8 @@ const ogImageAbs = new URL(ogImage, Astro.site);
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageAbs} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {isHome && <script type="application/ld+json" set:html={personLd} />}
     <script is:inline>
       // Theme: system default + manual override persisted in localStorage. Runs before paint.
       // ?theme=light|dark wins for the session (used by automated screenshots/tests).

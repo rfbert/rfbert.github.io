@@ -105,7 +105,7 @@ export async function renderOg(label: string): Promise<Buffer> {
                 type: 'div',
                 props: {
                   style: { fontFamily: 'Spline Sans Mono', fontSize: 24, color: C.muted },
-                  children: 'rfbert.github.io',
+                  children: 'rfbert.me',
                 },
               },
             ],

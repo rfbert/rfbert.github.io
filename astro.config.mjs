@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // GitHub Pages USER site → served at the domain root. `site` set, no `base`.
 export default defineConfig({
-  site: 'https://rfbert.github.io',
+  site: 'https://rfbert.me',
   output: 'static',
   integrations: [sitemap()],
   vite: {

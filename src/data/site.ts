@@ -15,7 +15,7 @@ export const site = {
     { label: 'Email', value: 'rf.bertolotti@gmail.com', href: 'mailto:rf.bertolotti@gmail.com' },
     { label: 'GitHub', value: 'github.com/rfbert', href: 'https://github.com/rfbert' },
     { label: 'LinkedIn', value: 'linkedin.com/in/rodrigo-bertolotti', href: 'https://www.linkedin.com/in/rodrigo-bertolotti' },
-    { label: 'Résumé', value: 'resume.pdf', href: '/resume.pdf' },
+    { label: 'Resume', value: 'resume.pdf', href: '/resume.pdf' },
   ],
   awards: [
     { title: 'Vice President, Alpha Lambda Delta National Honor Society', detail: 'OSU chapter' },

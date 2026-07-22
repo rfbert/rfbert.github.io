@@ -156,7 +156,7 @@ export async function renderOg(label: string): Promise<Buffer> {
                     lineHeight: 1.4,
                   },
                   children:
-                    'LLM reliability — fault-resilient inference at OSU’s TRUE AI Lab · production speech AI at Mibanco (Credicorp)',
+                    'AI systems — research at OSU’s TRUE AI Lab · production speech AI at Mibanco (Credicorp)',
                 },
               },
             ],

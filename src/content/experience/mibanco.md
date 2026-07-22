@@ -9,7 +9,7 @@ order: 1
 ---
 
 - Built a parallelized audio-ingestion and speech-to-text pipeline on Databricks (Python, SQL) using Azure AI model endpoints, for integration into production workflows at Peru's largest microfinance bank
-- Designed LLM-based interpretation of transcribed speech, orchestrating multiple Azure AI models to extract meaning from recorded audio
+- Designed LLM-based interpretation of transcribed speech; orchestrated multiple Azure AI models to extract meaning from recorded audio
 - Coordinated the AI team's project planning while automating routine engineering tasks with LLM-assisted tooling
 
 <!-- TODO after Summer 2026: add one quantified-results bullet here

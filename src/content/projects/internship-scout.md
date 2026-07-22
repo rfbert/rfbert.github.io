@@ -1,7 +1,7 @@
 ---
 title: Internship Scout
-tagline: A full-stack internship-discovery agent that reads the market every morning so I don't have to
-role: Designed, built, and launched — sole developer
+tagline: A full-stack agent that reads the internship market every morning so I don't have to
+role: Sole developer, design to launch
 start: 2026-07-01
 stack: [TypeScript, Next.js, Prisma, PostgreSQL, Docker, GitHub Actions]
 status: active
@@ -10,8 +10,8 @@ featured: true
 order: 1
 ---
 
-Internship search is high-volume and low-signal: hundreds of postings a day, few of them relevant. Internship Scout is my answer — a product I designed, built, launched, and iterate on my own daily usage.
+Internship search is high-volume and low-signal: hundreds of postings a day, few of them relevant. Internship Scout is my fix. I built it alone and keep adjusting it as I use it.
 
-**How it works.** A daily pipeline (GitHub Actions) scrapes and dedupes postings from multiple sources, applies a deterministic eligibility rules engine, then ranks the survivors with evidence-based LLM scoring — every score must cite verbatim text from the posting. Results land on a kanban board where I track applications end-to-end.
+Each morning a GitHub Actions pipeline scrapes and dedupes postings from multiple sources, runs them through a deterministic eligibility rules engine, and ranks the survivors with LLM scoring that must cite verbatim text from the posting. Results land on a kanban board where I track every application to its outcome.
 
-**Built with quality in mind from day one:** idempotent pipeline runs, Vitest unit tests, and Playwright end-to-end tests in CI.
+Pipeline runs are idempotent, and CI runs Vitest unit tests plus Playwright end-to-end tests.

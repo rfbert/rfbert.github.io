@@ -44,11 +44,11 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
          wayfinding at the top, place + theme pinned to the bottom, the emptiness
          between them is the composition. -->
     <header class="hidden lg:flex sticky top-0 h-dvh flex-col self-start pt-10 pb-8" aria-label="Site">
-      <a href="/" class="font-sans text-[0.92rem] font-medium text-ink transition-colors hover:text-accent">
+      <a href="/" class="font-sans text-sm font-medium text-ink transition-colors hover:text-accent">
         Home
       </a>
       <nav aria-label="Primary" class="mt-1.5">
-        <ul class="space-y-1.5 font-sans text-[0.92rem]">
+        <ul class="space-y-1.5 font-sans text-sm">
           {
             site.nav.map((n) => (
               <li>

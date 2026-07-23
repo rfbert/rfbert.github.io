@@ -1,9 +1,9 @@
 ---
 /**
- * The site signature: a quiet strip of bits in which one bit silently flips
- * (ochre), is detected, and the correction is shown — the research subject in
- * one visual. Plays once on load; prefers-reduced-motion renders the final
- * state statically.
+ * The site signature: a quiet row of bits with one corrupted bit caught —
+ * a single ochre digit, struck through. One glyph per position (no overlay),
+ * so nothing can overlap. On load the catch draws in once; reduced-motion
+ * renders the final struck state statically.
  */
 interface Props {
   class?: string;
@@ -13,59 +13,24 @@ const { class: className = '' } = Astro.props;
 
 <p
   class:list={['bit-sig font-mono text-sm tracking-[0.35em] text-muted select-none', className]}
-  aria-label="Decorative row of binary digits in which one corrupted bit is shown corrected"
+  aria-label="A row of binary digits with one corrupted bit caught and struck through"
 >
-  <span>1</span><span>0</span><span>1</span><span>1</span><span class="bit-x" aria-hidden="true"
-    ><span class="bit-good text-ink">0</span><span class="bit-bad text-accent">1</span></span
-  ><span>0</span><span>1</span><span>0</span><span>0</span>
+  <span>1</span><span>0</span><span>1</span><span>1</span><span class="bit-caught">1</span><span>0</span><span>1</span><span>0</span><span>0</span>
 </p>
 
 <style>
-  .bit-x {
-    position: relative;
-    display: inline-block;
-    width: 1ch;
+  .bit-caught {
+    color: var(--c-accent);
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px;
+    text-decoration-color: var(--c-accent);
+    animation: bit-catch 0.9s ease-out 0.4s both;
   }
-  .bit-bad {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    animation: bit-corrupt 4.5s ease-out 1 both;
+  @keyframes bit-catch {
+    0% { color: var(--c-ink); text-decoration-color: transparent; }
+    100% { color: var(--c-accent); text-decoration-color: var(--c-accent); }
   }
-  .bit-good {
-    animation: bit-recover 4.5s ease-out 1 both;
-  }
-  .bit-x::after {
-    content: '';
-    position: absolute;
-    left: -0.08ch;
-    right: 0.22ch;
-    top: 55%;
-    height: 1.5px;
-    background: var(--c-accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    animation: bit-strike 4.5s ease-out 1 both;
-  }
-
-  @keyframes bit-corrupt {
-    0%, 18% { opacity: 0; }
-    22%, 55% { opacity: 1; }
-    60%, 100% { opacity: 0; }
-  }
-  @keyframes bit-recover {
-    0%, 18% { opacity: 1; }
-    22%, 55% { opacity: 0; }
-    60%, 100% { opacity: 1; }
-  }
-  @keyframes bit-strike {
-    0%, 50% { transform: scaleX(0); }
-    62%, 100% { transform: scaleX(1); }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .bit-bad { opacity: 0; animation: none; }
-    .bit-good { opacity: 1; animation: none; }
-    .bit-x::after { transform: scaleX(1); animation: none; }
+    .bit-caught { animation: none; }
   }
 </style>

@@ -156,7 +156,7 @@ export async function renderOg(label: string): Promise<Buffer> {
                     lineHeight: 1.4,
                   },
                   children:
-                    'AI systems — research at OSU’s TRUE AI Lab · production speech AI at Mibanco (Credicorp)',
+                    'Building production AI — speech-to-text at Mibanco (Credicorp) · LLM-reliability research at OSU',
                 },
               },
             ],

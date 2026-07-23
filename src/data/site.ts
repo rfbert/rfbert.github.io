@@ -2,14 +2,13 @@ export const site = {
   name: 'Rodrigo Flores Bertolotti',
   title: 'Rodrigo Flores Bertolotti — AI Systems',
   description:
-    'CS undergraduate at Oregon State University building AI systems: LLM research at the TRUE AI Lab, production speech AI at Mibanco (Credicorp), and self-built tools.',
-  focus: 'I build AI systems: research at OSU\'s TRUE AI Lab, a speech pipeline in production at Mibanco (Credicorp), and tools of my own.',
+    'CS undergraduate at Oregon State University building production AI: a speech-to-text pipeline at Mibanco (Credicorp), LLM-reliability research at the TRUE AI Lab, and self-built tools.',
+  focus:
+    "CS student building production AI — a speech-to-text pipeline at Mibanco (Credicorp), LLM-reliability research at OSU's TRUE AI Lab, and tools of my own.",
   education: {
     line: 'B.S. Computer Science, Oregon State University — expected June 2028. GPA 4.0, Honors College.',
     coursework:
-      'Selected coursework: Data Structures, Algorithms, Intro to AI (Fall 2026), Computer Networks, Software Engineering I.',
-    prior:
-      'Prior studies: Computer & Systems Engineering, Universidad de San Martín de Porres, Lima, Peru (2024).',
+      'Coursework: Data Structures, Algorithms, Intro to AI, Computer Networks, Software Engineering.',
   },
   contacts: [
     { label: 'Email', value: 'rf.bertolotti@gmail.com', href: 'mailto:rf.bertolotti@gmail.com' },
@@ -26,9 +25,9 @@ export const site = {
     { title: 'Volunteer Organizer, community donation & food drives', detail: '65+ children and families, Peru (2023)' },
   ],
   nav: [
+    { label: 'Experience', href: '/experience/' },
     { label: 'Research', href: '/research/' },
     { label: 'Projects', href: '/projects/' },
-    { label: 'Experience', href: '/experience/' },
     { label: 'About', href: '/about/' },
   ],
 } as const;

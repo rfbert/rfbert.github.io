@@ -15,21 +15,11 @@ function must<T>(value: T | undefined, id: string): T {
 }
 const bitflip = must(research.find((r) => r.id === 'targeted-bitflip-defense'), 'research/targeted-bitflip-defense');
 const crossScale = must(research.find((r) => r.id === 'cross-scale-resilience'), 'research/cross-scale-resilience');
-const lab = must(experience.find((e) => e.id === 'true-ai-lab'), 'experience/true-ai-lab');
 const mibanco = must(experience.find((e) => e.id === 'mibanco'), 'experience/mibanco');
 const scout = must(projects.find((p) => p.id === 'internship-scout'), 'projects/internship-scout');
 
-// Research first: the identity leads with the lab.
+// Experience first: lead with the production internship.
 const entries = [
-  {
-    href: '/research/',
-    title: 'LLM fault-resilience research',
-    where: 'TRUE AI Lab, Oregon State University',
-    when: `${lab.data.start.getFullYear()}–present`,
-    desc: 'Lead author on a targeted bit-flip defense; co-author on cross-scale model resilience.',
-    tags: ['PyTorch', 'Hugging Face', 'Slurm'],
-    statuses: [bitflip.data.statusLabel, crossScale.data.statusLabel],
-  },
   {
     href: '/experience/',
     title: mibanco.data.role,
@@ -38,6 +28,15 @@ const entries = [
     desc: "Parallelized speech-to-text and LLM-interpretation pipeline for production workflows at Peru's largest microfinance bank.",
     tags: ['Databricks', 'Python', 'SQL', 'Azure AI'],
     statuses: [],
+  },
+  {
+    href: '/research/',
+    title: 'LLM fault-resilience research',
+    where: 'TRUE AI Lab, Oregon State University',
+    when: '2025–2026',
+    desc: 'Ran the initial investigation and early results on defenses against LLM bit-flip attacks; co-author on a cross-scale resilience paper.',
+    tags: ['PyTorch', 'Hugging Face', 'Slurm'],
+    statuses: [bitflip.data.statusLabel, crossScale.data.statusLabel],
   },
   {
     href: '/projects/',
@@ -63,7 +62,7 @@ const entries = [
     <p class="standfirst mt-6 max-w-[56ch]">{site.focus}</p>
 
     <p class="mt-5 max-w-[75ch]">{site.education.line}</p>
-    <p class="mt-1 max-w-[75ch] font-sans text-sm text-muted">{site.education.prior}</p>
+    <p class="mt-1 max-w-[75ch] font-sans text-sm text-muted">{site.education.coursework}</p>
 
     <!-- Labeled contact grid (borrowed from the technical direction) -->
     <ul class="mt-7 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Contact">

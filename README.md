@@ -1,7 +1,17 @@
-# rfbert.github.io
+# rfbert.github.io — [rfbert.me](https://rfbert.me)
 
-Personal website + portfolio of Rodrigo Flores Bertolotti. Astro 5 · Tailwind v4 · static ·
-deployed to GitHub Pages (user site — served at the domain root, `site` set, no `base`).
+[![Live site](https://img.shields.io/badge/live-rfbert.me-1f6feb)](https://rfbert.me)
+![Astro 5](https://img.shields.io/badge/Astro-5-BC52EE?logo=astro&logoColor=white)
+![Tailwind v4](https://img.shields.io/badge/Tailwind-v4-38BDF8?logo=tailwindcss&logoColor=white)
+![Deploy](https://img.shields.io/badge/deploy-GitHub%20Actions-2088FF?logo=githubactions&logoColor=white)
+
+Personal website and portfolio of **Rodrigo Flores Bertolotti** — CS undergraduate at
+Oregon State University building production AI. Designed and built end to end: Astro 5,
+Tailwind v4, a hand-rolled type system ("Silicon Ochre"), build-time Open Graph images,
+and a static deploy to GitHub Pages on a custom domain.
+
+The site signature — a single glyph flipping from a clean to a corrupted bit — is a nod
+to the LLM fault-resilience research it links to: *a flipped bit, caught.*
 
 ## Develop
 

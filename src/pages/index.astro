@@ -1,7 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
 import SiteShell from '../components/SiteShell.astro';
-import BitSignature from '../components/BitSignature.astro';
+import EccWord from '../components/EccWord.astro';
+import PinContacts from '../components/PinContacts.astro';
+import StatusStamp from '../components/StatusStamp.astro';
+import Led from '../components/Led.astro';
 import { site } from '../data/site';
 import { getCollection } from 'astro:content';
 
@@ -17,128 +20,142 @@ const bitflip = must(research.find((r) => r.id === 'targeted-bitflip-defense'), 
 const crossScale = must(research.find((r) => r.id === 'cross-scale-resilience'), 'research/cross-scale-resilience');
 const mibanco = must(experience.find((e) => e.id === 'mibanco'), 'experience/mibanco');
 const scout = must(projects.find((p) => p.id === 'internship-scout'), 'projects/internship-scout');
-
-// Experience first: lead with the production internship.
-const entries = [
-  {
-    href: '/experience/',
-    title: mibanco.data.role,
-    where: `${mibanco.data.organization} (${mibanco.data.parent}), ${mibanco.data.location}`,
-    when: 'Summer 2026',
-    desc: "Parallelized speech-to-text and LLM-interpretation pipeline for production workflows at Peru's largest microfinance bank.",
-    tags: ['Databricks', 'Python', 'SQL', 'Azure AI'],
-    statuses: [],
-  },
-  {
-    href: '/research/',
-    title: 'LLM fault-resilience research',
-    where: 'TRUE AI Lab, Oregon State University',
-    when: '2025–2026',
-    desc: 'Ran the initial investigation and early results on defenses against LLM bit-flip attacks; co-author on a cross-scale resilience paper.',
-    tags: ['PyTorch', 'Hugging Face', 'Slurm'],
-    statuses: [bitflip.data.statusLabel, crossScale.data.statusLabel],
-  },
-  {
-    href: '/projects/',
-    title: scout.data.title,
-    where: 'own product',
-    when: `${scout.data.start.getFullYear()}–present`,
-    desc: scout.data.tagline,
-    tags: ['TypeScript', 'Next.js', 'PostgreSQL'],
-    statuses: [],
-  },
-];
 ---
 
 <Base ogImage="/og/home.png">
   <SiteShell>
-    <BitSignature class="mb-5" />
-
+    <!-- Part header: the whole 30-second scan sits in this first block,
+         and none of it is ever eligible for corruption. -->
     <h1 class="headline">
       <span class="block">Rodrigo Flores</span>
-      <span class="surname block text-accent">Bertolotti</span>
+      <span class="block">Bertolotti</span>
     </h1>
 
-    <p class="standfirst mt-6 max-w-[56ch]">{site.focus}</p>
-
-    <p class="mt-5 max-w-[75ch]">{site.education.line}</p>
+    <p class="mt-5 max-w-[75ch] font-mono text-[0.82rem] leading-relaxed text-ink">
+      {site.education.line}
+    </p>
     <p class="mt-1 max-w-[75ch] font-sans text-sm text-muted">{site.education.coursework}</p>
 
-    <!-- Labeled contact grid (borrowed from the technical direction) -->
-    <ul class="mt-7 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Contact">
-      {
-        site.contacts.map((c) => (
-          <li class="min-w-0">
-            <span class="block font-sans text-xs text-muted">{c.label}</span>
-            <a href={c.href} class="contact-link font-mono text-[0.82rem] break-words">
-              {c.value}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+    <p class="standfirst mt-5 max-w-[56ch]">{site.focus}</p>
 
-    <section class="mt-10" aria-labelledby="selected-work">
-      <h2 id="selected-work" class="font-sans text-sm font-medium text-muted">Selected work</h2>
-      <ul class="mt-3 border-t border-line list-none p-0">
-        {
-          entries.map((e) => (
-            <li class="entry border-b border-line">
-              <a href={e.href} class="block py-3.5 no-underline">
-                <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-0.5">
-                  <h3 class="text-[1.25rem] leading-snug font-semibold">
-                    <span class="entry-title">{e.title}</span>
-                    <span class="font-normal text-muted"> — {e.where}</span>
-                  </h3>
-                  <span class="font-mono text-xs text-muted">{e.when}</span>
-                </div>
-                <p class="mt-1 max-w-[68ch] text-base text-muted">{e.desc}</p>
-                <p class="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-muted">
-                  {e.statuses.map((s) => (
-                    <span class="text-accent">{s}</span>
-                  ))}
-                  {e.tags.map((t) => (
-                    <span>{t}</span>
-                  ))}
-                </p>
-              </a>
-            </li>
-          ))
-        }
+    <EccWord class="mt-6" />
+
+    <section class="mt-10" aria-labelledby="selected-work" data-sec>
+      <h2 id="selected-work" class="sec-label">Selected work</h2>
+
+      <ul class="mt-3 list-none p-0 m-0">
+        <li class="border-t border-line">
+          <a href="/experience/" class="row group">
+            <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-0.5">
+              <h3 class="row-title">
+                <span class="row-link">{mibanco.data.role}</span>
+                <span class="font-normal text-muted"> — {mibanco.data.organization} ({mibanco.data.parent})</span>
+              </h3>
+              <span class="font-mono text-xs text-muted">Summer 2026</span>
+            </div>
+            <p class="mt-1 max-w-[68ch] text-base text-muted">
+              Parallelized speech-to-text and LLM-interpretation pipeline for production workflows
+              at Peru's largest microfinance bank.
+            </p>
+            <p class="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-muted">
+              <span>Lima, Peru · 12°03′S</span>
+              {mibanco.data.stack.map((t) => <span>{t}</span>)}
+            </p>
+          </a>
+        </li>
+
+        <li class="border-t border-line">
+          <a href="/research/" class="row group">
+            <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-0.5">
+              <h3 class="row-title">
+                <span class="row-link">LLM fault-resilience research</span>
+                <span class="font-normal text-muted"> — TRUE AI Lab, Oregon State University</span>
+              </h3>
+              <span class="font-mono text-xs text-muted">2025–2026</span>
+            </div>
+            <p class="mt-1 max-w-[68ch] text-base text-muted">
+              Ran the initial investigation and early results on defenses against LLM bit-flip
+              attacks; co-author on a cross-scale resilience paper.
+            </p>
+            <p class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+              <StatusStamp label={crossScale.data.statusLabel} />
+              <StatusStamp label={bitflip.data.statusLabel} />
+              <span class="flex flex-wrap gap-x-4 font-mono text-xs text-muted">
+                <span>PyTorch</span><span>Hugging Face</span><span>Slurm</span>
+              </span>
+            </p>
+          </a>
+        </li>
+
+        <li class="border-t border-b border-line">
+          <a href="/projects/" class="row group">
+            <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-0.5">
+              <h3 class="row-title">
+                <span class="row-link">{scout.data.title}</span>
+                <span class="font-normal text-muted"> — own product, sole developer</span>
+              </h3>
+              <span class="font-mono text-xs text-muted">2026–present</span>
+            </div>
+            <p class="mt-1 max-w-[68ch] text-base text-muted">{scout.data.tagline}</p>
+            <p class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+              <Led status="active" />
+              <span class="flex flex-wrap gap-x-4 font-mono text-xs text-muted">
+                <span>TypeScript</span><span>Next.js</span><span>PostgreSQL</span>
+              </span>
+            </p>
+          </a>
+        </li>
       </ul>
+    </section>
+
+    <section class="mt-10" aria-labelledby="contact" data-sec>
+      <h2 id="contact" class="sec-label">Contact</h2>
+      <div class="mt-3 border-t border-line pt-4">
+        <PinContacts />
+      </div>
     </section>
   </SiteShell>
 </Base>
 
 <style>
-  /* Oversized STIX thesis: committed scale contrast, tight but legal. */
+  /* The nameplate: Archivo expanded — an industrial stencil, never uppercase. */
   .headline {
-    font-size: clamp(2.5rem, 7vw, 5rem);
-    font-weight: 600;
-    line-height: 1.04;
-    letter-spacing: -0.025em;
+    font-family: var(--font-display);
+    font-variation-settings: 'wdth' 120;
+    font-size: clamp(2.5rem, 6.5vw, 4.25rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    margin-top: 2.25rem;
   }
 
   .standfirst {
-    font-size: clamp(1.125rem, 1.05rem + 0.8vw, 1.3rem);
+    font-size: clamp(1.125rem, 1.05rem + 0.7vw, 1.28rem);
     line-height: 1.5;
   }
 
-  .contact-link {
-    text-decoration-line: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.32em;
-    text-decoration-color: var(--c-line);
-    transition: text-decoration-color 120ms ease;
-  }
-  .contact-link:hover {
-    text-decoration-color: var(--c-accent);
+  .sec-label {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--c-muted);
   }
 
-  .entry a:hover .entry-title,
-  .entry a:focus-visible .entry-title {
-    text-decoration-line: underline;
-    text-decoration-thickness: 1.5px;
-    text-underline-offset: 0.22em;
+  .row {
+    display: block;
+    padding-block: 0.9rem;
+    text-decoration: none;
+  }
+  .row-title {
+    font-size: 1.25rem;
+    line-height: 1.35;
+    font-weight: 600;
+  }
+  .row:hover .row-link,
+  .row:focus-visible .row-link {
+    background-image: linear-gradient(var(--c-gold), var(--c-gold));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 100% 2px;
   }
 </style>

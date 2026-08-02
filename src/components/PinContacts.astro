@@ -1,0 +1,82 @@
+---
+/**
+ * Ordering information: the part has exactly four contacts, rendered as a
+ * pinout. Hover or focus makes contact — the pad fills gold. Pin numbers are
+ * true data (tab order). Every href carries its real build-time CRC-8.
+ * The email pin opens mail normally; copying is a separate, explicit control.
+ */
+import { site } from '../data/site';
+import { crc8 } from '../lib/crc8';
+---
+
+<ul class="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2 xl:grid-cols-4 list-none p-0 m-0" aria-label="Contact">
+  {
+    site.contacts.map((c, i) => (
+      <li class="pin min-w-0">
+        <span class="flex items-center gap-2 font-sans text-xs text-muted" aria-hidden="true">
+          <span class="pin-pad" />
+          <span class="font-mono">{i + 1}</span>
+          <span>{c.label}</span>
+        </span>
+        <span class="flex items-center gap-x-3">
+          <a
+            href={c.href}
+            data-crc={crc8(c.href)}
+            class="v-link inline-flex min-h-11 max-w-full items-center break-words py-1 font-mono text-[0.8rem] text-ink"
+          >
+            {c.value}
+          </a>
+          {c.href.startsWith('mailto:') && (
+            <button
+              type="button"
+              class="js-copy-email min-h-11 shrink-0 cursor-pointer border border-line bg-transparent px-3 py-1 font-mono text-[0.68rem] text-muted hover:border-gold hover:text-ink"
+              data-value={c.value}
+              hidden
+            >
+              copy
+            </button>
+          )}
+          <span class="js-copy-status sr-only" role="status" />
+        </span>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .pin-pad {
+    display: block;
+    width: 0.7rem;
+    height: 0.7rem;
+    border: 1.5px solid var(--c-gold);
+    transition: background 160ms ease-out;
+  }
+  .pin:has(a:hover) .pin-pad,
+  .pin:has(a:focus-visible) .pin-pad {
+    background: var(--c-gold);
+  }
+</style>
+
+<script>
+  // The copy control is JS-only, so it stays hidden without JS.
+  document.querySelectorAll<HTMLButtonElement>('.js-copy-email').forEach((btn) => {
+    btn.hidden = false;
+    const status = btn.parentElement?.querySelector<HTMLElement>('.js-copy-status');
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.value ?? '');
+        btn.textContent = 'copied ✓';
+        btn.classList.add('text-gold-text');
+        if (status) status.textContent = 'Email address copied';
+        setTimeout(() => {
+          btn.textContent = 'copy';
+          btn.classList.remove('text-gold-text');
+          if (status) status.textContent = '';
+        }, 2000);
+      } catch {
+        btn.textContent = 'select manually';
+        if (status) status.textContent = 'Copy failed — select the address manually';
+      }
+    });
+  });
+</script>

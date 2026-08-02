@@ -3,33 +3,36 @@ import { Resvg } from '@resvg/resvg-js';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-/** "Caught Bit" — see design/og-philosophy.md. */
+/** "Caught Bit", SEC-DED edition — see design/og-philosophy.md.
+    Datasheet paper, epoxy ink, contact gold for the corrected bit,
+    fault red only for the strike that records the hit. */
 const C = {
-  bg: '#17181d',
-  ink: '#ececea',
-  muted: '#a2a4ab',
-  line: '#34363c',
-  accent: '#d59a4b',
+  bg: '#f7f9f8',
+  ink: '#16211b',
+  muted: '#47564c',
+  line: '#d5dcd6',
+  gold: '#9a7b1c',
+  red: '#c03a1f',
 };
 
 const FONT_DIR = path.resolve('src/assets/fonts');
 
 async function fonts() {
-  const [stix, stixSemi, mono, sans] = await Promise.all([
-    readFile(path.join(FONT_DIR, 'stix-two-text-400.ttf')),
-    readFile(path.join(FONT_DIR, 'stix-two-text-600.ttf')),
-    readFile(path.join(FONT_DIR, 'spline-sans-mono-500.ttf')),
-    readFile(path.join(FONT_DIR, 'schibsted-grotesk-600.ttf')),
+  const [sans, sansSemi, mono, display] = await Promise.all([
+    readFile(path.join(FONT_DIR, 'ibm-plex-sans-latin-400-normal.woff')),
+    readFile(path.join(FONT_DIR, 'ibm-plex-sans-latin-600-normal.woff')),
+    readFile(path.join(FONT_DIR, 'ibm-plex-mono-latin-500-normal.woff')),
+    readFile(path.join(FONT_DIR, 'archivo-latin-600-normal.woff')),
   ]);
   return [
-    { name: 'STIX Two Text', data: stix, weight: 400 as const, style: 'normal' as const },
-    { name: 'STIX Two Text', data: stixSemi, weight: 600 as const, style: 'normal' as const },
-    { name: 'Spline Sans Mono', data: mono, weight: 500 as const, style: 'normal' as const },
-    { name: 'Schibsted Grotesk', data: sans, weight: 600 as const, style: 'normal' as const },
+    { name: 'IBM Plex Sans', data: sans, weight: 400 as const, style: 'normal' as const },
+    { name: 'IBM Plex Sans', data: sansSemi, weight: 600 as const, style: 'normal' as const },
+    { name: 'IBM Plex Mono', data: mono, weight: 500 as const, style: 'normal' as const },
+    { name: 'Archivo', data: display, weight: 600 as const, style: 'normal' as const },
   ];
 }
 
-const bit = (ch: string, opts: { accent?: boolean; struck?: boolean } = {}) => ({
+const bit = (ch: string, opts: { caught?: boolean } = {}) => ({
   type: 'div',
   props: {
     style: {
@@ -39,13 +42,13 @@ const bit = (ch: string, opts: { accent?: boolean; struck?: boolean } = {}) => (
       position: 'relative',
       width: 64,
       height: 88,
-      fontFamily: 'Spline Sans Mono',
+      fontFamily: 'IBM Plex Mono',
       fontSize: 72,
-      color: opts.accent ? C.accent : C.ink,
+      color: opts.caught ? C.gold : C.ink,
     },
     children: [
       { type: 'div', props: { children: ch } },
-      ...(opts.struck
+      ...(opts.caught
         ? [
             {
               type: 'div',
@@ -56,7 +59,7 @@ const bit = (ch: string, opts: { accent?: boolean; struck?: boolean } = {}) => (
                   right: -4,
                   top: 46,
                   height: 5,
-                  backgroundColor: C.accent,
+                  backgroundColor: C.red,
                 },
               },
             },
@@ -67,9 +70,11 @@ const bit = (ch: string, opts: { accent?: boolean; struck?: boolean } = {}) => (
 });
 
 export async function renderOg(label: string): Promise<Buffer> {
-  const bits = ['1', '0', '1', '1'].map((b) => bit(b));
-  const caught = bit('1', { accent: true, struck: true });
-  const rest = ['0', '1', '0', '0'].map((b) => bit(b));
+  // The same ECC word the site's signature strip carries: 'R' = 0x52 =
+  // 01010010, bit 3 caught and corrected. True data, not texture.
+  const bits = ['0', '1', '0'].map((b) => bit(b));
+  const caught = bit('1', { caught: true });
+  const rest = ['0', '0', '1', '0'].map((b) => bit(b));
 
   const element = {
     type: 'div',
@@ -82,6 +87,7 @@ export async function renderOg(label: string): Promise<Buffer> {
         backgroundColor: C.bg,
         padding: '64px 72px',
         justifyContent: 'space-between',
+        borderTop: `10px solid ${C.ink}`,
       },
       children: [
         {
@@ -93,7 +99,7 @@ export async function renderOg(label: string): Promise<Buffer> {
                 type: 'div',
                 props: {
                   style: {
-                    fontFamily: 'Schibsted Grotesk',
+                    fontFamily: 'IBM Plex Sans',
                     fontSize: 26,
                     color: C.muted,
                     letterSpacing: 2,
@@ -104,7 +110,7 @@ export async function renderOg(label: string): Promise<Buffer> {
               {
                 type: 'div',
                 props: {
-                  style: { fontFamily: 'Spline Sans Mono', fontSize: 24, color: C.muted },
+                  style: { fontFamily: 'IBM Plex Mono', fontSize: 24, color: C.muted },
                   children: 'rfbert.me',
                 },
               },
@@ -120,7 +126,29 @@ export async function renderOg(label: string): Promise<Buffer> {
                 type: 'div',
                 props: {
                   style: { display: 'flex', gap: 10, alignItems: 'center' },
-                  children: [...bits, caught, ...rest],
+                  children: [
+                    ...bits,
+                    caught,
+                    ...rest,
+                    // the check bit, set apart in contact gold
+                    {
+                      type: 'div',
+                      props: {
+                        style: {
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: 64,
+                          height: 88,
+                          marginLeft: 22,
+                          fontFamily: 'IBM Plex Mono',
+                          fontSize: 72,
+                          color: C.gold,
+                        },
+                        children: '1',
+                      },
+                    },
+                  ],
                 },
               },
               {
@@ -128,8 +156,8 @@ export async function renderOg(label: string): Promise<Buffer> {
                 props: {
                   style: {
                     width: 220,
-                    height: 2,
-                    backgroundColor: C.line,
+                    height: 3,
+                    backgroundColor: C.ink,
                   },
                 },
               },
@@ -137,7 +165,7 @@ export async function renderOg(label: string): Promise<Buffer> {
                 type: 'div',
                 props: {
                   style: {
-                    fontFamily: 'STIX Two Text',
+                    fontFamily: 'Archivo',
                     fontWeight: 600,
                     fontSize: 64,
                     color: C.ink,
@@ -150,7 +178,7 @@ export async function renderOg(label: string): Promise<Buffer> {
                 type: 'div',
                 props: {
                   style: {
-                    fontFamily: 'STIX Two Text',
+                    fontFamily: 'IBM Plex Sans',
                     fontSize: 30,
                     color: C.muted,
                     lineHeight: 1.4,
@@ -166,7 +194,7 @@ export async function renderOg(label: string): Promise<Buffer> {
           type: 'div',
           props: {
             style: {
-              fontFamily: 'Schibsted Grotesk',
+              fontFamily: 'IBM Plex Mono',
               fontSize: 22,
               color: C.muted,
             },

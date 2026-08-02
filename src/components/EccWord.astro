@@ -1,0 +1,140 @@
+---
+/**
+ * An ECC word: eight data bits ('R' = 0x52) and one check bit. The static
+ * state already tells the story — one bit was hit and corrected. With JS,
+ * clicking replays a flip-and-correct cycle and ticks the site ledger:
+ * the visitor operates the demonstration instead of only watching it.
+ * Ships disabled (a static figure) and is enabled by the script.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+
+// 'R' = 0x52 = 01010010 — three 1-bits, so the even-parity check bit is 1.
+// True data, not texture.
+const bits = [0, 1, 0, 1, 0, 0, 1, 0];
+const parity = bits.reduce((a, b) => a ^ b, 0);
+const hit = 3;
+---
+
+<button
+  type="button"
+  class:list={['ecc-word group block cursor-pointer border-0 bg-transparent p-0 text-left', className]}
+  aria-label="Replay a single-bit fault being detected and corrected"
+  disabled
+>
+  <span class="flex items-center gap-1" aria-hidden="true">
+    {
+      bits.map((b, i) => (
+        <span
+          class:list={['ecc-bit', b ? 'ecc-on' : '', i === hit ? 'ecc-hit' : '']}
+          data-bit={i}
+          data-val={b}
+        />
+      ))
+    }
+    <span class="ecc-bit ecc-check ml-1.5" data-val={parity} />
+  </span>
+  <span class="js-ecc-note mt-1.5 block font-mono text-[0.68rem] text-muted" role="status">
+    bit {hit} — flipped, corrected
+  </span>
+</button>
+
+<style>
+  /* Disabled = the no-JS static figure; keep it at full ink. */
+  .ecc-word:disabled {
+    cursor: default;
+    color: inherit;
+    opacity: 1;
+  }
+  .ecc-bit {
+    position: relative;
+    display: block;
+    width: 0.75rem;
+    height: 0.75rem;
+    border: 1.5px solid var(--c-ink);
+  }
+  .ecc-on {
+    background: var(--c-ink);
+  }
+  .ecc-check {
+    border-color: var(--c-gold);
+    background: var(--c-gold);
+  }
+  /* Static designed final frame: the hit bit sits corrected in gold,
+     the strike records that it was flipped. Fill still encodes the value. */
+  .ecc-hit {
+    border-color: var(--c-gold);
+    background: var(--c-gold);
+  }
+  .ecc-hit[data-val='0'] {
+    background: transparent;
+  }
+  .ecc-hit::after {
+    content: '';
+    position: absolute;
+    left: -3px;
+    right: -3px;
+    top: 50%;
+    height: 1.5px;
+    background: var(--c-red);
+    transform: rotate(-45deg);
+  }
+  /* Replay states (JS-driven): fault red shows the INVERTED value. */
+  .ecc-bit.ecc-fault {
+    border-color: var(--c-red);
+    background: var(--c-red);
+  }
+  .ecc-bit.ecc-fault[data-val='1'] {
+    background: transparent; /* the flip: 1 → 0, drawn in fault red */
+  }
+  .ecc-word:focus-visible {
+    outline: 2px solid var(--c-gold);
+    outline-offset: 4px;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.ecc-word').forEach((word) => {
+    word.disabled = false;
+    const bits = [...word.querySelectorAll<HTMLElement>('.ecc-bit:not(.ecc-check)')];
+    const note = word.querySelector<HTMLElement>('.js-ecc-note');
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    let busy = false;
+
+    const bump = (sel: string) =>
+      document
+        .querySelectorAll(sel)
+        .forEach((el) => (el.textContent = String(Number(el.textContent) + 1)));
+
+    word.addEventListener('click', () => {
+      if (busy) return;
+      const i = Math.floor(Math.random() * bits.length);
+      const bit = bits[i];
+      bits.forEach((b) => b.classList.remove('ecc-hit'));
+
+      if (reduced.matches) {
+        // Designed final frame only: no transient fault state, no timers.
+        bit.classList.add('ecc-hit');
+        if (note) note.textContent = `bit ${i} — flipped, corrected`;
+        bump('.js-ledger-det');
+        bump('.js-ledger-cor');
+        return;
+      }
+
+      busy = true;
+      bit.classList.add('ecc-fault');
+      if (note) note.textContent = `bit ${i} — flipped`;
+      bump('.js-ledger-det');
+
+      setTimeout(() => {
+        bit.classList.remove('ecc-fault');
+        bit.classList.add('ecc-hit');
+        if (note) note.textContent = `bit ${i} — flipped, corrected`;
+        bump('.js-ledger-cor');
+        busy = false;
+      }, 420);
+    });
+  });
+</script>

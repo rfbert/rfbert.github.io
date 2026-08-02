@@ -1,10 +1,12 @@
 ---
-import '@fontsource/stix-two-text/400.css';
-import '@fontsource/stix-two-text/500.css';
-import '@fontsource/stix-two-text/600.css';
-import '@fontsource/schibsted-grotesk/400.css';
-import '@fontsource/schibsted-grotesk/500.css';
-import '@fontsource/spline-sans-mono/400.css';
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-serif/400.css';
+import '@fontsource/ibm-plex-serif/400-italic.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
 import '../styles/global.css';
 import { site } from '../data/site';
 
@@ -71,17 +73,21 @@ const personLd = JSON.stringify({
     <script is:inline>
       // Theme: system default + manual override persisted in localStorage. Runs before paint.
       // ?theme=light|dark wins for the session (used by automated screenshots/tests).
+      // Storage can throw when blocked (hardened/private modes) — fall through to system.
       (() => {
         const q = new URLSearchParams(location.search).get('theme');
-        const stored = q === 'light' || q === 'dark' ? q : localStorage.getItem('theme');
+        let stored = q === 'light' || q === 'dark' ? q : null;
+        if (!stored) {
+          try {
+            stored = localStorage.getItem('theme');
+          } catch {}
+        }
         const dark = stored ? stored === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
         document.documentElement.classList.toggle('dark', dark);
       })();
     </script>
   </head>
   <body class="bg-bg text-ink min-h-dvh flex flex-col">
-    <main id="main" class="flex w-full flex-1 flex-col">
-      <slot />
-    </main>
+    <slot />
   </body>
 </html>

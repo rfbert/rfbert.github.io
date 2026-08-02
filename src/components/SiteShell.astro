@@ -1,17 +1,22 @@
 ---
 /**
- * Editorial chrome (winning art direction): a marginalia rail on desktop with the
- * structural rule the content hangs on; a single quiet nav row on mobile.
- * Every page renders inside this shell.
+ * SEC-DED chrome: datasheet header row over a solid rule, a parity rail on the
+ * right edge (desktop) that monitors the page — section ticks, fault ledger,
+ * live hex scroll offset — and a footer that mirrors the ledger everywhere.
+ *
+ * Structural guarantee inherited from the judge panel: with JS disabled the
+ * page is complete, correctly styled, and fully scannable. Every script here
+ * is an additive layer.
  */
 import ThemeToggle from './ThemeToggle.astro';
 import { site } from '../data/site';
+import { crc8 } from '../lib/crc8';
 
 const path = Astro.url.pathname;
 const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
 ---
 
-<div class="mx-auto flex w-full max-w-6xl flex-1 flex-col px-5 lg:px-8">
+<div class="flex w-full flex-1 flex-col">
   <a
     href="#content"
     class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-bg focus:px-3 focus:py-2 font-sans text-sm"
@@ -19,71 +24,50 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
     Skip to content
   </a>
 
-  <!-- Mobile wayfinding: one quiet row -->
-  <nav
-    class="lg:hidden flex flex-wrap items-baseline gap-x-5 gap-y-1 border-b border-line py-4 font-sans text-sm"
-    aria-label="Primary"
-  >
-    <a href="/" class:list={['inline-block py-1.5 transition-colors', path === '/' ? 'text-ink font-medium' : 'text-muted hover:text-ink']}>Home</a>
-    {
-      site.nav.map((n) => (
+  <div class="mx-auto flex w-full max-w-5xl flex-1 flex-col px-5 sm:px-8 lg:pr-20">
+    <!-- Part header row: name, wayfinding, theme — over the datasheet's solid rule -->
+    <header class="border-b-2 border-ink pt-5 pb-3" aria-label="Site">
+      <div class="flex flex-wrap items-baseline gap-x-6 gap-y-1.5">
         <a
-          href={n.href}
-          aria-current={isActive(n.href) ? 'page' : undefined}
-          class:list={['inline-block py-1.5 transition-colors', isActive(n.href) ? 'text-ink font-medium' : 'text-muted hover:text-ink']}
+          href="/"
+          class="wordmark text-[0.95rem] font-semibold text-ink no-underline"
+          aria-current={path === '/' ? 'page' : undefined}
         >
-          {n.label}
+          Rodrigo Flores Bertolotti
         </a>
-      ))
-    }
-    <span class="ml-auto"><ThemeToggle /></span>
-  </nav>
-
-  <div class="flex-1 lg:grid lg:grid-cols-[10.5rem_1fr] lg:gap-12 xl:gap-16">
-    <!-- Structural left margin: marginalia rail. Full viewport column while sticky:
-         wayfinding at the top, place + theme pinned to the bottom, the emptiness
-         between them is the composition. -->
-    <header class="hidden lg:flex sticky top-0 h-dvh flex-col self-start pt-10 pb-8" aria-label="Site">
-      <a href="/" class="font-sans text-sm font-medium text-ink transition-colors hover:text-accent">
-        Home
-      </a>
-      <nav aria-label="Primary" class="mt-1.5">
-        <ul class="space-y-1.5 font-sans text-sm">
+        <nav aria-label="Primary" class="ml-auto flex flex-wrap items-baseline gap-x-5 gap-y-1 font-sans text-sm">
           {
             site.nav.map((n) => (
-              <li>
-                <a
-                  href={n.href}
-                  aria-current={isActive(n.href) ? 'page' : undefined}
-                  class:list={[
-                    'transition-colors',
-                    isActive(n.href) ? 'text-accent' : 'text-muted hover:text-ink',
-                  ]}
-                >
-                  {n.label}
-                </a>
-              </li>
+              <a
+                href={n.href}
+                aria-current={isActive(n.href) ? 'page' : undefined}
+                class:list={[
+                  'v-link inline-block py-1',
+                  isActive(n.href) ? 'nav-active text-gold-text' : 'text-muted hover:text-ink',
+                ]}
+              >
+                {n.label}
+              </a>
             ))
           }
-        </ul>
-      </nav>
-      <p class="mt-auto pt-10 font-sans text-xs text-muted">Corvallis, Oregon</p>
-      <div class="mt-2"><ThemeToggle /></div>
+          <ThemeToggle />
+        </nav>
+      </div>
     </header>
 
-    <!-- Main column, hung on the rule -->
-    <div id="content" class="flex min-w-0 flex-col pt-8 pb-16 lg:border-l lg:border-line lg:pl-11 lg:pt-10">
-      <div class="flex-1">
-        <slot />
-      </div>
+    <!-- Main column: only page content lives in <main>, so header/footer keep
+         their banner/contentinfo landmarks. -->
+    <main id="content" class="flex min-w-0 flex-1 flex-col pt-9">
+      <slot />
+    </main>
 
-      <footer class="mt-16 border-t border-line pt-5">
+    <footer class="mt-16 border-t-2 border-ink pt-4 pb-16">
         <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 font-sans text-sm text-muted">
           <ul class="flex flex-wrap gap-x-5 gap-y-1 list-none p-0 m-0">
             {
               site.contacts.map((c) => (
                 <li>
-                  <a href={c.href} class="no-underline text-muted transition-colors hover:text-ink">
+                  <a href={c.href} data-crc={crc8(c.href)} class="v-link text-muted hover:text-ink">
                     {c.label}
                   </a>
                 </li>
@@ -92,12 +76,215 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
           </ul>
           <p class="m-0">© 2026 Rodrigo Flores Bertolotti</p>
         </div>
-        <p class="mt-3 font-sans text-xs text-muted">
-          Set in STIX Two Text, Schibsted Grotesk, and Spline Sans Mono · Built with Astro and
-          Tailwind ·
-          <a href="https://github.com/rfbert/rfbert.github.io" class="underline decoration-line decoration-1 underline-offset-4 hover:decoration-accent">Source</a>
+        <p class="mt-3 flex flex-wrap gap-x-5 gap-y-1 font-sans text-xs text-muted">
+          <span>
+            Set in Archivo and IBM Plex · Built with Astro ·
+            <a
+              href="https://github.com/rfbert/rfbert.github.io"
+              data-crc={crc8('https://github.com/rfbert/rfbert.github.io')}
+              class="v-link">Source</a
+            >
+          </span>
+          <span class="font-mono" aria-hidden="true">
+            parity — detected <span class="js-ledger-det">0</span> · corrected
+            <span class="js-ledger-cor">0</span>
+          </span>
         </p>
-      </footer>
-    </div>
+    </footer>
   </div>
+
+  <!-- Parity rail: the check column. Decorative monitoring chrome; everything it
+       shows is real (section positions, live scroll offset, the fault ledger). -->
+  <aside
+    class="parity-rail fixed inset-y-0 right-0 hidden w-14 border-l border-line lg:flex flex-col items-center"
+    aria-hidden="true"
+  >
+    <span class="mt-4 block h-2.5 w-2.5 bg-gold"></span>
+    <span
+      class="rail-ledger mt-4 font-mono text-[0.65rem] tracking-[0.08em] text-muted"
+    >
+      det <span class="js-ledger-det">0</span> · cor <span class="js-ledger-cor">0</span>
+    </span>
+    <span class="js-rail-ticks relative block w-full flex-1"></span>
+    <span class="js-rail-hex mb-4 font-mono text-[0.65rem] text-muted">0x0000</span>
+  </aside>
 </div>
+
+<style>
+  .wordmark {
+    font-family: var(--font-display);
+    font-variation-settings: 'wdth' 118;
+    letter-spacing: 0.005em;
+  }
+
+  .nav-active {
+    background-image: linear-gradient(var(--c-gold), var(--c-gold));
+    background-size: 100% 2px;
+  }
+
+  .rail-ledger {
+    writing-mode: vertical-rl;
+  }
+
+  .js-rail-ticks :global(button) {
+    position: absolute;
+    right: 0;
+    display: block;
+    width: 1.1rem;
+    height: 2px;
+    background: var(--c-gold);
+    cursor: pointer;
+  }
+  .js-rail-ticks :global(button:hover) {
+    width: 1.6rem;
+  }
+</style>
+
+<script>
+  // ── Parity-rail telemetry: section ticks + live hex scroll offset ──────────
+  const rail = document.querySelector<HTMLElement>('.parity-rail');
+  if (rail) {
+    const ticks = rail.querySelector<HTMLElement>('.js-rail-ticks');
+    const hex = rail.querySelector<HTMLElement>('.js-rail-hex');
+    const sections = [...document.querySelectorAll<HTMLElement>('[data-sec]')];
+
+    const placeTicks = () => {
+      if (!ticks) return;
+      ticks.innerHTML = '';
+      const doc = document.documentElement.scrollHeight;
+      for (const sec of sections) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.tabIndex = -1; // rail is decorative chrome; sections are reachable in-page
+        btn.style.top = `${(sec.offsetTop / doc) * 100}%`;
+        btn.addEventListener('click', () => {
+          sec.scrollIntoView({
+            behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+          });
+        });
+        ticks.appendChild(btn);
+      }
+    };
+    placeTicks();
+    // Web-font swap shifts every offsetTop; re-place once metrics are final.
+    document.fonts?.ready.then(placeTicks);
+    let tickRaf = 0;
+    addEventListener(
+      'resize',
+      () => {
+        if (!tickRaf) tickRaf = requestAnimationFrame(() => { tickRaf = 0; placeTicks(); });
+      },
+      { passive: true }
+    );
+
+    let raf = 0;
+    const readout = () => {
+      raf = 0;
+      const max = document.documentElement.scrollHeight - innerHeight;
+      const v = max > 0 ? Math.round((scrollY / max) * 0xffff) : 0;
+      if (hex) hex.textContent = `0x${v.toString(16).padStart(4, '0').toUpperCase()}`;
+    };
+    addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(readout); }, { passive: true });
+    readout();
+  }
+
+  // ── Single-event upset, corrected. One per page view, then still. ─────────
+  // The flip is computationally truthful (a real XOR single-bit neighbor) and
+  // purely presentational: the true glyph stays in the DOM (made transparent),
+  // the corrupted glyph is an aria-hidden overlay — screen readers, find-in-page
+  // and copy/paste always read clean data. Only long body prose marked
+  // [data-seu] is eligible; the recruiter scan path is never corrupted.
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduced) {
+    const bump = (sel: string) =>
+      document
+        .querySelectorAll(sel)
+        .forEach((el) => (el.textContent = String(Number(el.textContent) + 1)));
+    const tickLedger = () => {
+      bump('.js-ledger-det');
+      setTimeout(() => bump('.js-ledger-cor'), 140);
+    };
+
+    const flipChar = (ch: string): string | null => {
+      const code = ch.charCodeAt(0);
+      for (const k of [0, 1, 2, 3, 4, 5].sort(() => Math.random() - 0.5)) {
+        const f = String.fromCharCode(code ^ (1 << k));
+        if (f !== ch && /[a-zA-Z0-9]/.test(f)) return f;
+      }
+      return null;
+    };
+
+    const fire = () => {
+      const hosts = [...document.querySelectorAll<HTMLElement>('[data-seu]')];
+      if (!hosts.length) return;
+      const walker = document.createTreeWalker(
+        hosts[Math.floor(Math.random() * hosts.length)],
+        NodeFilter.SHOW_TEXT
+      );
+      const nodes: Text[] = [];
+      while (walker.nextNode()) {
+        const t = walker.currentNode as Text;
+        // Long paragraph prose only — list bullets read as proof rows, never eligible.
+        if (t.parentElement?.closest('p') && (t.textContent ?? '').trim().length >= 12)
+          nodes.push(t);
+      }
+      if (!nodes.length) return;
+      const node = nodes[Math.floor(Math.random() * nodes.length)];
+      const text = node.textContent ?? '';
+      // Plain UTF-16 index loop: splitText() consumes code units, so candidate
+      // indices must be code units too.
+      const candidates: number[] = [];
+      for (let i = 0; i < text.length; i++) if (/[a-z]/.test(text[i])) candidates.push(i);
+      if (!candidates.length) return;
+      const i = candidates[Math.floor(Math.random() * candidates.length)];
+      const flipped = flipChar(text[i]);
+      if (!flipped) return;
+
+      const tail = node.splitText(i);
+      tail.splitText(1);
+      const span = document.createElement('span');
+      span.className = 'seu-glyph seu-live';
+      tail.parentNode?.replaceChild(span, tail);
+      span.appendChild(tail);
+      const overlay = document.createElement('span');
+      overlay.className = 'seu-overlay';
+      overlay.setAttribute('aria-hidden', 'true');
+      overlay.textContent = flipped;
+      span.appendChild(overlay);
+      tickLedger();
+
+      setTimeout(() => {
+        overlay.remove();
+        // Class-driven restore — no :has() dependency; the true glyph can
+        // never be left invisible.
+        span.classList.remove('seu-live');
+        span.classList.add('seu-corrected');
+        setTimeout(() => span.classList.remove('seu-corrected'), 500);
+      }, 420);
+    };
+
+    setTimeout(fire, 7000);
+  }
+</script>
+
+<style is:global>
+  .seu-glyph {
+    position: relative;
+  }
+  .seu-glyph.seu-live {
+    color: transparent;
+  }
+  .seu-glyph.seu-corrected {
+    color: var(--c-gold-text);
+    transition: color 400ms steps(2);
+  }
+  .seu-overlay {
+    position: absolute;
+    inset: 0;
+    color: var(--c-red-text);
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+    user-select: none;
+    pointer-events: none;
+  }
+</style>

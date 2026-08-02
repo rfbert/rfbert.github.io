@@ -1,0 +1,18 @@
+---
+/** A bordered mono stamp for true status values ("Manuscript under review").
+    Status is data, never section grammar — and never fault red. */
+interface Props {
+  label: string;
+  class?: string;
+}
+const { label, class: className } = Astro.props;
+---
+
+<span
+  class:list={[
+    'inline-block border border-gold px-2 py-0.5 font-mono text-[0.7rem] leading-snug text-gold-text',
+    className,
+  ]}
+>
+  {label}
+</span>

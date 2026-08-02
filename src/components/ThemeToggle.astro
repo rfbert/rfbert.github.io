@@ -3,19 +3,23 @@
 <button
   type="button"
   class="js-theme-toggle font-sans text-sm text-muted hover:text-ink transition-colors cursor-pointer"
-  aria-label="Switch color theme"
 >
   <span class="dark:hidden">Dark</span>
   <span class="hidden dark:inline">Light</span>
 </button>
 
 <script>
-  // Multiple toggles render (mobile nav + desktop rail) — bind every one.
+  // Multiple toggles can render — bind every one. The visible "Dark"/"Light"
+  // text is the accessible name (it names the theme the button switches to).
   document.querySelectorAll<HTMLButtonElement>('.js-theme-toggle').forEach((btn) => {
     btn.addEventListener('click', () => {
       const nowDark = !document.documentElement.classList.contains('dark');
       document.documentElement.classList.toggle('dark', nowDark);
-      localStorage.setItem('theme', nowDark ? 'dark' : 'light');
+      try {
+        localStorage.setItem('theme', nowDark ? 'dark' : 'light');
+      } catch {
+        // Storage blocked — the toggle still works for this page view.
+      }
     });
   });
 </script>

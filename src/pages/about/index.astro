@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import SiteShell from '../../components/SiteShell.astro';
 import PageIntro from '../../components/PageIntro.astro';
+import PinContacts from '../../components/PinContacts.astro';
 import { site } from '../../data/site';
 ---
 
@@ -13,7 +14,7 @@ import { site } from '../../data/site';
   <SiteShell>
     <PageIntro title="About" />
 
-    <div class="max-w-[68ch] space-y-4">
+    <div class="max-w-[66ch] space-y-4" data-seu>
       <p>
         I'm a computer science undergraduate at Oregon State University. I build AI systems, and
         I'm drawn to LLM reliability: what happens to large language models when the hardware under
@@ -32,10 +33,13 @@ import { site } from '../../data/site';
         development and for staying organized.
       </p>
     </div>
+    <p class="mt-3 font-mono text-xs text-muted" aria-hidden="true">
+      Lima 12°03′S → Corvallis 44°34′N
+    </p>
 
-    <section class="mt-10" aria-labelledby="now">
-      <h2 id="now" class="font-sans text-sm font-medium text-muted">Now</h2>
-      <div class="mt-3 border-t border-line pt-4 max-w-[68ch]">
+    <section class="mt-10" aria-labelledby="now" data-sec>
+      <h2 id="now" class="sec-label">Now</h2>
+      <div class="mt-3 border-t border-line pt-4 max-w-[66ch]">
         <p>
           <span class="font-mono text-xs text-muted mr-3">Jul 2026</span>
           Interning on the AI team at Mibanco in Lima. Summer 2027 internship applications are next.
@@ -43,19 +47,17 @@ import { site } from '../../data/site';
       </div>
     </section>
 
-    <section class="mt-10" aria-labelledby="edu">
-      <h2 id="edu" class="font-sans text-sm font-medium text-muted">Education</h2>
-      <div class="mt-3 border-t border-line pt-4 max-w-[68ch] space-y-1.5">
-        <p>{site.education.line}</p>
+    <section class="mt-10" aria-labelledby="edu" data-sec>
+      <h2 id="edu" class="sec-label">Education</h2>
+      <div class="mt-3 border-t border-line pt-4 max-w-[75ch] space-y-1.5">
+        <p class="font-mono text-[0.82rem] leading-relaxed">{site.education.line}</p>
         <p class="font-sans text-sm text-muted">{site.education.coursework}</p>
       </div>
     </section>
 
-    <section class="mt-10" aria-labelledby="recognition">
-      <h2 id="recognition" class="font-sans text-sm font-medium text-muted">
-        Leadership, awards &amp; certificates
-      </h2>
-      <ul class="mt-3 border-t border-line pt-4 list-none p-0 m-0 max-w-[68ch] space-y-2.5">
+    <section class="mt-10" aria-labelledby="recognition" data-sec>
+      <h2 id="recognition" class="sec-label">Leadership, awards &amp; certificates</h2>
+      <ul class="mt-3 border-t border-line pt-4 list-none p-0 m-0 max-w-[66ch] space-y-2.5">
         {
           site.awards.map((a) => (
             <li>
@@ -67,23 +69,20 @@ import { site } from '../../data/site';
       </ul>
     </section>
 
-    <section class="mt-10" aria-labelledby="contact">
-      <h2 id="contact" class="font-sans text-sm font-medium text-muted">Contact</h2>
-      <ul class="mt-3 border-t border-line pt-4 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2 list-none p-0 m-0">
-        {
-          site.contacts.map((c) => (
-            <li class="min-w-0">
-              <span class="block font-sans text-xs text-muted">{c.label}</span>
-              <a
-                href={c.href}
-                class="font-mono text-[0.82rem] break-words underline decoration-line decoration-1 underline-offset-4 hover:decoration-accent"
-              >
-                {c.value}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+    <section class="mt-10" aria-labelledby="contact" data-sec>
+      <h2 id="contact" class="sec-label">Contact</h2>
+      <div class="mt-3 border-t border-line pt-4">
+        <PinContacts />
+      </div>
     </section>
   </SiteShell>
 </Base>
+
+<style>
+  .sec-label {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--c-muted);
+  }
+</style>

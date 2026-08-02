@@ -1,34 +1,51 @@
-# Theme: Silicon Ochre
+# Theme: SEC-DED (Syndrome Zero)
 
-Custom theme derived via theme-factory (none of the 10 presets fit a research-portfolio register).
-Mood sentence: *a university-press lab notebook — precise ink on pure white, one considered ochre
-highlight, silicon read under a warm desk lamp.* Brand seed from impeccable palette: oklch(0.550 0.124 60.0).
+v2 direction, chosen by a 3-lens judge panel (distinctiveness / audience-fit / feasibility)
+over three alternatives. Mood sentence: *ECC-protected memory as a document — a datasheet-clean
+scan that takes one visible bit hit, repairs it in front of you, and keeps a ledger to prove
+nothing stays corrupted.* v1 ("Silicon Ochre") is archived at
+`~/Repositories/website-archive/rfbert.me-v1-silicon-ochre`.
 
-## Color (OKLCH, light / dark)
+## Color (hex, light / dark) — WCAG-verified, see contrast notes
 
-| Role    | Light                    | Dark                     |
-|---------|--------------------------|--------------------------|
-| bg      | oklch(1 0 0) pure white  | oklch(0.165 0.006 265)   |
-| surface | oklch(0.962 0.003 60)    | oklch(0.205 0.007 262)   |
-| ink     | oklch(0.21 0.008 262)    | oklch(0.93 0.004 75)     |
-| muted   | oklch(0.46 0.01 262)     | oklch(0.70 0.008 262)    |
-| line    | oklch(0.885 0.004 60)    | oklch(0.30 0.006 262)    |
-| accent  | oklch(0.55 0.124 60)     | oklch(0.74 0.112 62)     |
+| Role      | Light (datasheet paper)   | Dark (solder-mask board)  |
+|-----------|---------------------------|---------------------------|
+| bg        | #F7F9F8                   | #0F231B                   |
+| surface   | #EEF2EF                   | #173326                   |
+| ink       | #16211B (15.7:1)          | #E9F1EA (14.3:1)          |
+| muted     | #47564C (7.4:1)           | #9DB3A4 (7.4:1)           |
+| line      | #D5DCD6                   | #274536                   |
+| gold      | #9A7B1C (graphic, 3.8:1)  | #E2B93B (8.8:1)           |
+| gold-text | #806414 (5.3:1 AA)        | #E2B93B                   |
+| red       | #C03A1F (graphic)         | #FF7A54                   |
+| red-text  | #A32E15 (6.7:1)           | #FF7A54 (6.4:1)           |
 
-Strategy: **Restrained** (tinted neutrals + one accent ≤10%) — the register is quiet academic
-confidence; warmth lives in the accent + serif, never the background.
+Color is **semantic, never decorative**: gold = verified (links, pads, ticks, corrected states),
+red = a fault is live. Red never appears in the static state of any page except the 404
+(a double-bit error: detectable, not correctable). Light is default; dark is a *material swap*
+(the board the datasheet describes), not an inversion.
+
+Contrast note: the direction spec's gold failed AA as text (3.8:1 measured) — hence the
+gold/gold-text split in light mode. Keep both tokens; never set body-size text in `--c-gold`.
 
 ## Type roles
 
-- **Serif (voice, prose, headlines):** STIX Two Text — the scientific-publishing typeface;
-  material honesty for a researcher. Weights 400/500/600/700 + italic.
-- **Sans (wayfinding: nav, labels, buttons):** Schibsted Grotesk.
-- **Mono (data: dates, tokens, the bit signature):** Spline Sans Mono.
+- **Display (nameplate, page titles):** Archivo Variable, width axis in use — name at
+  wdth 120 / wght 800, page titles wdth 106 / 600, wordmark wdth 118. Never uppercase.
+- **Body (everything):** IBM Plex Sans 400/500/600 — the typeface of the company that shipped
+  ECC memory. 1.0625rem/1.65, measure ≤66ch.
+- **Manuscript register:** IBM Plex Serif 400 + italic, *only* for the two research abstracts.
+- **Data:** IBM Plex Mono 400/500 strictly for true data — dates, coordinates, checksums,
+  stacks, status stamps, the degree spec line. Never headings, never body prose.
 
-Scale: modular ×1.30; headings fluid via clamp(); body 1.0625rem/1.7; max line length 68ch.
+Scale ×1.25 modular; fluid clamp() headings capped 4.25rem.
 
 ## Signature
 
-**The flipped bit, caught.** A short bit/token strip where one bit flips to ochre and is
-struck through + corrected — the research subject (detect-and-correct silent corruption)
-told in one quiet visual. Entrance-level motion only; reduced-motion → static.
+**The single-event upset, corrected — and operable.** One glyph in long body prose (marked
+`data-seu`; the recruiter scan path is never eligible) takes a real XOR single-bit flip once
+per page view, is struck in red, and snaps back corrected as the parity ledger ticks. The
+corruption is purely presentational (aria-hidden overlay; copy/find/screen readers always get
+clean text). The home ECC-word strip is the operable version: click to replay a flip-and-correct.
+Reduced motion: no flips ever fire; the strip's static frame (gold bit, red strike) tells the
+story instead. Motion doctrine: one pass, then still.

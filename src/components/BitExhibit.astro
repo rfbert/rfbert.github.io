@@ -1,0 +1,200 @@
+---
+/**
+ * One weight, thirty-two switches. The 32 bits of a real float32 weight as
+ * toggles, grouped sign | exponent | mantissa. Decoding is genuine
+ * (Float32Array reinterpret); the arithmetic line is captioned honestly as an
+ * illustration. Fifteen seconds of play teaches the research field: most flips
+ * are silent, a few are catastrophic, and the dangerous ones look fine —
+ * only the draft gate catches those.
+ *
+ * Keyboard: arrow keys move between switches (roving tabindex), Enter/Space
+ * toggles. Without JS the exhibit renders as a correct static figure.
+ */
+
+// -0.0087890625 = -9 × 2⁻¹⁰ exactly: sign 1 · exponent 01111000 · mantissa 00100...0
+const BITS = '1' + '01111000' + '00100000000000000000000';
+const groups = [
+  { name: 'sign', bits: BITS.slice(0, 1), offset: 0 },
+  { name: 'exponent', bits: BITS.slice(1, 9), offset: 1 },
+  { name: 'mantissa', bits: BITS.slice(9), offset: 9 },
+];
+---
+
+<section class="bit-exhibit border border-line p-5 sm:p-6" aria-labelledby="bit-exhibit-h" data-sec>
+  <h2 id="bit-exhibit-h" class="font-sans text-sm font-medium text-muted">
+    One weight, thirty-two switches
+  </h2>
+  <p class="mt-2 max-w-[62ch] text-base text-muted">
+    A model weight is thirty-two bits. Flip one and see what a hardware fault does: most flips
+    change nothing, a few are catastrophic — and the dangerous ones look fine.
+  </p>
+
+  <div class="js-bits mt-5 flex flex-wrap items-end gap-x-5 gap-y-3" role="group" aria-label="The 32 bits of one float32 weight">
+    {
+      groups.map((g) => (
+        <div>
+          <span class="block font-mono text-[0.65rem] text-muted" aria-hidden="true">
+            {g.name}
+          </span>
+          <div class="mt-1 flex flex-wrap gap-[3px]">
+            {[...g.bits].map((b, i) => (
+              <button
+                type="button"
+                class="bit-btn"
+                data-idx={g.offset + i}
+                aria-pressed={b === '1' ? 'true' : 'false'}
+                aria-label={`bit ${31 - (g.offset + i)} (${g.name})`}
+                disabled
+              >
+                {b}
+              </button>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="mt-5 space-y-1 font-mono text-[0.8rem]">
+    <p class="m-0">weight = <span class="js-val">-0.0087890625</span></p>
+    <p class="m-0">17 × 24 = <span class="js-out">408</span></p>
+    <p class="m-0" role="status">
+      draft gate: <span class="js-verdict text-gold-text">ACCEPT</span>
+      <span class="js-note ml-2 font-sans text-[0.8rem] text-muted">stored value — nothing to catch</span>
+    </p>
+  </div>
+
+  <div class="mt-4 flex flex-wrap items-baseline gap-x-5 gap-y-2">
+    <button
+      type="button"
+      class="js-reset cursor-pointer border border-line bg-transparent px-2.5 py-1.5 font-mono text-[0.72rem] text-muted hover:border-gold hover:text-ink"
+      hidden
+    >
+      restore stored value
+    </button>
+    <p class="m-0 font-sans text-xs text-muted">
+      An illustration of the failure mode I study. The weight decode is real IEEE-754; the
+      arithmetic line stands in for a model's output.
+    </p>
+  </div>
+</section>
+
+<style>
+  .bit-btn {
+    width: 1.35rem;
+    height: 1.6rem;
+    border: 1.5px solid var(--c-ink);
+    background: transparent;
+    color: var(--c-ink);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    cursor: pointer;
+    padding: 0;
+  }
+  /* Disabled = the no-JS static figure; render it at full ink. */
+  .bit-btn:disabled {
+    cursor: default;
+    color: var(--c-ink);
+    opacity: 1;
+  }
+  .bit-btn[aria-pressed='true'] {
+    background: var(--c-ink);
+    color: var(--c-bg);
+  }
+  .bit-btn.bit-flipped {
+    border-color: var(--c-red);
+  }
+  .bit-btn.bit-flipped[aria-pressed='true'] {
+    background: var(--c-red);
+    color: var(--c-bg);
+  }
+  .bit-btn.bit-flipped[aria-pressed='false'] {
+    color: var(--c-red-text);
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.bit-exhibit');
+  if (root) {
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('.bit-btn')];
+    // Progressive enhancement: the server ships a static figure (disabled
+    // buttons, hidden reset); the script turns it into a roving-tabindex toolbar.
+    buttons.forEach((b, i) => {
+      b.disabled = false;
+      b.tabIndex = i === 0 ? 0 : -1;
+    });
+    const resetBtn = root.querySelector<HTMLButtonElement>('.js-reset');
+    if (resetBtn) resetBtn.hidden = false;
+    const val = root.querySelector<HTMLElement>('.js-val')!;
+    const out = root.querySelector<HTMLElement>('.js-out')!;
+    const verdict = root.querySelector<HTMLElement>('.js-verdict')!;
+    const note = root.querySelector<HTMLElement>('.js-note')!;
+    const stored = buttons.map((b) => b.getAttribute('aria-pressed') === 'true');
+
+    const decode = (bits: boolean[]): number => {
+      let u = 0;
+      for (const b of bits) u = (u << 1) | (b ? 1 : 0);
+      const buf = new ArrayBuffer(4);
+      new DataView(buf).setUint32(0, u >>> 0);
+      return new DataView(buf).getFloat32(0);
+    };
+    const base = decode(stored);
+
+    const render = () => {
+      const bits = buttons.map((b) => b.getAttribute('aria-pressed') === 'true');
+      const v = decode(bits);
+      val.textContent = Number.isFinite(v) ? String(v) : String(v);
+      buttons.forEach((b, i) => b.classList.toggle('bit-flipped', bits[i] !== stored[i]));
+      const flips = bits.filter((b, i) => b !== stored[i]).length;
+
+      const set = (o: string, ver: string, red: boolean, n: string) => {
+        out.textContent = o;
+        verdict.textContent = ver;
+        verdict.classList.toggle('text-red-text', red);
+        verdict.classList.toggle('text-gold-text', !red);
+        note.textContent = n;
+      };
+
+      if (flips === 0) {
+        set('408', 'ACCEPT', false, 'stored value — nothing to catch');
+        return;
+      }
+      const rel = Math.abs((v - base) / base);
+      if (!Number.isFinite(v) || Math.abs(v) > 1e3) {
+        set('—', 'FLAGGED', true, 'activations explode — any output monitor catches this');
+      } else if (rel < 0.02) {
+        set('408', 'ACCEPT', false, 'silent — no visible effect, and no monitor fires');
+      } else {
+        set('428', 'FLAGGED', true, 'wrong and plausible — only the draft gate catches it');
+      }
+    };
+
+    const rove = (to: HTMLButtonElement) => {
+      buttons.forEach((b) => (b.tabIndex = b === to ? 0 : -1));
+    };
+
+    buttons.forEach((btn, i) => {
+      btn.addEventListener('click', () => {
+        btn.setAttribute('aria-pressed', btn.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+        rove(btn); // keep the roving tabindex on the bit the user last touched
+        render();
+      });
+      btn.addEventListener('keydown', (e) => {
+        let next: HTMLButtonElement | undefined;
+        if (e.key === 'ArrowRight') next = buttons[(i + 1) % buttons.length];
+        else if (e.key === 'ArrowLeft') next = buttons[(i - 1 + buttons.length) % buttons.length];
+        else if (e.key === 'Home') next = buttons[0];
+        else if (e.key === 'End') next = buttons[buttons.length - 1];
+        if (!next) return;
+        e.preventDefault();
+        rove(next);
+        next.focus();
+      });
+    });
+
+    resetBtn?.addEventListener('click', () => {
+      buttons.forEach((b, i) => b.setAttribute('aria-pressed', stored[i] ? 'true' : 'false'));
+      render();
+    });
+  }
+</script>

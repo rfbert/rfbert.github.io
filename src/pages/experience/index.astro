@@ -12,8 +12,14 @@ const rendered = await Promise.all(
   experience.map(async (entry) => ({ entry, Content: (await render(entry)).Content }))
 );
 
+// Content dates are UTC midnights; format in UTC or the build timezone
+// renders every 1st-of-month one month early.
 const fmt = (d: Date) =>
-  d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  d.toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+
+// Coordinate stamps: biography as measured values (Lima ↔ Corvallis).
+const coord = (location: string) =>
+  location.includes('Lima') ? '12°03′S' : location.includes('Corvallis') ? '44°34′N' : null;
 ---
 
 <Base
@@ -24,33 +30,40 @@ const fmt = (d: Date) =>
   <SiteShell>
     <PageIntro title="Experience" />
 
-    <ul class="list-none p-0 m-0 space-y-10">
+    <ul class="list-none p-0 m-0 space-y-0">
       {
         rendered.map(({ entry, Content }) => (
-          <li class="border-t border-line pt-6">
-            <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-0.5">
+          <li class="border-t border-line py-7 md:grid md:grid-cols-[9.5rem_1fr] md:gap-8" data-sec>
+            <!-- Address column: the date range is the region's address in the map -->
+            <p class="m-0 font-mono text-xs leading-relaxed text-muted">
+              {fmt(entry.data.start)}<br />
+              {entry.data.end ? `– ${fmt(entry.data.end)}` : '– present'}
+            </p>
+            <div class="mt-2 md:mt-0 min-w-0">
               <h2 class="text-[1.35rem] leading-snug font-semibold">
                 {entry.data.organization}
-                {entry.data.parent && <span class="font-normal text-muted"> — {entry.data.parent}</span>}
+                {entry.data.parent && (
+                  <span class="font-normal text-muted"> — {entry.data.parent}</span>
+                )}
               </h2>
-              <span class="font-mono text-xs text-muted">
-                {fmt(entry.data.start)}{entry.data.end ? `–${fmt(entry.data.end)}` : '–present'}
-              </span>
-            </div>
-            <p class="mt-0.5 font-sans text-sm text-muted">
-              {entry.data.role} · {entry.data.location}
-            </p>
-            {entry.data.stack.length > 0 && (
-              <p class="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-muted">
-                {entry.data.stack.map((t) => (
-                  <span>{t}</span>
-                ))}
+              <p class="mt-0.5 font-sans text-sm text-muted">
+                {entry.data.role} · {entry.data.location}
+                {coord(entry.data.location) && (
+                  <span class="ml-2 font-mono text-xs">{coord(entry.data.location)}</span>
+                )}
               </p>
-            )}
-            <div class="mt-3">
-              <Prose>
-                <Content />
-              </Prose>
+              {entry.data.stack.length > 0 && (
+                <p class="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-muted">
+                  {entry.data.stack.map((t) => (
+                    <span>{t}</span>
+                  ))}
+                </p>
+              )}
+              <div class="mt-3">
+                <Prose>
+                  <Content />
+                </Prose>
+              </div>
             </div>
           </li>
         ))

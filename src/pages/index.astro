@@ -7,6 +7,7 @@ import StatusStamp from '../components/StatusStamp.astro';
 import Led from '../components/Led.astro';
 import { site } from '../data/site';
 import { getCollection } from 'astro:content';
+import portraitMask from '../assets/portrait-mask.png';
 
 const research = await getCollection('research');
 const experience = await getCollection('experience');
@@ -25,20 +26,36 @@ const scout = must(projects.find((p) => p.id === 'internship-scout'), 'projects/
 <Base ogImage="/og/home.png">
   <SiteShell>
     <!-- Part header: the whole 30-second scan sits in this first block,
-         and none of it is ever eligible for corruption. -->
-    <h1 class="headline">
-      <span class="block">Rodrigo Flores</span>
-      <span class="block">Bertolotti</span>
-    </h1>
+         and none of it is ever eligible for corruption. The portrait rides the
+         right column, so it never costs the scan a pixel of vertical space. -->
+    <div class="hero">
+      <h1 class="headline hero-name">
+        <span class="block">Rodrigo Flores</span>
+        <span class="block">Bertolotti</span>
+      </h1>
 
-    <p class="mt-5 max-w-[75ch] font-mono text-[0.82rem] leading-relaxed text-ink">
-      {site.education.line}
-    </p>
-    <p class="mt-1 max-w-[75ch] font-sans text-sm text-muted">{site.education.coursework}</p>
+      <!-- Ink drawing as a single-color mask: it takes its color from the ink
+           token, so it is epoxy ink on datasheet paper in light mode and
+           silkscreen on the board in dark. One asset, both materials. -->
+      <div
+        class="hero-portrait"
+        style={`--portrait: url('${portraitMask.src}')`}
+        role="img"
+        aria-label="Ink portrait of Rodrigo Flores Bertolotti"
+      >
+      </div>
 
-    <p class="standfirst mt-5 max-w-[56ch]">{site.focus}</p>
+      <div class="hero-spec">
+        <p class="max-w-[75ch] font-mono text-[0.82rem] leading-relaxed text-ink">
+          {site.education.line}
+        </p>
+        <p class="mt-1 max-w-[75ch] font-sans text-sm text-muted">{site.education.coursework}</p>
 
-    <EccWord class="mt-6" />
+        <p class="standfirst mt-5 max-w-[52ch]">{site.focus}</p>
+
+        <EccWord class="mt-6" />
+      </div>
+    </div>
 
     <section class="mt-10" aria-labelledby="selected-work" data-sec>
       <h2 id="selected-work" class="sec-label">Selected work</h2>
@@ -118,6 +135,75 @@ const scout = must(projects.find((p) => p.id === 'internship-scout'), 'projects/
 </Base>
 
 <style>
+  /* Hero grid. Mobile: the portrait sits beside the nameplate only, so the
+     spec line and focus line keep the full measure. From 64rem it spans the
+     whole block and grows into the right column. */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 1.25rem;
+    align-items: start;
+  }
+  .hero-name {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .hero-spec {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin-top: 1.25rem;
+  }
+  .hero-portrait {
+    grid-column: 2;
+    grid-row: 1;
+    width: clamp(5rem, 26vw, 7.5rem);
+    aspect-ratio: 800 / 928;
+    background-color: var(--c-ink);
+    -webkit-mask-image: var(--portrait);
+    mask-image: var(--portrait);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
+  }
+  /* Silkscreen on a dark board blooms; hold it just under full ink. */
+  :global(.dark) .hero-portrait {
+    opacity: 0.94;
+  }
+
+  @media (min-width: 40rem) {
+    .hero {
+      column-gap: 2rem;
+    }
+    .hero-portrait {
+      width: 9rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .hero {
+      column-gap: 2.5rem;
+    }
+    .hero-spec {
+      grid-column: 1;
+    }
+    .hero-portrait {
+      /* The rows are implicit, so `-1` would collapse to row 1 — span them. */
+      grid-row: 1 / span 2;
+      width: clamp(13rem, 21vw, 16.5rem);
+      align-self: center;
+    }
+  }
+
+  /* Background graphics do not print — drop it rather than leave a hole. */
+  @media print {
+    .hero-portrait {
+      display: none;
+    }
+  }
+
   /* The nameplate: Archivo expanded — an industrial stencil, never uppercase. */
   .headline {
     font-family: var(--font-display);
@@ -127,6 +213,15 @@ const scout = must(projects.find((p) => p.id === 'internship-scout'), 'projects/
     line-height: 1.02;
     letter-spacing: -0.015em;
     margin-top: 2.25rem;
+  }
+
+  /* Below 40rem the nameplate shares its line with the portrait, so it scales
+     with the viewport — "Bertolotti" is one unbreakable word and has to clear
+     the ink at every phone width, down to 320px. */
+  @media (max-width: 39.99rem) {
+    .headline.hero-name {
+      font-size: clamp(1.9rem, 9vw, 2.5rem);
+    }
   }
 
   .standfirst {

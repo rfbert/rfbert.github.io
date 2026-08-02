@@ -215,12 +215,30 @@ const scout = must(projects.find((p) => p.id === 'internship-scout'), 'projects/
     margin-top: 2.25rem;
   }
 
-  /* Below 40rem the nameplate shares its line with the portrait, so it scales
-     with the viewport — "Bertolotti" is one unbreakable word and has to clear
-     the ink at every phone width, down to 320px. */
+  /* Phones get one column and one left axis: portrait, then nameplate, then
+     spec — all flush to the same edge and all on the full measure. Sharing a
+     line with the portrait would force the nameplate onto a narrower measure
+     than everything under it, which reads as misaligned. */
   @media (max-width: 39.99rem) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .hero-portrait {
+      grid-column: 1;
+      grid-row: 1;
+      width: clamp(7rem, 33vw, 10rem);
+      margin-top: 1.25rem;
+    }
     .headline.hero-name {
-      font-size: clamp(1.9rem, 9vw, 2.5rem);
+      grid-row: 2;
+      margin-top: 1.125rem;
+      /* Sized so "Rodrigo Flores" holds one line down to 320px — the
+         nameplate keeps its two-line structure instead of breaking to three. */
+      font-size: clamp(2rem, 10vw, 2.5rem);
+    }
+    .hero-spec {
+      grid-row: 3;
+      margin-top: 1.5rem;
     }
   }
 

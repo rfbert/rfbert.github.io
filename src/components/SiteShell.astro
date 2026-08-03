@@ -1,8 +1,8 @@
 ---
 /**
  * SEC-DED chrome: datasheet header row over a solid rule, a parity rail on the
- * right edge (desktop) that monitors the page — section ticks, fault ledger,
- * live hex scroll offset — and a footer that mirrors the ledger everywhere.
+ * right edge (desktop) that monitors the page — fault ledger, live hex scroll
+ * offset — and a footer that mirrors the ledger everywhere.
  *
  * Structural guarantee inherited from the judge panel: with JS disabled the
  * page is complete, correctly styled, and fully scannable. Every script here
@@ -94,7 +94,7 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
   </div>
 
   <!-- Parity rail: the check column. Decorative monitoring chrome; everything it
-       shows is real (section positions, live scroll offset, the fault ledger). -->
+       shows is real (live scroll offset, the fault ledger). -->
   <aside
     class="parity-rail fixed inset-y-0 right-0 hidden w-14 border-l border-line lg:flex flex-col items-center"
     aria-hidden="true"
@@ -105,7 +105,7 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
     >
       det <span class="js-ledger-det">0</span> · cor <span class="js-ledger-cor">0</span>
     </span>
-    <span class="js-rail-ticks relative block w-full flex-1"></span>
+    <span class="block flex-1"></span>
     <span class="js-rail-hex mb-4 font-mono text-[0.65rem] text-muted">0x0000</span>
   </aside>
 </div>
@@ -125,57 +125,13 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
   .rail-ledger {
     writing-mode: vertical-rl;
   }
-
-  .js-rail-ticks :global(button) {
-    position: absolute;
-    right: 0;
-    display: block;
-    width: 1.1rem;
-    height: 2px;
-    background: var(--c-gold);
-    cursor: pointer;
-  }
-  .js-rail-ticks :global(button:hover) {
-    width: 1.6rem;
-  }
 </style>
 
 <script>
-  // ── Parity-rail telemetry: section ticks + live hex scroll offset ──────────
+  // ── Parity-rail telemetry: live hex scroll offset ──────────────────────────
   const rail = document.querySelector<HTMLElement>('.parity-rail');
   if (rail) {
-    const ticks = rail.querySelector<HTMLElement>('.js-rail-ticks');
     const hex = rail.querySelector<HTMLElement>('.js-rail-hex');
-    const sections = [...document.querySelectorAll<HTMLElement>('[data-sec]')];
-
-    const placeTicks = () => {
-      if (!ticks) return;
-      ticks.innerHTML = '';
-      const doc = document.documentElement.scrollHeight;
-      for (const sec of sections) {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.tabIndex = -1; // rail is decorative chrome; sections are reachable in-page
-        btn.style.top = `${(sec.offsetTop / doc) * 100}%`;
-        btn.addEventListener('click', () => {
-          sec.scrollIntoView({
-            behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-          });
-        });
-        ticks.appendChild(btn);
-      }
-    };
-    placeTicks();
-    // Web-font swap shifts every offsetTop; re-place once metrics are final.
-    document.fonts?.ready.then(placeTicks);
-    let tickRaf = 0;
-    addEventListener(
-      'resize',
-      () => {
-        if (!tickRaf) tickRaf = requestAnimationFrame(() => { tickRaf = 0; placeTicks(); });
-      },
-      { passive: true }
-    );
 
     let raf = 0;
     const readout = () => {

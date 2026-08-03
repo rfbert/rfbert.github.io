@@ -1,7 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- SEC-DED mark: a bit was hit (red strike), and sits corrected in gold. -->
-  <rect width="64" height="64" rx="12" fill="#16211b"/>
-  <text x="12" y="45" font-family="ui-monospace, Menlo, monospace" font-size="34" font-weight="600" fill="#e9f1ea">0</text>
-  <text x="33" y="45" font-family="ui-monospace, Menlo, monospace" font-size="34" font-weight="600" fill="#e2b93b">1</text>
-  <line x1="30" y1="34" x2="56" y2="34" stroke="#ff7a54" stroke-width="3"/>
+  <!-- SEC-DED mark: a 2x2 memory word — one bit was hit (the strike records it)
+       and sits corrected in gold. Dark underlay keeps red off gold (1.4:1). -->
+  <rect width="64" height="64" rx="14" fill="#16211B"/>
+  <rect x="11" y="11" width="18" height="18" rx="3" fill="#E9F1EA"/>
+  <rect x="35" y="11" width="18" height="18" rx="3" fill="#E9F1EA"/>
+  <rect x="11" y="35" width="18" height="18" rx="3" fill="#E9F1EA"/>
+  <rect x="35" y="35" width="18" height="18" rx="3" fill="#E2B93B"/>
+  <line x1="31" y1="57" x2="57" y2="31" stroke="#16211B" stroke-width="7.5" stroke-linecap="round"/>
+  <line x1="31" y1="57" x2="57" y2="31" stroke="#FF7A54" stroke-width="5" stroke-linecap="round"/>
 </svg>

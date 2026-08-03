@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import SiteShell from '../../components/SiteShell.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import Prose from '../../components/Prose.astro';
+import PipelineTrace from '../../components/PipelineTrace.astro';
 import { getCollection, render } from 'astro:content';
 
 const experience = (await getCollection('experience')).sort(
@@ -58,6 +59,13 @@ const coord = (location: string) =>
                     <span>{t}</span>
                   ))}
                 </p>
+              )}
+              {entry.id === 'mibanco' && (
+                <PipelineTrace
+                  caption="recorded audio to production, parallelized on Databricks"
+                  stages={['audio', 'ingest', 'speech-to-text', 'LLM interpretation', 'production']}
+                  ariaLabel="Speech-to-text pipeline"
+                />
               )}
               <div class="mt-3">
                 <Prose>

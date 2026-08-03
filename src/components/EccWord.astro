@@ -36,8 +36,10 @@ const hit = 3;
     }
     <span class="ecc-bit ecc-check ml-1.5" data-val={parity} />
   </span>
-  <span class="js-ecc-note mt-1.5 block font-mono text-[0.68rem] text-muted" role="status">
-    bit {hit} — flipped, corrected
+  <span class="mt-1.5 flex flex-wrap items-baseline gap-x-3 font-mono text-[0.68rem] text-muted">
+    <span aria-hidden="true">'R' = 0x52</span>
+    <span class="js-ecc-note" role="status">bit {hit} — flipped, corrected</span>
+    <span class="js-ecc-replay" hidden aria-hidden="true">↺ replay</span>
   </span>
 </button>
 
@@ -93,11 +95,18 @@ const hit = 3;
     outline: 2px solid var(--c-gold);
     outline-offset: 4px;
   }
+  /* The replay cue is chrome, not data: muted at rest, verified-gold on intent. */
+  .ecc-word:hover .js-ecc-replay,
+  .ecc-word:focus-visible .js-ecc-replay {
+    color: var(--c-gold-text);
+  }
 </style>
 
 <script>
   document.querySelectorAll<HTMLButtonElement>('.ecc-word').forEach((word) => {
     word.disabled = false;
+    // The replay cue only appears once the strip is actually operable.
+    word.querySelector<HTMLElement>('.js-ecc-replay')?.removeAttribute('hidden');
     const bits = [...word.querySelectorAll<HTMLElement>('.ecc-bit:not(.ecc-check)')];
     const note = word.querySelector<HTMLElement>('.js-ecc-note');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');

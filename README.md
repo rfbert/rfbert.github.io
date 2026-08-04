@@ -31,7 +31,7 @@ gh repo create rfbert/rfbert.github.io --public --source . --push
 
 Then on github.com: **Settings → Pages → Source: GitHub Actions.** The included
 `.github/workflows/deploy.yml` (withastro/action) builds and deploys on every push to `main`.
-Site: https://rfbert.github.io
+Site: https://rfbert.me
 
 ## Content maintenance
 

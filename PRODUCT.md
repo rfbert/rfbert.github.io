@@ -5,7 +5,7 @@
 Personal website + portfolio of **Rodrigo Flores Bertolotti** — CS undergrad at Oregon State
 University working on **LLM reliability** (fault-resilient LLM inference at the TRUE AI Lab;
 AI internship at Mibanco/Credicorp). Deployed as a GitHub Pages user site at
-https://rfbert.github.io.
+https://rfbert.me (repo rfbert.github.io).
 
 ## Audience
 

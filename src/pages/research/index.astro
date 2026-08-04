@@ -26,7 +26,7 @@ const rendered = await Promise.all(
       lede="I study what hardware faults do to large language models, and how inference can defend itself. Undergraduate researcher at the TRUE (Trustworthy and Responsible) AI Lab, Oregon State University."
     />
 
-    <ul class="list-none p-0 m-0 space-y-0">
+    <ul class="list-none p-0 m-0 space-y-0" role="list">
       {
         rendered.map(({ entry, Content }) => (
           <li class="border-t border-line py-7" data-sec>
@@ -50,7 +50,7 @@ const rendered = await Promise.all(
             </div>
 
             {entry.id === 'targeted-bitflip-defense' && (
-              <figure class="mt-5 max-w-md text-muted" aria-hidden="false">
+              <figure class="mt-5 max-w-md text-muted">
                 <svg viewBox="0 0 360 130" class="w-full" role="img" aria-labelledby="bitflip-schematic-title">
                   <title id="bitflip-schematic-title">
                     Schematic: an attacker flips a handful of chosen weight bits, the model's
@@ -78,6 +78,7 @@ const rendered = await Promise.all(
                         stroke-width="1.5"
                       />
                     ))}
+                    <line x1="74" y1="63" x2="91" y2="46" stroke="var(--c-bg)" stroke-width="4.5" />
                     <line x1="74" y1="63" x2="91" y2="46" stroke="var(--c-red)" stroke-width="1.5" />
                   </g>
                   <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor">
@@ -89,16 +90,11 @@ const rendered = await Promise.all(
                     <text x="180" y="118" text-anchor="middle" fill="var(--c-gold-text)">when can monitoring catch it?</text>
                   </g>
                 </svg>
-                <figcaption class="sr-only">
-                  A targeted attack flips a handful of weight bits; inference still produces
-                  plausible output. The research question: when can output-level monitoring
-                  catch the corruption?
-                </figcaption>
               </figure>
             )}
 
             {entry.id === 'cross-scale-resilience' && (
-              <figure class="mt-5 max-w-md text-muted" aria-hidden="false">
+              <figure class="mt-5 max-w-md text-muted">
                 <svg viewBox="0 0 360 130" class="w-full" role="img" aria-labelledby="schematic-title">
                   <title id="schematic-title">
                     Schematic: a small draft model and the large target model cross-check each other;
@@ -127,10 +123,6 @@ const rendered = await Promise.all(
                     <text x="180" y="118" text-anchor="middle" fill="var(--c-gold-text)">verify = detect + correct</text>
                   </g>
                 </svg>
-                <figcaption class="sr-only">
-                  Draft and target models cross-check each other; verification doubles as fault
-                  detection and correction.
-                </figcaption>
               </figure>
             )}
           </li>

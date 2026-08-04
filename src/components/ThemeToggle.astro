@@ -1,8 +1,16 @@
 ---
+interface Props {
+  /** Extra classes — used to place one instance in the header, one in the footer. */
+  class?: string;
+}
+const { class: className } = Astro.props;
 ---
 <button
   type="button"
-  class="js-theme-toggle font-sans text-sm text-muted hover:text-ink transition-colors cursor-pointer"
+  class:list={[
+    'js-theme-toggle font-sans text-sm text-muted hover:text-ink transition-colors cursor-pointer',
+    className,
+  ]}
 >
   <span class="dark:hidden">Dark</span>
   <span class="hidden dark:inline">Light</span>

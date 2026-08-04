@@ -5,7 +5,11 @@ role: Sole developer, design to launch
 start: 2026-07-01
 stack: [TypeScript, Next.js, Prisma, PostgreSQL, Docker, GitHub Actions]
 status: active
-repoNote: Repo public soon
+repoNote: In daily use — public release in progress
+summary:
+  problem: "Internship search is high-volume and low-signal — hundreds of postings a day, few of them relevant."
+  built: "A daily GitHub Actions pipeline: scrape → dedupe → eligibility rules → LLM scoring that cites verbatim posting text → kanban."
+  result: "Idempotent daily runs with Vitest unit and Playwright end-to-end tests in CI; in personal use every morning."
 featured: true
 order: 1
 ---

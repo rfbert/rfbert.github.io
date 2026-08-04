@@ -3,7 +3,6 @@ import Base from '../../layouts/Base.astro';
 import SiteShell from '../../components/SiteShell.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import PinContacts from '../../components/PinContacts.astro';
-import PipelineTrace from '../../components/PipelineTrace.astro';
 import { site } from '../../data/site';
 ---
 
@@ -17,27 +16,70 @@ import { site } from '../../data/site';
 
     <div class="max-w-[66ch] space-y-4" data-seu>
       <p>
-        I'm a computer science undergraduate at Oregon State University. I build AI systems, and
-        I'm drawn to LLM reliability: what happens to large language models when the hardware under
-        them fails, and how inference can defend itself.
+        I grew up in Lima, Peru, and got into computing by automating the small, repetitive parts
+        of my own days. That habit — build the tool, then actually keep using it — is still how I
+        work.
       </p>
       <p>
-        This summer I'm building production AI at Mibanco (part of Credicorp, Peru's largest
-        financial group): a speech-to-text and LLM-interpretation pipeline on Databricks and Azure
-        AI. Before that, at OSU's TRUE (Trustworthy and Responsible) AI Lab, I ran fault-injection
-        experiments on 1B–8B models and contributed data and benchmarks to decoding-time
-        defenses against bit-flip attacks.
+        At Oregon State I found the problem I care about most: what happens to large language models
+        when the hardware under them fails. At the TRUE (Trustworthy and Responsible) AI Lab I run
+        fault-injection experiments on 1B–8B models and help build decoding-time defenses against
+        bit-flip attacks — the kind of failure that stays invisible until it isn't.
       </p>
       <p>
-        I grew up in Lima, Peru. I build my own tools, too; the latest is an internship agent I
-        use every morning. And I use AI tooling daily, for development and for staying organized.
+        This summer I'm at Mibanco, part of Credicorp, building a production speech-to-text and
+        LLM-interpretation pipeline on Databricks and Azure AI. On the side I keep shipping my own
+        tools; the current one reads the internship market for me every morning.
       </p>
     </div>
-    <PipelineTrace
-      caption="the route so far"
-      stages={['Lima, Peru · 12°03′S', 'Corvallis, OR · 44°34′N']}
-      ariaLabel="From Lima to Corvallis"
-    />
+
+    <section class="mt-10" aria-labelledby="path" data-sec>
+      <h2 id="path" class="sec-label">Path</h2>
+      <ol class="timeline mt-4 list-none p-0 m-0" role="list">
+        <li>
+          <div class="tl-body">
+            <span class="tl-pad" aria-hidden="true"></span>
+            <time class="tl-date font-mono text-xs text-muted">2023</time>
+            <p class="tl-head font-medium">Lima, Peru</p>
+            <p class="font-sans text-sm text-muted">
+              Organized community donation and food drives reaching 65+ children and families.
+            </p>
+          </div>
+        </li>
+        <li>
+          <div class="tl-body">
+            <span class="tl-pad" aria-hidden="true"></span>
+            <time class="tl-date font-mono text-xs text-muted">2024</time>
+            <p class="tl-head font-medium">Python course assistant · USMP</p>
+            <p class="font-sans text-sm text-muted">
+              Mentored and graded a university Python course in Lima.
+            </p>
+          </div>
+        </li>
+        <li>
+          <div class="tl-body">
+            <span class="tl-pad" aria-hidden="true"></span>
+            <time class="tl-date font-mono text-xs text-muted">2025</time>
+            <p class="tl-head font-medium">Oregon State University · TRUE AI Lab</p>
+            <p class="font-sans text-sm text-muted">
+              Began my CS degree in the Honors College, finished a Diploma in Artificial Intelligence
+              (final grade 98%), joined the TRUE AI Lab through a URSA Engage research award, and made
+              the College of Engineering Dean's List.
+            </p>
+          </div>
+        </li>
+        <li>
+          <div class="tl-body">
+            <span class="tl-pad" aria-hidden="true"></span>
+            <time class="tl-date font-mono text-xs text-muted">2026</time>
+            <p class="tl-head font-medium">AI Intern · Mibanco (Credicorp)</p>
+            <p class="font-sans text-sm text-muted">
+              Building a production speech-to-text and LLM-interpretation pipeline in Lima.
+            </p>
+          </div>
+        </li>
+      </ol>
+    </section>
 
     <section class="mt-10" aria-labelledby="now" data-sec>
       <h2 id="now" class="sec-label">Now</h2>
@@ -86,5 +128,37 @@ import { site } from '../../data/site';
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--c-muted);
+  }
+
+  /* A milestone timeline: gold pads riding a continuous line. The spacing lives
+     as padding inside each bordered body, so the rail never breaks between items;
+     the last item drops the line so it terminates cleanly. */
+  .timeline {
+    max-width: 62ch;
+  }
+  .tl-body {
+    position: relative;
+    padding-left: 1.5rem;
+    padding-bottom: 1.35rem;
+    border-left: 1.5px solid var(--c-line);
+  }
+  .timeline li:last-child .tl-body {
+    padding-bottom: 0;
+    border-left-color: transparent;
+  }
+  .tl-pad {
+    position: absolute;
+    left: -0.34rem;
+    top: 0.2rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border: 1.5px solid var(--c-gold);
+    background: var(--c-gold);
+  }
+  .tl-body p {
+    margin: 0;
+  }
+  .tl-head {
+    margin-top: 0.15rem;
   }
 </style>

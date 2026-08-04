@@ -4,6 +4,7 @@ import SiteShell from '../../components/SiteShell.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import Prose from '../../components/Prose.astro';
 import PipelineTrace from '../../components/PipelineTrace.astro';
+import SpecStrip from '../../components/SpecStrip.astro';
 import { getCollection, render } from 'astro:content';
 
 const experience = (await getCollection('experience')).sort(
@@ -53,12 +54,22 @@ const coord = (location: string) =>
                   <span class="ml-2 font-mono text-xs">{coord(entry.data.location)}</span>
                 )}
               </p>
-              {entry.data.stack.length > 0 && (
-                <p class="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-muted">
-                  {entry.data.stack.map((t) => (
-                    <span>{t}</span>
-                  ))}
-                </p>
+              {entry.data.summary ? (
+                <SpecStrip
+                  class="mt-4"
+                  problem={entry.data.summary.problem}
+                  built={entry.data.summary.built}
+                  result={entry.data.summary.result}
+                  stack={entry.data.stack}
+                />
+              ) : (
+                entry.data.stack.length > 0 && (
+                  <p class="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-muted">
+                    {entry.data.stack.map((t) => (
+                      <span>{t}</span>
+                    ))}
+                  </p>
+                )
               )}
               {entry.id === 'mibanco' && (
                 <PipelineTrace

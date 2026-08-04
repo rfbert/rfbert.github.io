@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import SiteShell from '../../components/SiteShell.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import PinContacts from '../../components/PinContacts.astro';
+import PipelineTrace from '../../components/PipelineTrace.astro';
 import { site } from '../../data/site';
 ---
 
@@ -28,20 +29,21 @@ import { site } from '../../data/site';
         defenses against bit-flip attacks.
       </p>
       <p>
-        I grew up in Lima, Peru, and study CS at Oregon State. I build my own tools, too; the
-        latest is an internship agent I use every morning. And I use AI tooling daily, for
-        development and for staying organized.
+        I grew up in Lima, Peru. I build my own tools, too; the latest is an internship agent I
+        use every morning. And I use AI tooling daily, for development and for staying organized.
       </p>
     </div>
-    <p class="mt-3 font-mono text-xs text-muted" aria-hidden="true">
-      Lima 12°03′S → Corvallis 44°34′N
-    </p>
+    <PipelineTrace
+      caption="the route so far"
+      stages={['Lima, Peru · 12°03′S', 'Corvallis, OR · 44°34′N']}
+      ariaLabel="From Lima to Corvallis"
+    />
 
     <section class="mt-10" aria-labelledby="now" data-sec>
       <h2 id="now" class="sec-label">Now</h2>
       <div class="mt-3 border-t border-line pt-4 max-w-[66ch]">
         <p>
-          <span class="font-mono text-xs text-muted mr-3">Jul 2026</span>
+          <span class="font-mono text-xs text-muted mr-3">Aug 2026</span>
           Interning on the AI team at Mibanco in Lima. Summer 2027 internship applications are next.
         </p>
       </div>
@@ -57,7 +59,7 @@ import { site } from '../../data/site';
 
     <section class="mt-10" aria-labelledby="recognition" data-sec>
       <h2 id="recognition" class="sec-label">Leadership, awards &amp; certificates</h2>
-      <ul class="mt-3 border-t border-line pt-4 list-none p-0 m-0 max-w-[66ch] space-y-2.5">
+      <ul class="mt-3 border-t border-line pt-4 list-none p-0 m-0 max-w-[66ch] space-y-2.5" role="list">
         {
           site.awards.map((a) => (
             <li>

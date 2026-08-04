@@ -20,7 +20,7 @@ Gold is split: `gold` for graphics (≥3:1), `gold-text` for text (AA). Never bo
 
 ## Mechanisms (all real, none decorative)
 
-- `SiteShell.astro` — parity rail (desktop): section ticks from `[data-sec]`, live hex scroll
+- `SiteShell.astro` — parity rail (desktop): live hex scroll
   offset, fault ledger mirrored in the footer. One-shot SEU engine: a single XOR bit flip in
   `[data-seu]` prose per page view, corrected in ~420ms, ledger ticks. Scan path never eligible.
 - `EccWord.astro` — operable signature strip (click replays flip-and-correct; static frame under

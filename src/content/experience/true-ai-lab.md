@@ -1,10 +1,9 @@
 ---
 organization: TRUE (Trustworthy and Responsible) AI Lab
 parent: Oregon State University
-role: Undergraduate Research Assistant — LLM Fault Resilience
+role: Undergraduate Researcher, URSA Engage — LLM Fault Resilience
 location: Corvallis, OR
 start: 2025-11-01
-end: 2026-06-01
 stack: [PyTorch, Hugging Face, Slurm]
 order: 2
 ---

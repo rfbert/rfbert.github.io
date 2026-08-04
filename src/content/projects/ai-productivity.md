@@ -9,6 +9,6 @@ status: shipped
 order: 2
 ---
 
-An automation workflow connecting Google Calendar, Gmail, Telegram, Notion, and Google Sheets. It automated 12+ recurring scheduling and communication tasks and cut down on my manual scheduling errors. It was also the start of a habit I still keep: using AI tooling for personal productivity and for development.
+An automation workflow connecting Google Calendar, Gmail, Telegram, Notion, and Google Sheets. It automated 12+ recurring scheduling and communication tasks and cut down on my manual errors. It was also the start of a habit I still keep: using AI tooling for personal productivity and for development.
 
 Built as the capstone work of my Diploma in Artificial Intelligence at USMP (final grade 98%).

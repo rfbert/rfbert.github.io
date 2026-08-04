@@ -8,7 +8,7 @@ export const site = {
   education: {
     line: 'B.S. Computer Science, Oregon State University — expected June 2028. GPA 4.0, Honors College.',
     coursework:
-      'Coursework: Data Structures, Algorithms, Intro to AI, Computer Networks, Software Engineering.',
+      'Coursework: Data Structures, Algorithms · Fall 2026: Intro to AI, Computer Networks, Software Engineering I.',
   },
   contacts: [
     { label: 'Email', value: 'rf.bertolotti@gmail.com', href: 'mailto:rf.bertolotti@gmail.com' },
@@ -17,11 +17,12 @@ export const site = {
     { label: 'Resume', value: 'resume.pdf', href: '/resume.pdf' },
   ],
   awards: [
-    { title: 'Vice President, Alpha Lambda Delta National Honor Society', detail: 'OSU chapter' },
+    { title: 'URSA Engage Undergraduate Research Award', detail: "OSU's competitive, stipend-funded undergraduate research program — TRUE AI Lab (2025)" },
+    { title: 'Vice President, Alpha Lambda Delta National Honor Society', detail: 'OSU chapter (2025)' },
     { title: "Dean's List, College of Engineering", detail: 'Winter & Spring 2025' },
     { title: 'Diploma in Artificial Intelligence, USMP', detail: 'Final grade 98%; 100% in Fundamentals, Generative AI, and Applications (2025)' },
-    { title: 'AI Fluency for Nonprofits', detail: 'Anthropic, 2026' },
-    { title: 'Google: Artificial Intelligence & Productivity', detail: 'Santander Open Academy, 2026' },
+    { title: 'AI Fluency for Nonprofits', detail: 'Anthropic (2026)' },
+    { title: 'Google: Artificial Intelligence & Productivity', detail: 'Santander Open Academy (2026)' },
     { title: 'Volunteer Organizer, community donation & food drives', detail: '65+ children and families, Peru (2023)' },
   ],
   nav: [

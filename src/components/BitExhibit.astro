@@ -55,10 +55,12 @@ const groups = [
     }
   </div>
 
-  <div class="mt-5 space-y-1 font-mono text-[0.8rem]">
+  {/* aria-live on the whole readout: a flip changes weight and output too,
+      not only the verdict line — announce all three together, politely. */}
+  <div class="mt-5 space-y-1 font-mono text-[0.8rem]" aria-live="polite">
     <p class="m-0">weight = <span class="js-val">-0.0087890625</span></p>
     <p class="m-0">17 × 24 = <span class="js-out">408</span></p>
-    <p class="m-0" role="status">
+    <p class="m-0">
       draft gate: <span class="js-verdict text-gold-text">ACCEPT</span>
       <span class="js-note ml-2 font-sans text-[0.8rem] text-muted">stored value — nothing to catch</span>
     </p>
@@ -143,8 +145,11 @@ const groups = [
     const render = () => {
       const bits = buttons.map((b) => b.getAttribute('aria-pressed') === 'true');
       const v = decode(bits);
-      val.textContent = Number.isFinite(v) ? String(v) : String(v);
-      buttons.forEach((b, i) => b.classList.toggle('bit-flipped', bits[i] !== stored[i]));
+      val.textContent = String(v);
+      buttons.forEach((b, i) => {
+        b.textContent = bits[i] ? '1' : '0';
+        b.classList.toggle('bit-flipped', bits[i] !== stored[i]);
+      });
       const flips = bits.filter((b, i) => b !== stored[i]).length;
 
       const set = (o: string, ver: string, red: boolean, n: string) => {

@@ -14,4 +14,4 @@ Internship search is high-volume and low-signal: hundreds of postings a day, few
 
 Each morning a GitHub Actions pipeline scrapes and dedupes postings from multiple sources, runs them through a deterministic eligibility rules engine, and ranks the survivors with LLM scoring that must cite verbatim text from the posting. Results land on a kanban board where I track every application to its outcome.
 
-Pipeline runs are idempotent, and CI runs Vitest unit tests plus Playwright end-to-end tests.
+Pipeline runs are idempotent; CI covers Vitest unit tests plus Playwright end-to-end tests.

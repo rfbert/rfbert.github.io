@@ -20,7 +20,7 @@ const groups = [
 ];
 ---
 
-<section class="bit-exhibit border border-line p-5 sm:p-6" aria-labelledby="bit-exhibit-h" data-sec>
+<section id="try-it" class="bit-exhibit scroll-mt-8 border border-line p-5 sm:p-6" aria-labelledby="bit-exhibit-h" data-sec>
   <h2 id="bit-exhibit-h" class="font-sans text-sm font-medium text-muted">
     One weight, thirty-two switches
   </h2>
@@ -83,8 +83,9 @@ const groups = [
 
 <style>
   .bit-btn {
-    width: 1.35rem;
-    height: 1.6rem;
+    /* ≥24px wide clears the WCAG 2.5.8 minimum target even with a fine pointer. */
+    width: 1.5rem;
+    height: 1.75rem;
     border: 1.5px solid var(--c-ink);
     background: transparent;
     color: var(--c-ink);
@@ -92,6 +93,15 @@ const groups = [
     font-size: 0.72rem;
     cursor: pointer;
     padding: 0;
+  }
+  /* Touch pointers get a much larger tap target. 1.7rem keeps the 8-bit
+     exponent group on one line down to 320px; the 23-bit mantissa wraps as before. */
+  @media (pointer: coarse) {
+    .bit-btn {
+      width: 1.7rem;
+      height: 2.4rem;
+      font-size: 0.8rem;
+    }
   }
   /* Disabled = the no-JS static figure; render it at full ink. */
   .bit-btn:disabled {

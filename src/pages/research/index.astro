@@ -5,6 +5,7 @@ import PageIntro from '../../components/PageIntro.astro';
 import Prose from '../../components/Prose.astro';
 import StatusStamp from '../../components/StatusStamp.astro';
 import BitExhibit from '../../components/BitExhibit.astro';
+import SpecStrip from '../../components/SpecStrip.astro';
 import { getCollection, render } from 'astro:content';
 
 const research = (await getCollection('research')).sort(
@@ -26,6 +27,11 @@ const rendered = await Promise.all(
       lede="I study what hardware faults do to large language models, and how inference can defend itself. Undergraduate researcher at the TRUE (Trustworthy and Responsible) AI Lab, Oregon State University."
     />
 
+    {/* Surface the interactive exhibit that otherwise sits at the foot of the page. */}
+    <p class="-mt-6 mb-8 font-sans text-sm">
+      <a href="#try-it" class="v-link text-gold-text">Try it — flip one bit in a live float32 weight ↓</a>
+    </p>
+
     <ul class="list-none p-0 m-0 space-y-0" role="list">
       {
         rendered.map(({ entry, Content }) => (
@@ -41,6 +47,15 @@ const rendered = await Promise.all(
               <span class="font-mono text-xs text-muted">{entry.data.role}</span>
             </p>
             <p class="mt-1 font-sans text-sm text-muted">{entry.data.lab}</p>
+
+            {entry.data.summary && (
+              <SpecStrip
+                class="mt-4 max-w-[62ch]"
+                problem={entry.data.summary.problem}
+                built={entry.data.summary.built}
+                result={entry.data.summary.result}
+              />
+            )}
 
             {/* The manuscript register: abstracts speak in the paper's serif voice */}
             <div class="mt-3 font-serif">

@@ -1,0 +1,83 @@
+---
+/**
+ * A datasheet spec strip: Problem / Built / Result / Stack as labeled rows for
+ * a fast scan before the prose. Static (no JS), so it always renders. Labels
+ * are plain-English wayfinding in sans; the stack line is true data, so it
+ * keeps the mono voice. Rendered once per entry — a spec table, not a card grid.
+ */
+interface Props {
+  problem: string;
+  built: string;
+  result: string;
+  stack?: string[];
+  class?: string;
+}
+const { problem, built, result, stack = [], class: className } = Astro.props;
+const rows = [
+  { label: 'Problem', value: problem },
+  { label: 'Built', value: built },
+  { label: 'Result', value: result },
+] as const;
+---
+
+<dl class:list={['spec', className]}>
+  {
+    rows.map((r) => (
+      <div class="spec-row">
+        <dt>{r.label}</dt>
+        <dd>{r.value}</dd>
+      </div>
+    ))
+  }
+  {stack.length > 0 && (
+    <div class="spec-row">
+      <dt>Stack</dt>
+      <dd class="spec-stack">{stack.join(' · ')}</dd>
+    </div>
+  )}
+</dl>
+
+<style>
+  .spec {
+    margin: 0;
+    border: 1px solid var(--c-line);
+  }
+  .spec-row {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    gap: 0 1rem;
+    padding: 0.5rem 0.85rem;
+  }
+  .spec-row + .spec-row {
+    border-top: 1px solid var(--c-line);
+  }
+  .spec dt {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--c-muted);
+    padding-top: 0.12rem;
+  }
+  .spec dd {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--c-ink);
+  }
+  .spec-stack {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--c-muted);
+  }
+  /* Narrow screens: label stacks above the value so the measure stays readable. */
+  @media (max-width: 30rem) {
+    .spec-row {
+      grid-template-columns: 1fr;
+      gap: 0.15rem 0;
+    }
+    .spec dt {
+      padding-top: 0;
+    }
+  }
+</style>

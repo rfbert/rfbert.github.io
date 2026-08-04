@@ -6,6 +6,10 @@ start: 2025-05-01
 end: 2025-05-31
 stack: [Python, Google Workspace APIs, Telegram, Notion]
 status: shipped
+summary:
+  problem: "Recurring scheduling and communication tasks ate time and invited manual errors."
+  built: "One automation layer connecting Google Calendar, Gmail, Telegram, Notion, and Google Sheets."
+  result: "12+ recurring tasks automated; built as the capstone of my AI Diploma (final grade 98%)."
 order: 2
 ---
 

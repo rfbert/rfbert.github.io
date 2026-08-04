@@ -5,6 +5,10 @@ role: Undergraduate Researcher, URSA Engage — LLM Fault Resilience
 location: Corvallis, OR
 start: 2025-11-01
 stack: [PyTorch, Hugging Face, Slurm]
+summary:
+  problem: "Hardware bit-flips can silently corrupt LLM inference — how robust are models, and what defends them?"
+  built: "A gradient-guided bit-flip attack framework and evaluation code for the lab's fault-injection harness, run on an A100 Slurm cluster."
+  result: "Benchmarked 7 defenses against 2 attack classes on GSM8K across 1B–8B models; co-authored a cross-scale resilience manuscript, now under review."
 order: 2
 ---
 

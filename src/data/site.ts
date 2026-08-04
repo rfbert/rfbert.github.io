@@ -3,8 +3,11 @@ export const site = {
   title: 'Rodrigo Flores Bertolotti — AI Systems',
   description:
     'CS undergraduate at Oregon State University building production AI: a speech-to-text pipeline at Mibanco (Credicorp), LLM-reliability research at the TRUE AI Lab, and self-built tools.',
+  // Recruiter-first lead: the positioning line the 30-second scan lands on
+  // before any coursework metadata. Kept defensible verbatim.
+  positioning: 'AI systems builder — production pipelines and LLM reliability.',
   focus:
-    "CS student building production AI — a speech-to-text pipeline at Mibanco (Credicorp), LLM-reliability research at OSU's TRUE AI Lab, and tools of my own.",
+    "CS undergraduate building production AI: a speech-to-text pipeline at Mibanco (Credicorp), LLM-reliability research at OSU's TRUE AI Lab, and tools of my own.",
   education: {
     line: 'B.S. Computer Science, Oregon State University — expected June 2028. GPA 4.0, Honors College.',
     coursework:

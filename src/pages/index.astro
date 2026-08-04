@@ -21,14 +21,38 @@ const bitflip = must(research.find((r) => r.id === 'targeted-bitflip-defense'), 
 const crossScale = must(research.find((r) => r.id === 'cross-scale-resilience'), 'research/cross-scale-resilience');
 const mibanco = must(experience.find((e) => e.id === 'mibanco'), 'experience/mibanco');
 const scout = must(projects.find((p) => p.id === 'internship-scout'), 'projects/internship-scout');
+
+// The two promoted hero actions and the two quiet contacts, pulled from the
+// single contacts source so nothing drifts.
+const byLabel = (label: string) => must(site.contacts.find((c) => c.label === label), `contact/${label}`);
+const resume = byLabel('Resume');
+const email = byLabel('Email');
+const github = byLabel('GitHub');
+const linkedin = byLabel('LinkedIn');
+
+// At-a-glance chips: the mono voice carries only the genuine datum (a count,
+// scale, dataset, or tool name); the describing word rides alongside in sans,
+// so mono never dresses up prose. Every value is defensible from the content.
+const researchMetrics = [
+  { v: '7', label: 'defenses' },
+  { v: '2', label: 'attack classes' },
+  { v: '1B–8B', label: 'models' },
+  { v: 'GSM8K' },
+];
+const scoutMetrics = [
+  { v: '5', label: 'stage pipeline' },
+  { v: 'daily', label: 'GitHub Actions run' },
+  { v: 'Vitest + Playwright', label: 'in CI' },
+];
 ---
 
 <Base ogImage="/og/home.png">
   <SiteShell>
-    <!-- Part header: name, degree line, focus, and all four contacts sit in
-         this first block, so the scan's essentials never depend on the fold;
-         none of it is ever eligible for corruption. The portrait rides the
-         right column, so it never costs the scan a pixel of vertical space. -->
+    <!-- Part header: name, positioning line, the two promoted actions, all four
+         contacts, and the degree metadata sit in this first block, so the scan's
+         essentials never depend on the fold; none of it is ever eligible for
+         corruption. The portrait rides the right column, so it never costs the
+         scan a pixel of vertical space. -->
     <div class="hero">
       <h1 class="headline hero-name">
         <span class="block">Rodrigo Flores</span>
@@ -47,20 +71,38 @@ const scout = must(projects.find((p) => p.id === 'internship-scout'), 'projects/
       </div>
 
       <div class="hero-spec">
-        <p class="max-w-[75ch] font-mono text-[0.82rem] leading-relaxed text-ink">
-          {site.education.line}
-        </p>
-        <p class="mt-1 max-w-[75ch] font-sans text-sm text-muted">{site.education.coursework}</p>
+        {/* The recruiter-first lead: what I build, before any coursework. */}
+        <p class="standfirst max-w-[46ch]">{site.positioning}</p>
+        <p class="mt-3 max-w-[58ch] text-base text-muted">{site.focus}</p>
 
-        <p class="standfirst mt-4 max-w-[52ch]">{site.focus}</p>
+        {/* Two promoted actions in the datasheet's control language: a bordered
+            command with a contact pad that fills gold on hover/focus. GitHub and
+            LinkedIn stay a quiet keystroke away, so all four contacts remain in
+            scan reach; the full labeled pinout (with CRCs) is the Contact section. */}
+        <div class="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2.5">
+          <a href={resume.href} class="cta">
+            <span class="cta-pad" aria-hidden="true"></span>
+            <span>Resume</span>
+            <span class="cta-meta">PDF</span>
+            <span class="cta-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a href={email.href} class="cta">
+            <span class="cta-pad" aria-hidden="true"></span>
+            <span>Email</span>
+            <span class="cta-arrow" aria-hidden="true">↗</span>
+          </a>
+          <span class="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs" aria-label="More contacts">
+            <a href={github.href} class="v-link text-muted hover:text-ink">{github.value}</a>
+            <span class="text-line" aria-hidden="true">·</span>
+            <a href={linkedin.href} class="v-link text-muted hover:text-ink">{linkedin.value}</a>
+          </span>
+        </div>
 
-        {/* The four contacts, in scan reach regardless of viewport height.
-            The full labeled pinout (with CRCs) remains the Contact section. */}
-        <p class="mt-4 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs" aria-label="Contact">
-          {site.contacts.map((c) => (
-            <a href={c.href} class="v-link text-muted hover:text-ink">{c.value}</a>
-          ))}
-        </p>
+        {/* Degree, GPA, coursework — secondary metadata now, muted below the lead. */}
+        <div class="mt-5 max-w-[75ch]">
+          <p class="font-mono text-[0.8rem] leading-relaxed text-muted">{site.education.line}</p>
+          <p class="mt-0.5 font-sans text-sm text-muted">{site.education.coursework}</p>
+        </div>
 
         <EccWord class="mt-5" />
       </div>
@@ -103,6 +145,14 @@ const scout = must(projects.find((p) => p.id === 'internship-scout'), 'projects/
               Contributed data and benchmarks to defenses against LLM bit-flip attacks;
               co-author on a cross-scale resilience paper.
             </p>
+            <p class="metrics" aria-label="At a glance">
+              {researchMetrics.map((m) => (
+                <span class="metric">
+                  <span class="metric-val">{m.v}</span>
+                  {m.label && <span class="metric-label">{m.label}</span>}
+                </span>
+              ))}
+            </p>
             <p class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
               <StatusStamp label={crossScale.data.statusLabel} />
               <StatusStamp label={bitflip.data.statusLabel} />
@@ -123,6 +173,14 @@ const scout = must(projects.find((p) => p.id === 'internship-scout'), 'projects/
               <span class="font-mono text-xs text-muted">2026–present</span>
             </div>
             <p class="mt-1 max-w-[68ch] text-base text-muted">{scout.data.tagline}</p>
+            <p class="metrics" aria-label="At a glance">
+              {scoutMetrics.map((m) => (
+                <span class="metric">
+                  <span class="metric-val">{m.v}</span>
+                  {m.label && <span class="metric-label">{m.label}</span>}
+                </span>
+              ))}
+            </p>
             <p class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
               <Led status="active" />
               <span class="flex flex-wrap gap-x-4 font-mono text-xs text-muted">
@@ -255,6 +313,75 @@ const scout = must(projects.find((p) => p.id === 'internship-scout'), 'projects/
   .standfirst {
     font-size: clamp(1.125rem, 1.05rem + 0.7vw, 1.28rem);
     line-height: 1.5;
+  }
+
+  /* Promoted actions in the datasheet's own control grammar: a bordered command
+     carrying a gold contact pad that makes contact (fills) on hover/focus. The
+     44px min-height doubles as a comfortable touch target. */
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.4rem 0.85rem;
+    border: 1.5px solid var(--c-line);
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--c-ink);
+    text-decoration: none;
+    transition: border-color 160ms ease-out;
+  }
+  .cta:hover,
+  .cta:focus-visible {
+    border-color: var(--c-gold);
+  }
+  .cta-pad {
+    display: block;
+    width: 0.6rem;
+    height: 0.6rem;
+    border: 1.5px solid var(--c-gold);
+    transition: background 160ms ease-out;
+  }
+  .cta:hover .cta-pad,
+  .cta:focus-visible .cta-pad {
+    background: var(--c-gold);
+  }
+  .cta-meta {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--c-muted);
+  }
+  .cta-arrow {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--c-gold-text);
+  }
+
+  /* Outcome chips: the datum stays in the mono voice (true data — counts, scales,
+     datasets, tools), the describing word rides alongside in sans. Mono never
+     dresses up prose, and the number leans on the site's single 600 emphasis. */
+  .metrics {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    font-size: 0.72rem;
+  }
+  .metric {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.3rem;
+  }
+  .metric-val {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--c-ink);
+  }
+  .metric-label {
+    font-family: var(--font-sans);
+    color: var(--c-muted);
   }
 
   .sec-label {

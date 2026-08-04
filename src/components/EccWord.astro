@@ -16,6 +16,9 @@ const { class: className } = Astro.props;
 const bits = [0, 1, 0, 1, 0, 0, 1, 0];
 const parity = bits.reduce((a, b) => a ^ b, 0);
 const hit = 3;
+// Bits render MSB-first, so the label uses hardware numbering (bit 0 = LSB,
+// rightmost) — same convention as BitExhibit's 31..0.
+const hitLabel = 7 - hit;
 ---
 
 <button
@@ -38,7 +41,7 @@ const hit = 3;
   </span>
   <span class="mt-1.5 flex flex-wrap items-baseline gap-x-3 font-mono text-[0.68rem] text-muted">
     <span aria-hidden="true">'R' = 0x52</span>
-    <span class="js-ecc-note" role="status">bit {hit} — flipped, corrected</span>
+    <span class="js-ecc-note" role="status">bit {hitLabel} — flipped, corrected</span>
     <span class="js-ecc-replay" hidden aria-hidden="true">↺ replay</span>
   </span>
 </button>
@@ -81,6 +84,11 @@ const hit = 3;
     top: 50%;
     height: 1.5px;
     background: var(--c-red);
+    /* bg-colored rims keep the red strike separated from the gold fill,
+       the same underlay treatment the favicon documents. */
+    box-shadow:
+      0 1.5px 0 var(--c-bg),
+      0 -1.5px 0 var(--c-bg);
     transform: rotate(-45deg);
   }
   /* Replay states (JS-driven): fault red shows the INVERTED value. */
@@ -111,6 +119,7 @@ const hit = 3;
     const note = word.querySelector<HTMLElement>('.js-ecc-note');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     let busy = false;
+    let hitIdx = bits.findIndex((b) => b.classList.contains('ecc-hit'));
 
     const bump = (sel: string) =>
       document
@@ -119,14 +128,18 @@ const hit = 3;
 
     word.addEventListener('click', () => {
       if (busy) return;
-      const i = Math.floor(Math.random() * bits.length);
+      // Never re-pick the bit already marked hit: under reduced motion that
+      // replay would be a silent no-op. Hardware numbering: bit 0 = LSB.
+      let i = Math.floor(Math.random() * (bits.length - 1));
+      if (i >= hitIdx) i += 1;
       const bit = bits[i];
       bits.forEach((b) => b.classList.remove('ecc-hit'));
+      hitIdx = i;
 
       if (reduced.matches) {
         // Designed final frame only: no transient fault state, no timers.
         bit.classList.add('ecc-hit');
-        if (note) note.textContent = `bit ${i} — flipped, corrected`;
+        if (note) note.textContent = `bit ${7 - i} — flipped, corrected`;
         bump('.js-ledger-det');
         bump('.js-ledger-cor');
         return;
@@ -134,13 +147,13 @@ const hit = 3;
 
       busy = true;
       bit.classList.add('ecc-fault');
-      if (note) note.textContent = `bit ${i} — flipped`;
+      if (note) note.textContent = `bit ${7 - i} — flipped`;
       bump('.js-ledger-det');
 
       setTimeout(() => {
         bit.classList.remove('ecc-fault');
         bit.classList.add('ecc-hit');
-        if (note) note.textContent = `bit ${i} — flipped, corrected`;
+        if (note) note.textContent = `bit ${7 - i} — flipped, corrected`;
         bump('.js-ledger-cor');
         busy = false;
       }, 420);

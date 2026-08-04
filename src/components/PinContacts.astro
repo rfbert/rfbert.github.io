@@ -9,7 +9,7 @@ import { site } from '../data/site';
 import { crc8 } from '../lib/crc8';
 ---
 
-<ul class="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2 xl:grid-cols-4 list-none p-0 m-0" aria-label="Contact">
+<ul class="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2 xl:grid-cols-4 list-none p-0 m-0" role="list" aria-label="Contact">
   {
     site.contacts.map((c, i) => (
       <li class="pin min-w-0">
@@ -18,11 +18,14 @@ import { crc8 } from '../lib/crc8';
           <span class="font-mono">{i + 1}</span>
           <span>{c.label}</span>
         </span>
-        <span class="flex items-center gap-x-3">
+        {/* flex-wrap + min-w-0: the unbreakable email address may fill the cell,
+            dropping the copy control to its own line instead of invading the
+            neighboring pin at 4-column widths. */}
+        <span class="flex flex-wrap items-center gap-x-3 min-w-0">
           <a
             href={c.href}
             data-crc={crc8(c.href)}
-            class="v-link inline-flex min-h-11 max-w-full items-center break-words py-1 font-mono text-[0.8rem] text-ink"
+            class="v-link inline-flex min-h-11 min-w-0 max-w-full items-center break-words py-1 font-mono text-[0.8rem] text-ink"
           >
             {c.value}
           </a>
@@ -62,13 +65,15 @@ import { crc8 } from '../lib/crc8';
   document.querySelectorAll<HTMLButtonElement>('.js-copy-email').forEach((btn) => {
     btn.hidden = false;
     const status = btn.parentElement?.querySelector<HTMLElement>('.js-copy-status');
+    let timer: ReturnType<typeof setTimeout> | undefined;
     btn.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(btn.dataset.value ?? '');
         btn.textContent = 'copied ✓';
         btn.classList.add('text-gold-text');
         if (status) status.textContent = 'Email address copied';
-        setTimeout(() => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
           btn.textContent = 'copy';
           btn.classList.remove('text-gold-text');
           if (status) status.textContent = '';

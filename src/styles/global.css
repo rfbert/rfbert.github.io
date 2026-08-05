@@ -128,6 +128,18 @@ p {
   opacity: 1;
 }
 
+/* Schematic figures: a 360-unit drawing scaled to a phone renders its labels
+   at ~6-8px, under the site's smallest text. Hold the drawing at 1:1 and let
+   the figure scroll inside its own box instead — the page never scrolls
+   sideways, and the <title> carries the full text alternative regardless.
+   Modern browsers make overflow containers keyboard-focusable on their own. */
+.schematic {
+  overflow-x: auto;
+}
+.schematic > svg {
+  min-width: 360px;
+}
+
 /* Ledger digits tick discretely — change is steps() because bits are. */
 .ledger-tick {
   transition: color 0s;

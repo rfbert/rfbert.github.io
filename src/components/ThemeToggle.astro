@@ -11,6 +11,7 @@ const { class: className } = Astro.props;
     'js-theme-toggle font-sans text-sm text-muted hover:text-ink transition-colors cursor-pointer',
     className,
   ]}
+  hidden
 >
   <span class="dark:hidden">Dark</span>
   <span class="hidden dark:inline">Light</span>
@@ -21,6 +22,8 @@ const { class: className } = Astro.props;
   // Multiple toggles can render — bind every one. The visible "Dark"/"Light"
   // text is the accessible name (it names the theme the button switches to).
   document.querySelectorAll<HTMLButtonElement>('.js-theme-toggle').forEach((btn) => {
+    // Ships hidden: the control only exists once it can actually switch themes.
+    btn.hidden = false;
     btn.addEventListener('click', () => {
       const nowDark = !document.documentElement.classList.contains('dark');
       document.documentElement.classList.toggle('dark', nowDark);

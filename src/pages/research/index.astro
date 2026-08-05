@@ -40,7 +40,7 @@ const rendered = await Promise.all(
               <h2 class="max-w-[56ch] text-[1.35rem] leading-snug font-semibold">
                 {entry.data.title}
               </h2>
-              <span class="font-mono text-xs text-muted">{entry.data.start.getUTCFullYear()}</span>
+              <span class="ml-auto font-mono text-xs text-muted">{entry.data.start.getUTCFullYear()}</span>
             </div>
             <p class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
               <StatusStamp label={entry.data.statusLabel} />
@@ -68,7 +68,7 @@ const rendered = await Promise.all(
               <figure class="mt-5 max-w-md text-muted">
                 <svg viewBox="0 0 360 130" class="w-full" role="img" aria-labelledby="bitflip-schematic-title">
                   <title id="bitflip-schematic-title">
-                    Schematic: an attacker flips a handful of chosen weight bits, the model's
+                    Schematic: an attacker flips a handful of chosen weight bits, the model’s
                     output still looks plausible, and the open question is when monitoring can
                     catch it.
                   </title>

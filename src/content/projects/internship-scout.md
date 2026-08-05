@@ -1,6 +1,6 @@
 ---
 title: Internship Scout
-tagline: A full-stack agent that reads the internship market every morning so I don't have to
+tagline: A full-stack agent that reads the internship market every morning so I don’t have to.
 role: Sole developer, design to launch
 start: 2026-07-01
 stack: [TypeScript, Next.js, Prisma, PostgreSQL, Docker, GitHub Actions]

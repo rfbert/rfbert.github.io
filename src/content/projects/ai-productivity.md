@@ -9,7 +9,7 @@ status: shipped
 summary:
   problem: "Recurring scheduling and communication tasks ate time and invited manual errors."
   built: "One automation layer connecting Google Calendar, Gmail, Telegram, Notion, and Google Sheets."
-  result: "12+ recurring tasks automated; built as the capstone of my AI Diploma (final grade 98%)."
+  result: "12+ recurring tasks automated; built as the capstone of my Diploma in Artificial Intelligence at USMP (final grade 98%)."
 order: 2
 ---
 

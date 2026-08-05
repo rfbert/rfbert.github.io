@@ -104,7 +104,19 @@ const scoutMetrics = [
           <p class="mt-0.5 font-sans text-sm text-muted">{site.education.coursework}</p>
         </div>
 
-        <EccWord class="mt-5" />
+        {/* The explainer sits with the thing it explains: the strip is where a
+            visitor actually meets the motif and can replay it. One sentence,
+            native <details> — works with no JS, by keyboard and by touch. */}
+        <div class="mt-5 flex flex-wrap items-center gap-x-2">
+          <EccWord />
+          <details class="ecc-note">
+            <summary aria-label="What this strip means"><span aria-hidden="true">ⓘ</span></summary>
+            <p class="ecc-note-body">
+              The site is built like ECC (error-correcting) memory: this strip is one byte plus a
+              check bit, and clicking it replays a single-bit fault being caught and corrected.
+            </p>
+          </details>
+        </div>
       </div>
     </div>
 
@@ -381,6 +393,49 @@ const scoutMetrics = [
   }
   .metric-label {
     font-family: var(--font-sans);
+    color: var(--c-muted);
+  }
+
+  /* The ECC explainer: a subtle info affordance that discloses one sentence.
+     The body is taken out of flow — as a flex item, a <details> otherwise
+     contributes its closed body's full width and pushes the marker to its own
+     line. Out of flow, the marker stays beside the strip and the panel opens
+     over the content below without shifting anything. */
+  .ecc-note {
+    position: relative;
+  }
+  .ecc-note > summary {
+    list-style: none;
+    cursor: pointer;
+    color: var(--c-muted);
+    /* A real tap target (≥24px, WCAG 2.5.8) — matches the site's other controls. */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.5rem;
+    min-height: 1.5rem;
+    font-size: 0.85rem;
+  }
+  .ecc-note > summary::-webkit-details-marker {
+    display: none;
+  }
+  .ecc-note > summary:hover,
+  .ecc-note > summary:focus-visible {
+    color: var(--c-gold-text);
+  }
+  .ecc-note-body {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    margin: 0.4rem 0 0;
+    width: max-content;
+    max-width: min(48ch, calc(100vw - 3rem));
+    border: 1px solid var(--c-line);
+    background: var(--c-surface);
+    padding: 0.55rem 0.75rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
     color: var(--c-muted);
   }
 

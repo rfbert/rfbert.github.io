@@ -76,7 +76,7 @@ const groups = [
     </button>
     <p class="m-0 font-sans text-xs text-muted">
       An illustration of the failure mode I study. The weight decode is real IEEE-754; the
-      arithmetic line stands in for a model's output.
+      arithmetic line stands in for a model’s output.
     </p>
   </div>
 </section>
@@ -102,6 +102,16 @@ const groups = [
       height: 2.4rem;
       font-size: 0.8rem;
     }
+  }
+  /* Switches sit 3px apart, so the global 3px-offset ring would be drawn over
+     both neighbours' borders. Keep this one ring on its own box. */
+  .bit-btn:focus-visible {
+    outline-offset: 0;
+  }
+  /* Same hover grammar as every other control on the site (reset, copy, CTAs).
+     Never on :disabled — that state is the no-JS static figure. */
+  .bit-btn:not(:disabled):hover {
+    border-color: var(--c-gold);
   }
   /* Disabled = the no-JS static figure; render it at full ink. */
   .bit-btn:disabled {

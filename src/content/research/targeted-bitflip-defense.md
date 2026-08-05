@@ -7,7 +7,7 @@ status: in-preparation
 statusLabel: In preparation
 area: Adversarial fault tolerance
 summary:
-  problem: "Adversarial bit-flips corrupt a handful of chosen weights while the model's output still looks plausible — when can monitoring catch it?"
+  problem: "Adversarial bit-flips corrupt a handful of chosen weights while the model’s output still looks plausible — when can monitoring catch it?"
   built: "A benchmark of fault-tolerance defenses across stealth and damage attack classes."
   result: "7 defenses evaluated against 2 attack classes on GSM8K; work continues at the lab toward publication."
 order: 2

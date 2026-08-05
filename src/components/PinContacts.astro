@@ -13,26 +13,30 @@ import { crc8 } from '../lib/crc8';
   {
     site.contacts.map((c, i) => (
       <li class="pin min-w-0">
-        <span class="flex items-center gap-2 font-sans text-xs text-muted" aria-hidden="true">
+        {/* mb-2 keeps the link's focus ring (3px offset + 2px) clear of this
+            label's ink — flush, it reads as a strike through the pad and text. */}
+        <span class="mb-2 flex items-center gap-2 font-sans text-xs text-muted" aria-hidden="true">
           <span class="pin-pad" />
           <span class="font-mono">{i + 1}</span>
           <span>{c.label}</span>
         </span>
-        {/* flex-wrap + min-w-0: the unbreakable email address may fill the cell,
-            dropping the copy control to its own line instead of invading the
-            neighboring pin at 4-column widths. */}
-        <span class="flex flex-wrap items-center gap-x-3 min-w-0">
+        {/* Baseline alignment: the link's build-time CRC rides an ::after, so a
+            centered flex row would float it off the text baseline. flex-wrap +
+            min-w-0 keeps the unbreakable email address from invading the
+            neighboring pin at 4-column widths; if the copy control has to wrap,
+            gap-y keeps it tucked under the address rather than adrift. */}
+        <span class="flex flex-wrap items-baseline gap-x-3 gap-y-1.5 min-w-0">
           <a
             href={c.href}
             data-crc={crc8(c.href)}
-            class="v-link inline-flex min-h-11 min-w-0 max-w-full items-center break-words py-1 font-mono text-[0.8rem] text-ink"
+            class="v-link min-w-0 max-w-full break-words py-1.5 font-mono text-[0.8rem] text-ink"
           >
             {c.value}
           </a>
           {c.href.startsWith('mailto:') && (
             <button
               type="button"
-              class="js-copy-email min-h-11 shrink-0 cursor-pointer border border-line bg-transparent px-3 py-1 font-mono text-[0.68rem] text-muted hover:border-gold hover:text-ink"
+              class="js-copy-email inline-flex min-h-6 min-w-[4.6rem] shrink-0 cursor-pointer items-center justify-center border border-line bg-transparent px-2 font-mono text-[0.68rem] leading-none text-muted hover:border-gold hover:text-ink"
               data-value={c.value}
               hidden
             >

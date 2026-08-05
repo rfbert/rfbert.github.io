@@ -49,6 +49,14 @@
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 }
 
+/* Progressive-enhancement controls ship with the `hidden` attribute and are
+   revealed by their script. Without this, a responsive display utility on the
+   same element (e.g. `sm:inline-flex`) outranks the UA rule and shows a control
+   that cannot work. */
+[hidden] {
+  display: none !important;
+}
+
 html {
   font-family: var(--font-sans);
   background-color: var(--c-bg);
@@ -92,6 +100,10 @@ p {
   text-decoration: none;
   background-image: linear-gradient(var(--c-gold), var(--c-gold));
   background-repeat: no-repeat;
+  /* Origin the sweep on the content box, not the padding box: a link that
+     carries vertical padding (nav, contact pins) would otherwise strand its
+     underline below the text instead of under it. */
+  background-origin: content-box;
   background-position: 0 100%;
   background-size: 0% 1px;
   transition: background-size 160ms ease-out;

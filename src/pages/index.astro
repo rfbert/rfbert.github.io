@@ -93,7 +93,7 @@ const scoutMetrics = [
           </a>
           <span class="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs" aria-label="More contacts">
             <a href={github.href} class="v-link text-muted hover:text-ink">{github.value}</a>
-            <span class="text-line" aria-hidden="true">·</span>
+            <span class="text-muted" aria-hidden="true">·</span>
             <a href={linkedin.href} class="v-link text-muted hover:text-ink">{linkedin.value}</a>
           </span>
         </div>
@@ -119,11 +119,11 @@ const scoutMetrics = [
                 <span class="row-link">{mibanco.data.role}</span>
                 <span class="font-normal text-muted"> — {mibanco.data.organization} ({mibanco.data.parent})</span>
               </h3>
-              <span class="font-mono text-xs text-muted">Summer 2026</span>
+              <span class="ml-auto font-mono text-xs text-muted">Summer 2026</span>
             </div>
             <p class="mt-1 max-w-[68ch] text-base text-muted">
               Parallelized speech-to-text and LLM-interpretation pipeline for production workflows
-              at Peru's largest microfinance bank.
+              at Peru’s largest microfinance bank.
             </p>
             <p class="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-muted">
               <span>Lima, Peru · 12°03′S</span>
@@ -139,7 +139,7 @@ const scoutMetrics = [
                 <span class="row-link">LLM fault-resilience research</span>
                 <span class="font-normal text-muted"> — TRUE AI Lab, Oregon State University</span>
               </h3>
-              <span class="font-mono text-xs text-muted">2025–present</span>
+              <span class="ml-auto font-mono text-xs text-muted">2025–present</span>
             </div>
             <p class="mt-1 max-w-[68ch] text-base text-muted">
               Contributed data and benchmarks to defenses against LLM bit-flip attacks;
@@ -170,7 +170,7 @@ const scoutMetrics = [
                 <span class="row-link">{scout.data.title}</span>
                 <span class="font-normal text-muted"> — own product, sole developer</span>
               </h3>
-              <span class="font-mono text-xs text-muted">2026–present</span>
+              <span class="ml-auto font-mono text-xs text-muted">2026–present</span>
             </div>
             <p class="mt-1 max-w-[68ch] text-base text-muted">{scout.data.tagline}</p>
             <p class="metrics" aria-label="At a glance">
@@ -302,7 +302,7 @@ const scoutMetrics = [
       margin-top: 1.125rem;
       /* Sized so "Rodrigo Flores" holds one line down to 320px — the
          nameplate keeps its two-line structure instead of breaking to three. */
-      font-size: clamp(2rem, 10vw, 2.5rem);
+      font-size: clamp(1.85rem, 9.4vw, 2.5rem);
     }
     .hero-spec {
       grid-row: 3;

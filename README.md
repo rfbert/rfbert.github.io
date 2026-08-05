@@ -37,5 +37,9 @@ Site: https://rfbert.me
 
 - New project/research/experience → add a `.md` under `src/content/…` (schema-typed).
 - Updated resume → `cp ~/Repositories/resume/resume.pdf public/resume.pdf`.
-- Mibanco quantified-results bullet: placeholder comment in `src/content/experience/mibanco.md`.
+- **TODO after Summer 2026** — add one quantified-results bullet to
+  `src/content/experience/mibanco.md` (audio volume processed, runtime before→after
+  parallelization, the shipped use case) and fold the figure into its `summary.result`.
+  Keep verbs matched to personal contribution. (Kept here, not as an HTML comment in the
+  content body: markdown passes those straight through to the shipped page.)
 - Blog later: add a `posts` collection + nav item (nav is data-driven in `site.ts`).

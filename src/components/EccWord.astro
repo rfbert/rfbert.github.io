@@ -41,7 +41,13 @@ const hitLabel = 7 - hit;
   </span>
   <span class="mt-1.5 flex flex-wrap items-baseline gap-x-3 font-mono text-[0.68rem] text-muted">
     <span aria-hidden="true">'R' = 0x52</span>
-    <span class="js-ecc-note" role="status">bit {hitLabel} — flipped, corrected</span>
+    {/* The ", corrected" tail keeps its box while hidden, so replaying never
+        reflows the caption row (and the ↺ cue) under the pointer. */}
+    <span class="js-ecc-note" role="status"
+      >bit <span class="js-ecc-bit">{hitLabel}</span> — flipped<span class="js-ecc-corrected"
+        >, corrected</span
+      ></span
+    >
     <span class="js-ecc-replay" hidden aria-hidden="true">↺ replay</span>
   </span>
 </button>
@@ -103,6 +109,11 @@ const hitLabel = 7 - hit;
     outline: 2px solid var(--c-gold);
     outline-offset: 4px;
   }
+  /* Hidden but still occupying its box — the caption keeps a constant width
+     through a flip-and-correct cycle instead of shrinking and snapping back. */
+  .js-ecc-corrected.is-pending {
+    visibility: hidden;
+  }
   /* The replay cue is chrome, not data: muted at rest, verified-gold on intent. */
   .ecc-word:hover .js-ecc-replay,
   .ecc-word:focus-visible .js-ecc-replay {
@@ -116,7 +127,8 @@ const hitLabel = 7 - hit;
     // The replay cue only appears once the strip is actually operable.
     word.querySelector<HTMLElement>('.js-ecc-replay')?.removeAttribute('hidden');
     const bits = [...word.querySelectorAll<HTMLElement>('.ecc-bit:not(.ecc-check)')];
-    const note = word.querySelector<HTMLElement>('.js-ecc-note');
+    const noteBit = word.querySelector<HTMLElement>('.js-ecc-bit');
+    const noteCorrected = word.querySelector<HTMLElement>('.js-ecc-corrected');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     let busy = false;
     let hitIdx = bits.findIndex((b) => b.classList.contains('ecc-hit'));
@@ -136,10 +148,12 @@ const hitLabel = 7 - hit;
       bits.forEach((b) => b.classList.remove('ecc-hit'));
       hitIdx = i;
 
+      if (noteBit) noteBit.textContent = String(7 - i);
+
       if (reduced.matches) {
         // Designed final frame only: no transient fault state, no timers.
         bit.classList.add('ecc-hit');
-        if (note) note.textContent = `bit ${7 - i} — flipped, corrected`;
+        noteCorrected?.classList.remove('is-pending');
         bump('.js-ledger-det');
         bump('.js-ledger-cor');
         return;
@@ -147,13 +161,14 @@ const hitLabel = 7 - hit;
 
       busy = true;
       bit.classList.add('ecc-fault');
-      if (note) note.textContent = `bit ${7 - i} — flipped`;
+      // Reserve the tail's box rather than removing it — no reflow mid-cycle.
+      noteCorrected?.classList.add('is-pending');
       bump('.js-ledger-det');
 
       setTimeout(() => {
         bit.classList.remove('ecc-fault');
         bit.classList.add('ecc-hit');
-        if (note) note.textContent = `bit ${7 - i} — flipped, corrected`;
+        noteCorrected?.classList.remove('is-pending');
         bump('.js-ledger-cor');
         busy = false;
       }, 420);

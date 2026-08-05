@@ -13,19 +13,35 @@ import { crc8 } from '../lib/crc8';
   {
     site.contacts.map((c, i) => (
       <li class="pin min-w-0">
-        {/* mb-2 keeps the link's focus ring (3px offset + 2px) clear of this
-            label's ink — flush, it reads as a strike through the pad and text. */}
-        <span class="mb-2 flex items-center gap-2 font-sans text-xs text-muted" aria-hidden="true">
-          <span class="pin-pad" />
-          <span class="font-mono">{i + 1}</span>
-          <span>{c.label}</span>
-        </span>
+        {/* The copy control rides the pin's header, not the address line: at
+            4-column widths the address fills its cell, so anything trailing it
+            wrapped to a line of its own and left the Email pin taller and
+            visibly out of step with its neighbours. The header row carries a
+            fixed height on every pin, so all four addresses stay on one axis
+            whether or not a pin has a control. mb-2 also keeps the link's focus
+            ring (3px offset + 2px) clear of the label's ink. */}
+        <div class="mb-2 flex min-h-6 items-center gap-2">
+          <span class="flex items-center gap-2 font-sans text-xs text-muted" aria-hidden="true">
+            <span class="pin-pad" />
+            <span class="font-mono">{i + 1}</span>
+            <span>{c.label}</span>
+          </span>
+          {c.href.startsWith('mailto:') && (
+            <button
+              type="button"
+              class="js-copy-email inline-flex min-h-6 min-w-[4.6rem] shrink-0 cursor-pointer items-center justify-center border border-line bg-transparent px-2 font-mono text-[0.68rem] leading-none text-muted hover:border-gold hover:text-ink"
+              data-value={c.value}
+              aria-label={`Copy email address ${c.value}`}
+              hidden
+            >
+              copy
+            </button>
+          )}
+          <span class="js-copy-status sr-only" role="status" />
+        </div>
         {/* Baseline alignment: the link's build-time CRC rides an ::after, so a
-            centered flex row would float it off the text baseline. flex-wrap +
-            min-w-0 keeps the unbreakable email address from invading the
-            neighboring pin at 4-column widths; if the copy control has to wrap,
-            gap-y keeps it tucked under the address rather than adrift. */}
-        <span class="flex flex-wrap items-baseline gap-x-3 gap-y-1.5 min-w-0">
+            centered flex row would float it off the text baseline. */}
+        <span class="flex min-w-0 items-baseline">
           <a
             href={c.href}
             data-crc={crc8(c.href)}
@@ -33,17 +49,6 @@ import { crc8 } from '../lib/crc8';
           >
             {c.value}
           </a>
-          {c.href.startsWith('mailto:') && (
-            <button
-              type="button"
-              class="js-copy-email inline-flex min-h-6 min-w-[4.6rem] shrink-0 cursor-pointer items-center justify-center border border-line bg-transparent px-2 font-mono text-[0.68rem] leading-none text-muted hover:border-gold hover:text-ink"
-              data-value={c.value}
-              hidden
-            >
-              copy
-            </button>
-          )}
-          <span class="js-copy-status sr-only" role="status" />
         </span>
       </li>
     ))

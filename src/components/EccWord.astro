@@ -1,10 +1,18 @@
 ---
 /**
- * An ECC word: eight data bits ('R' = 0x52) and one check bit. The static
- * state already tells the story — one bit was hit and corrected. With JS,
- * clicking replays a flip-and-correct cycle and ticks the site ledger:
- * the visitor operates the demonstration instead of only watching it.
- * Ships disabled (a static figure) and is enabled by the script.
+ * An ECC word you can operate: eight data bits ('R' = 0x52) plus one even-parity
+ * check bit, with a live parity readout.
+ *
+ * Two faults are injectable, and the difference between them is the whole point
+ * of the theme:
+ *   single — parity disagrees, the fault is caught and corrected.
+ *   double — parity agrees again, so one check bit cannot see it. The word is
+ *            wrong and looks fine. Real ECC spends extra check bits precisely to
+ *            catch this case, and it is the failure mode my research studies.
+ *
+ * The word itself is a graphic (aria-hidden); the readout carries the state as
+ * text. Ships as a static figure — a recorded, corrected hit — so the no-JS
+ * frame tells the same story; the script reveals the controls.
  */
 interface Props {
   class?: string;
@@ -13,51 +21,43 @@ const { class: className } = Astro.props;
 
 // 'R' = 0x52 = 01010010 — three 1-bits, so the even-parity check bit is 1.
 // True data, not texture.
-const bits = [0, 1, 0, 1, 0, 0, 1, 0];
-const parity = bits.reduce((a, b) => a ^ b, 0);
-const hit = 3;
-// Bits render MSB-first, so the label uses hardware numbering (bit 0 = LSB,
-// rightmost) — same convention as BitExhibit's 31..0.
-const hitLabel = 7 - hit;
+const DATA = [0, 1, 0, 1, 0, 0, 1, 0];
+const PARITY = DATA.reduce((a, b) => a ^ b, 0);
+// The static (no-JS) frame's recorded hit. Bits render MSB-first, so the label
+// uses hardware numbering (bit 0 = LSB, rightmost) — same as BitExhibit's 31..0.
+const HIT = 3;
 ---
 
-<button
-  type="button"
-  class:list={['ecc-word group block cursor-pointer border-0 bg-transparent p-0 text-left', className]}
-  aria-label="Replay a single-bit fault being detected and corrected"
-  disabled
->
-  <span class="flex items-center gap-1" aria-hidden="true">
+<div class:list={['ecc', className]}>
+  <div class="ecc-word" aria-hidden="true">
     {
-      bits.map((b, i) => (
+      DATA.map((b, i) => (
         <span
-          class:list={['ecc-bit', b ? 'ecc-on' : '', i === hit ? 'ecc-hit' : '']}
-          data-bit={i}
+          class:list={['ecc-bit', b ? 'is-on' : '', i === HIT ? 'is-corrected' : '']}
           data-val={b}
         />
       ))
     }
-    <span class="ecc-bit ecc-check ml-1.5" data-val={parity} />
-  </span>
-  <span class="mt-1.5 flex flex-wrap items-baseline gap-x-3 font-mono text-[0.68rem] text-muted">
-    <span aria-hidden="true">'R' = 0x52</span>
-    {/* The ", corrected" tail keeps its box while hidden, so replaying never
-        reflows the caption row (and the ↺ cue) under the pointer. */}
-    <span class="js-ecc-note" role="status"
-      >bit <span class="js-ecc-bit">{hitLabel}</span> — flipped<span class="js-ecc-corrected"
-        >, corrected</span
-      ></span
-    >
-    <span class="js-ecc-replay" hidden aria-hidden="true">↺ replay</span>
-  </span>
-</button>
+    <span class="ecc-bit ecc-check ml-1.5" data-val={PARITY} />
+  </div>
+
+  <p class="ecc-read" role="status">
+    <span class="ecc-word-id">'R' = 0x52</span>
+    <span class="js-ecc-msg">bit {7 - HIT} — flipped, corrected</span>
+  </p>
+
+  <div class="ecc-controls">
+    <button type="button" class="ecc-btn js-ecc-single" hidden>single fault</button>
+    <button type="button" class="ecc-btn js-ecc-double" hidden>double fault</button>
+    <slot />
+  </div>
+</div>
 
 <style>
-  /* Disabled = the no-JS static figure; keep it at full ink. */
-  .ecc-word:disabled {
-    cursor: default;
-    color: inherit;
-    opacity: 1;
+  .ecc-word {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
   }
   .ecc-bit {
     position: relative;
@@ -65,24 +65,28 @@ const hitLabel = 7 - hit;
     width: 0.75rem;
     height: 0.75rem;
     border: 1.5px solid var(--c-ink);
+    transition: background 200ms steps(2), border-color 200ms steps(2);
   }
-  .ecc-on {
+  .ecc-bit.is-on {
     background: var(--c-ink);
   }
   .ecc-check {
     border-color: var(--c-gold);
     background: var(--c-gold);
   }
-  /* Static designed final frame: the hit bit sits corrected in gold,
-     the strike records that it was flipped. Fill still encodes the value. */
-  .ecc-hit {
+  .ecc-check[data-val='0'] {
+    background: transparent;
+  }
+  /* A recorded, corrected hit: the bit sits verified-gold and the strike records
+     that it was flipped. Fill still encodes the value. */
+  .ecc-bit.is-corrected {
     border-color: var(--c-gold);
     background: var(--c-gold);
   }
-  .ecc-hit[data-val='0'] {
+  .ecc-bit.is-corrected[data-val='0'] {
     background: transparent;
   }
-  .ecc-hit::after {
+  .ecc-bit.is-corrected::after {
     content: '';
     position: absolute;
     left: -3px;
@@ -90,88 +94,176 @@ const hitLabel = 7 - hit;
     top: 50%;
     height: 1.5px;
     background: var(--c-red);
-    /* bg-colored rims keep the red strike separated from the gold fill,
-       the same underlay treatment the favicon documents. */
+    /* bg-colored rims keep the red strike separated from the gold fill, the same
+       underlay treatment the favicon documents. */
     box-shadow:
       0 1.5px 0 var(--c-bg),
       0 -1.5px 0 var(--c-bg);
     transform: rotate(-45deg);
   }
-  /* Replay states (JS-driven): fault red shows the INVERTED value. */
-  .ecc-bit.ecc-fault {
+  /* A live fault, drawn in fault red and showing the INVERTED value. Transient
+     only — every cycle ends corrected or scrubbed, never sitting red. */
+  .ecc-bit.is-fault {
     border-color: var(--c-red);
     background: var(--c-red);
   }
-  .ecc-bit.ecc-fault[data-val='1'] {
-    background: transparent; /* the flip: 1 → 0, drawn in fault red */
+  .ecc-bit.is-fault[data-val='1'] {
+    background: transparent;
   }
-  .ecc-word:focus-visible {
-    outline: 2px solid var(--c-gold);
-    outline-offset: 4px;
+
+  .ecc-read {
+    margin: 0.4rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--c-muted);
   }
-  /* Hidden but still occupying its box — the caption keeps a constant width
-     through a flip-and-correct cycle instead of shrinking and snapping back. */
-  .js-ecc-corrected.is-pending {
-    visibility: hidden;
+  .ecc-word-id {
+    color: var(--c-muted);
   }
-  /* The replay cue is chrome, not data: muted at rest, verified-gold on intent. */
-  .ecc-word:hover .js-ecc-replay,
-  .ecc-word:focus-visible .js-ecc-replay {
+  /* Verdicts colour the readout, never the section grammar. */
+  .ecc-read.is-caught .js-ecc-msg {
     color: var(--c-gold-text);
+  }
+  .ecc-read.is-missed .js-ecc-msg {
+    color: var(--c-red-text);
+  }
+
+  .ecc-controls {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .ecc-btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.5rem;
+    padding: 0 0.5rem;
+    border: 1px solid var(--c-line);
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    line-height: 1;
+    color: var(--c-muted);
+    cursor: pointer;
+    transition: border-color 160ms ease-out, color 160ms ease-out;
+  }
+  .ecc-btn:hover,
+  .ecc-btn:focus-visible {
+    border-color: var(--c-gold);
+    color: var(--c-ink);
+  }
+  .ecc-btn[disabled] {
+    cursor: default;
+    opacity: 0.5;
   }
 </style>
 
 <script>
-  document.querySelectorAll<HTMLButtonElement>('.ecc-word').forEach((word) => {
-    word.disabled = false;
-    // The replay cue only appears once the strip is actually operable.
-    word.querySelector<HTMLElement>('.js-ecc-replay')?.removeAttribute('hidden');
-    const bits = [...word.querySelectorAll<HTMLElement>('.ecc-bit:not(.ecc-check)')];
-    const noteBit = word.querySelector<HTMLElement>('.js-ecc-bit');
-    const noteCorrected = word.querySelector<HTMLElement>('.js-ecc-corrected');
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const root = document.querySelector<HTMLElement>('.ecc');
+  if (root) {
+    const bits = [...root.querySelectorAll<HTMLElement>('.ecc-bit:not(.ecc-check)')];
+    const check = root.querySelector<HTMLElement>('.ecc-check')!;
+    const read = root.querySelector<HTMLElement>('.ecc-read')!;
+    const msg = root.querySelector<HTMLElement>('.js-ecc-msg')!;
+    const single = root.querySelector<HTMLButtonElement>('.js-ecc-single')!;
+    const double = root.querySelector<HTMLButtonElement>('.js-ecc-double')!;
+
+    // Stored word, read off the markup so the data has one source.
+    const stored = bits.map((b) => b.dataset.val === '1');
+    const storedParity = stored.reduce((a, b) => a !== b, false);
+    // Hardware numbering: bit 0 = LSB = rightmost.
+    const num = (i: number) => 7 - i;
+    const parityOf = (w: boolean[]) => w.reduce((a, b) => a !== b, false);
+
     let busy = false;
-    let hitIdx = bits.findIndex((b) => b.classList.contains('ecc-hit'));
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 
     const bump = (sel: string) =>
       document
         .querySelectorAll(sel)
         .forEach((el) => (el.textContent = String(Number(el.textContent) + 1)));
 
-    word.addEventListener('click', () => {
-      if (busy) return;
-      // Never re-pick the bit already marked hit: under reduced motion that
-      // replay would be a silent no-op. Hardware numbering: bit 0 = LSB.
-      let i = Math.floor(Math.random() * (bits.length - 1));
-      if (i >= hitIdx) i += 1;
-      const bit = bits[i];
-      bits.forEach((b) => b.classList.remove('ecc-hit'));
-      hitIdx = i;
+    const setVerdict = (text: string, state: '' | 'caught' | 'missed') => {
+      msg.textContent = text;
+      read.classList.toggle('is-caught', state === 'caught');
+      read.classList.toggle('is-missed', state === 'missed');
+    };
 
-      if (noteBit) noteBit.textContent = String(7 - i);
+    /** Draw a word: `faults` are live (red), `corrected` carries the record mark. */
+    const paint = (word: boolean[], faults: number[], corrected: number[]) => {
+      bits.forEach((b, i) => {
+        b.dataset.val = word[i] ? '1' : '0';
+        b.classList.toggle('is-on', word[i]);
+        b.classList.toggle('is-fault', faults.includes(i));
+        b.classList.toggle('is-corrected', corrected.includes(i));
+      });
+      check.dataset.val = storedParity ? '1' : '0';
+    };
+
+    const pick = (n: number) => {
+      const idx = [...bits.keys()];
+      for (let i = idx.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [idx[i], idx[j]] = [idx[j], idx[i]];
+      }
+      return idx.slice(0, n).sort((a, b) => a - b);
+    };
+
+    const inject = (n: 1 | 2) => {
+      if (busy) return;
+      busy = true;
+      single.disabled = true;
+      double.disabled = true;
+
+      const hit = pick(n);
+      const word = stored.map((v, i) => (hit.includes(i) ? !v : v));
+      // A single check bit sees odd error counts only: one flip breaks parity,
+      // two flips restore it. That asymmetry is the whole demonstration.
+      const detected = parityOf(word) !== storedParity;
+      const names = hit.map(num).join(' and ');
+
+      const settle = () => {
+        if (n === 1) {
+          // Caught: restore the true value and leave the record mark.
+          paint(stored, [], hit);
+          setVerdict(`bit ${names} — corrected`, 'caught');
+          bump('.js-ledger-cor');
+        } else {
+          // Nothing detected it, so nothing was corrected — scrub back clean.
+          paint(stored, [], []);
+          setVerdict('one check bit cannot see a double fault', 'missed');
+        }
+        busy = false;
+        single.disabled = false;
+        double.disabled = false;
+      };
 
       if (reduced.matches) {
         // Designed final frame only: no transient fault state, no timers.
-        bit.classList.add('ecc-hit');
-        noteCorrected?.classList.remove('is-pending');
-        bump('.js-ledger-det');
-        bump('.js-ledger-cor');
+        settle();
+        if (detected) bump('.js-ledger-det');
         return;
       }
 
-      busy = true;
-      bit.classList.add('ecc-fault');
-      // Reserve the tail's box rather than removing it — no reflow mid-cycle.
-      noteCorrected?.classList.add('is-pending');
-      bump('.js-ledger-det');
+      paint(word, hit, []);
+      if (detected) {
+        setVerdict(`bit ${names} flipped — parity mismatch`, 'missed');
+        bump('.js-ledger-det');
+      } else {
+        setVerdict(`bits ${names} flipped — parity still checks out`, 'missed');
+      }
+      setTimeout(settle, n === 1 ? 420 : 900);
+    };
 
-      setTimeout(() => {
-        bit.classList.remove('ecc-fault');
-        bit.classList.add('ecc-hit');
-        noteCorrected?.classList.remove('is-pending');
-        bump('.js-ledger-cor');
-        busy = false;
-      }, 420);
-    });
-  });
+    // Progressive enhancement: the controls only exist once they can act.
+    single.hidden = false;
+    double.hidden = false;
+    single.addEventListener('click', () => inject(1));
+    double.addEventListener('click', () => inject(2));
+  }
 </script>

@@ -46,6 +46,7 @@ Scale ×1.25 modular; fluid clamp() headings capped 4.25rem.
 `data-seu`; the recruiter scan path is never eligible) takes a real XOR single-bit flip once
 per page view, is struck in red, and snaps back corrected as the parity ledger ticks. The
 corruption is purely presentational (aria-hidden overlay; copy/find/screen readers always get
-clean text). The home ECC-word strip is the operable version: click to replay a flip-and-correct.
+clean text). The home ECC-word strip is the operable version: inject a single fault and watch parity catch and
+correct it, or a double fault and watch it slip past a lone check bit.
 Reduced motion: no flips ever fire; the strip's static frame (gold bit, red strike) tells the
 story instead. Motion doctrine: one pass, then still.

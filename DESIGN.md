@@ -23,8 +23,12 @@ Gold is split: `gold` for graphics (≥3:1), `gold-text` for text (AA). Never bo
 - `SiteShell.astro` — parity rail (desktop): live hex scroll
   offset, fault ledger mirrored in the footer. One-shot SEU engine: a single XOR bit flip in
   `[data-seu]` prose per page view, corrected in ~420ms, ledger ticks. Scan path never eligible.
-- `EccWord.astro` — operable signature strip (click replays flip-and-correct; static frame under
-  no-JS/reduced-motion tells the same story).
+- `EccWord.astro` — operable signature strip: one byte plus a real even-parity check bit, with
+  `single fault` / `double fault` controls and a live parity readout. Single → parity disagrees,
+  caught and corrected (ledger ticks). Double → parity agrees again, so it goes undetected and the
+  word is scrubbed; the ledger does not tick, because nothing caught it. That asymmetry is the
+  point, and it is the failure mode the research studies. Red is transient in both paths — every
+  cycle ends corrected or clean. Static frame under no-JS/reduced-motion tells the same story.
 - `BitExhibit.astro` — IEEE-754 "one weight, thirty-two switches" (Research page): real
   Float32 decode, roving-tabindex toolbar, honest illustration caption.
 - `PinContacts.astro` — the 4-contact pinout; real build-time CRC-8 (`src/lib/crc8.ts`) on

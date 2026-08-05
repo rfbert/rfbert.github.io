@@ -104,19 +104,18 @@ const scoutMetrics = [
           <p class="mt-0.5 font-sans text-sm text-muted">{site.education.coursework}</p>
         </div>
 
-        {/* The explainer sits with the thing it explains: the strip is where a
-            visitor actually meets the motif and can replay it. One sentence,
-            native <details> — works with no JS, by keyboard and by touch. */}
-        <div class="mt-5 flex flex-wrap items-center gap-x-2">
-          <EccWord />
+        {/* The explainer rides the strip's own control row, beside the buttons
+            it describes. One sentence, native <details> — no JS needed. */}
+        <EccWord class="mt-5">
           <details class="ecc-note">
             <summary aria-label="What this strip means"><span aria-hidden="true">ⓘ</span></summary>
             <p class="ecc-note-body">
-              The site is built like ECC (error-correcting) memory: this strip is one byte plus a
-              check bit, and clicking it replays a single-bit fault being caught and corrected.
+              One byte plus a single check bit. Flip one bit and the parity disagrees, so the
+              fault is caught and corrected. Flip two and the parity agrees again — the word is
+              wrong and still looks fine. Catching that case is what my research is about.
             </p>
           </details>
-        </div>
+        </EccWord>
       </div>
     </div>
 

@@ -1,11 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- SEC-DED mark: a 2x2 memory word — one bit was hit (the strike records it)
-       and sits corrected in gold. Dark underlay keeps red off gold (1.4:1). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Rodrigo Flores Bertolotti">
+  <title>Rodrigo Flores Bertolotti</title>
+  <!-- The nameplate's own R (Archivo 600), trailed by its check bit in verified
+       gold - the ECC word's "byte, then parity" read as a monogram. One mark,
+       identical on every page and every surface. -->
   <rect width="64" height="64" rx="14" fill="#16211B"/>
-  <rect x="11" y="11" width="18" height="18" rx="3" fill="#E9F1EA"/>
-  <rect x="35" y="11" width="18" height="18" rx="3" fill="#E9F1EA"/>
-  <rect x="11" y="35" width="18" height="18" rx="3" fill="#E9F1EA"/>
-  <rect x="35" y="35" width="18" height="18" rx="3" fill="#E2B93B"/>
-  <line x1="31" y1="57" x2="57" y2="31" stroke="#16211B" stroke-width="7.5" stroke-linecap="round"/>
-  <line x1="31" y1="57" x2="57" y2="31" stroke="#FF7A54" stroke-width="5" stroke-linecap="round"/>
+  <path d="M15.28 51L8.08 51L8.08 13L28.07 13Q32.28 13 35.05 14.44Q37.82 15.88 39.21 18.54Q40.59 21.20 40.59 24.80Q40.59 28.51 38.93 31.36Q37.27 34.22 34.06 35.66L41.92 51L34.06 51L27.08 36.87L15.28 36.87L15.28 51M15.28 19.15L15.28 30.84L27.52 30.84Q30.29 30.84 31.79 29.23Q33.28 27.62 33.28 24.80Q33.28 22.97 32.62 21.72Q31.95 20.48 30.68 19.81Q29.40 19.15 27.52 19.15" fill="#E9F1EA"/>
+  <rect x="46.92" y="42.00" width="9" height="9" rx="1" fill="#E2B93B"/>
 </svg>

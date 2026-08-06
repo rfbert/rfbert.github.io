@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "icons": "node scripts/build-icons.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -23,5 +24,8 @@
     "satori": "^0.12.2",
     "tailwindcss": "^4.1.4",
     "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "opentype.js": "^2.0.0"
   }
 }

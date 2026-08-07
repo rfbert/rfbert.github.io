@@ -1,9 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Rodrigo Flores Bertolotti">
   <title>Rodrigo Flores Bertolotti</title>
-  <!-- The nameplate's own R (Archivo 600), trailed by its check bit in verified
-       gold - the ECC word's "byte, then parity" read as a monogram. One mark,
-       identical on every page and every surface. -->
-  <rect width="64" height="64" rx="14" fill="#16211B"/>
-  <path d="M15.28 51L8.08 51L8.08 13L28.07 13Q32.28 13 35.05 14.44Q37.82 15.88 39.21 18.54Q40.59 21.20 40.59 24.80Q40.59 28.51 38.93 31.36Q37.27 34.22 34.06 35.66L41.92 51L34.06 51L27.08 36.87L15.28 36.87L15.28 51M15.28 19.15L15.28 30.84L27.52 30.84Q30.29 30.84 31.79 29.23Q33.28 27.62 33.28 24.80Q33.28 22.97 32.62 21.72Q31.95 20.48 30.68 19.81Q29.40 19.15 27.52 19.15" fill="#E9F1EA"/>
-  <rect x="46.92" y="42.00" width="9" height="9" rx="1" fill="#E2B93B"/>
+  <rect width="64" height="64" rx="13" fill="#0F231B"/>
+  <path d="M20.74 54L12.41 54L12.41 10L35.56 10Q40.43 10 43.64 11.67Q46.85 13.34 48.45 16.41Q50.06 19.49 50.06 23.66Q50.06 27.96 48.13 31.26Q46.21 34.57 42.49 36.23L51.59 54L42.49 54L34.41 37.64L20.74 37.64L20.74 54M20.74 17.12L20.74 30.65L34.92 30.65Q38.13 30.65 39.86 28.79Q41.59 26.93 41.59 23.66Q41.59 21.55 40.82 20.10Q40.05 18.66 38.57 17.89Q37.10 17.12 34.92 17.12" fill="#E2B93B"/>
 </svg>

@@ -1,5 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Rodrigo Flores Bertolotti">
   <title>Rodrigo Flores Bertolotti</title>
   <rect width="64" height="64" rx="13" fill="#0F231B"/>
-  <path d="M20.74 54L12.41 54L12.41 10L35.56 10Q40.43 10 43.64 11.67Q46.85 13.34 48.45 16.41Q50.06 19.49 50.06 23.66Q50.06 27.96 48.13 31.26Q46.21 34.57 42.49 36.23L51.59 54L42.49 54L34.41 37.64L20.74 37.64L20.74 54M20.74 17.12L20.74 30.65L34.92 30.65Q38.13 30.65 39.86 28.79Q41.59 26.93 41.59 23.66Q41.59 21.55 40.82 20.10Q40.05 18.66 38.57 17.89Q37.10 17.12 34.92 17.12" fill="#E2B93B"/>
+  <path d="M32 10.0 L57 54.0 L45 54.0 L26 20.0 Z" fill="#E9F1EA"/>
+  <path d="M57 54.0 L7 54.0 L13 43.0 L51 43.0 Z" fill="#A9BAAE"/>
+  <path d="M7 54.0 L32 10.0 L38 21.0 L19 54.0 Z" fill="#E2B93B"/>
+  <path d="M32 10.0 L38 21.0 L32 32.0 L26 20.0 Z" fill="#E9F1EA"/>
 </svg>

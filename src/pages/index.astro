@@ -91,7 +91,7 @@ const scoutMetrics = [
             <span>Email</span>
             <span class="cta-arrow" aria-hidden="true">↗</span>
           </a>
-          <span class="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs" aria-label="More contacts">
+          <span class="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs" role="group" aria-label="More contacts">
             <a href={github.href} class="v-link text-muted hover:text-ink">{github.value}</a>
             <span class="text-muted" aria-hidden="true">·</span>
             <a href={linkedin.href} class="v-link text-muted hover:text-ink">{linkedin.value}</a>
@@ -156,7 +156,7 @@ const scoutMetrics = [
               Contributed data and benchmarks to defenses against LLM bit-flip attacks;
               co-author on a cross-scale resilience paper.
             </p>
-            <p class="metrics" aria-label="At a glance">
+            <p class="metrics">
               {researchMetrics.map((m) => (
                 <span class="metric">
                   <span class="metric-val">{m.v}</span>
@@ -184,7 +184,7 @@ const scoutMetrics = [
               <span class="ml-auto font-mono text-xs text-muted">2026–present</span>
             </div>
             <p class="mt-1 max-w-[68ch] text-base text-muted">{scout.data.tagline}</p>
-            <p class="metrics" aria-label="At a glance">
+            <p class="metrics">
               {scoutMetrics.map((m) => (
                 <span class="metric">
                   <span class="metric-val">{m.v}</span>

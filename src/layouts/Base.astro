@@ -1,6 +1,12 @@
 ---
 import '@fontsource-variable/archivo/wdth.css';
 import '@fontsource/ibm-plex-sans/400.css';
+// Preload targets: the nameplate face and the body face are on every page's
+// critical path; without preload they only start downloading after the CSS
+// resolves, so first paint always swaps. Vite rewrites ?url to the hashed
+// asset the CSS itself references, keeping the two in sync.
+import archivoWdthUrl from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
+import plexSans400Url from '@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2?url';
 import '@fontsource/ibm-plex-sans/500.css';
 import '@fontsource/ibm-plex-sans/600.css';
 import '@fontsource/ibm-plex-serif/400.css';
@@ -53,6 +59,8 @@ const personLd = JSON.stringify({
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" href={archivoWdthUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={plexSans400Url} as="font" type="font/woff2" crossorigin />
     <title>{title}</title>
     <meta name="description" content={description} />
     {/* A noindex page (404) has no canonical URL worth declaring. */}

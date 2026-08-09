@@ -108,8 +108,11 @@ p {
   background-size: 0% 1px;
   transition: background-size 160ms ease-out;
 }
-.v-link:hover,
-.v-link:focus-visible {
+/* The current-page nav link (.nav-active, SiteShell) already carries a
+   full-width 2px underline; keep the 1px sweep from outranking it and
+   thinning the mark on hover/focus. */
+.v-link:hover:not(.nav-active),
+.v-link:focus-visible:not(.nav-active) {
   background-size: 100% 1px;
 }
 .v-link[data-crc]::after {
@@ -138,11 +141,6 @@ p {
 }
 .schematic > svg {
   min-width: 360px;
-}
-
-/* Ledger digits tick discretely — change is steps() because bits are. */
-.ledger-tick {
-  transition: color 0s;
 }
 
 @media (prefers-reduced-motion: reduce) {

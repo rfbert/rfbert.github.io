@@ -3,9 +3,7 @@ title: Cross-Scale Model Resilience for LLM Inference Under Hardware Faults
 lab: TRUE (Trustworthy and Responsible) AI Lab, Oregon State University
 role: Co-author
 start: 2025-11-01
-status: under-review
 statusLabel: Manuscript under review
-area: Fault-resilient LLM inference
 summary:
   problem: "Bit flips in GPU memory can silently corrupt LLM inference, and the risk shifts with model scale."
   built: "A speculative-decoding defense: a small draft model and the large target model cross-check, so verification doubles as fault detection and correction."

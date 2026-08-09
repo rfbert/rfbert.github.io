@@ -20,8 +20,13 @@ function lastCommitISO(): string {
 
 const iso = lastCommitISO() || new Date().toISOString();
 
+// Both faces of the date read the same instant in UTC: git's %cI carries the
+// committer's local offset, so slicing it directly could sit a calendar day
+// away from the UTC-rendered label below.
+const utcDate = new Date(iso).toISOString().slice(0, 10);
+
 /** Machine-readable, for <time datetime>. */
-export const updatedISO = iso.slice(0, 10);
+export const updatedISO = utcDate;
 
 /** Human-readable, e.g. "5 Aug 2026". */
 export const updatedLabel = new Date(iso).toLocaleDateString('en-GB', {

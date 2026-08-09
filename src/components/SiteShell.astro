@@ -2,7 +2,7 @@
 /**
  * SEC-DED chrome: datasheet header row over a solid rule, a parity rail on the
  * right edge (desktop) that monitors the page — fault ledger, live hex scroll
- * offset — and a footer that mirrors the ledger everywhere.
+ * offset — and a footer that carries an "Updated <date>" freshness line.
  *
  * Structural guarantee inherited from the judge panel: with JS disabled the
  * page is complete, correctly styled, and fully scannable. Every script here
@@ -15,6 +15,10 @@ import { updatedISO, updatedLabel } from '../lib/updated';
 
 const path = Astro.url.pathname;
 const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+
+// © year rides the same last-change date as the footer's "Updated" stamp, so a
+// contentless rebuild never bumps it.
+const copyrightYear = updatedISO.slice(0, 4);
 ---
 
 <div class="flex w-full flex-1 flex-col">
@@ -81,7 +85,7 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
               where it lives in the header nav). */}
           <div class="flex items-baseline gap-x-4">
             <ThemeToggle class="sm:hidden" />
-            <p class="m-0">© 2026 Rodrigo Flores Bertolotti</p>
+            <p class="m-0">© {copyrightYear} Rodrigo Flores Bertolotti</p>
           </div>
         </div>
         <p class="mt-3 flex flex-wrap items-baseline gap-x-5 gap-y-1 font-sans text-xs text-muted">
@@ -161,13 +165,16 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
   // [data-seu] is eligible; the recruiter scan path is never corrupted.
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!reduced) {
+    // The correction lands when the overlay lifts; the ledger may not claim
+    // it a moment sooner. One constant keeps the tick and the glyph in step.
+    const CORRECT_MS = 420;
     const bump = (sel: string) =>
       document
         .querySelectorAll(sel)
         .forEach((el) => (el.textContent = String(Number(el.textContent) + 1)));
     const tickLedger = () => {
       bump('.js-ledger-det');
-      setTimeout(() => bump('.js-ledger-cor'), 140);
+      setTimeout(() => bump('.js-ledger-cor'), CORRECT_MS);
     };
 
     const flipChar = (ch: string): string | null => {
@@ -225,7 +232,7 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
         span.classList.remove('seu-live');
         span.classList.add('seu-corrected');
         setTimeout(() => span.classList.remove('seu-corrected'), 500);
-      }, 420);
+      }, CORRECT_MS);
     };
 
     setTimeout(fire, 7000);

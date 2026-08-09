@@ -1,26 +1,35 @@
-# OG Image Philosophy — "Caught Bit"
+# OG Image Philosophy — "Caught Bit", SEC-DED edition
 
-*(canvas-design output; expressed in code at `src/lib/og.ts`, rendered by `src/pages/og/[slug].png.ts`)*
+*(expressed in code at `src/lib/og.ts`, rendered at build time by `src/pages/og/[slug].png.ts`
+for five slugs — home, research, projects, experience, about — that share one composition and
+differ only in the wayfinding label; the v1 "Silicon Ochre" rendition of this card is archived
+with the rest of v1 at `~/Repositories/website-archive/rfbert.me-v1-silicon-ochre`)*
 
-**The movement.** Caught Bit is the poster form of Silicon Ochre: one silent hardware fault,
-detected and corrected, staged like a specimen on a charcoal field. It is the research told
-without a sentence of explanation — a strip of bits, one of them wrong, one strike of ochre
-proving somebody was watching.
+**The movement.** Caught Bit is the poster form of SEC-DED: one hardware fault, caught,
+corrected, and recorded on the datasheet that describes the part. The card carries the site
+signature's exact ECC word — 'R' = 0x52 = 01010010 with its even-parity check bit set apart in
+contact gold — and one bit standing corrected: gold, struck through in red, the same recorded
+hit the home strip ships as its static frame. True data, not texture; the research told without
+a sentence of explanation.
 
-**Space and form.** A single dark field (the unlit machine room), generous margins, one
-dominant horizontal gesture: the bit strip. Nothing competes with it. The name sits beneath
-like a caption to an instrument reading — the human who caught it. Master-level restraint:
-every distance deliberate, nothing centered by accident, the composition should look like it
-took hours of nudging because it did.
+**Space and form.** Datasheet paper, not a dark field. A thick ink rule caps the card — the
+part-header rule the site's own chrome opens with — and one horizontal band holds everything:
+the ECC word over a short ink rule over the name over the focus line, with the ink portrait
+from the home hero on the right. The identity column is fixed-width so the portrait can never
+be squeezed by long text; the degree line runs the full width beneath, an instrument reading
+under the specimen.
 
-**Color and material.** Charcoal (#17181d), paper-white ink (#ececea), graphite muted
-(#a2a4ab), and exactly one ochre (#d59a4b) — spent only on the corrupted bit, its strike,
-and one hairline. Ochre is the event; everything else is the quiet around it.
+**Color and material.** The SEC-DED light tokens, verbatim: datasheet paper (#f7f9f8), epoxy
+ink (#16211b), muted (#47564c), contact gold (#9a7b1c), fault red (#c03a1f). Color stays
+semantic — gold is spent on the corrected bit and the check bit that caught it; red on exactly
+one element, the strike that records the hit. That is the theme's one sanctioned static red:
+red-as-record, never red-as-live-fault.
 
-**Scale and rhythm.** Bits large enough to read from a feed thumbnail (the poster test).
-Mono for the machine's voice, STIX Two Text for the human's, Schibsted for the wayfinding
-label. Meticulously kerned, painstakingly spaced — the product of deep expertise, not a
-template.
+**Scale and rhythm.** Bits at 62px mono — readable from a feed thumbnail (the poster test).
+IBM Plex Mono for the machine's voice, IBM Plex Sans for the human's, Archivo — the nameplate
+face — for the name itself. The subset woffs in `src/assets/fonts` are the site's own faces,
+so satori renders the card in the same voice the page speaks.
 
-**Hierarchy.** 1) the caught bit · 2) the name · 3) the focus line · 4) page label + URL.
-Ten percent text, ninety percent staging.
+**Hierarchy.** 1) the caught bit · 2) the name · 3) the portrait · 4) the focus line ·
+5) page label, URL, and the mono degree line. The machine's reading first, then the human it
+identifies — a datasheet header, not a poster.

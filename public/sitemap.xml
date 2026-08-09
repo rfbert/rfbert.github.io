@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Conventional-path alias: crawlers probing /sitemap.xml land here instead of
+     a 404. Astro's generated index is /sitemap-index.xml; both point at the
+     same stable shard name, /sitemap-0.xml. -->
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://rfbert.me/sitemap-0.xml</loc>
+  </sitemap>
+</sitemapindex>

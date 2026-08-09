@@ -46,7 +46,10 @@ const scoutMetrics = [
 ];
 ---
 
-<Base ogImage="/og/home.png">
+<Base
+  ogImage="/og/home.png"
+  ogAlt="Portfolio card for Rodrigo Flores Bertolotti with a caught-bit mark in the SEC-DED site style."
+>
   <SiteShell>
     <!-- Part header: name, positioning line, the two promoted actions, all four
          contacts, and the degree metadata sit in this first block, so the scan's
@@ -119,7 +122,7 @@ const scoutMetrics = [
       </div>
     </div>
 
-    <section class="mt-8" aria-labelledby="selected-work" data-sec>
+    <section class="mt-8" aria-labelledby="selected-work">
       <h2 id="selected-work" class="sec-label">Selected work</h2>
 
       <ul class="mt-3 list-none p-0 m-0" role="list">
@@ -203,7 +206,7 @@ const scoutMetrics = [
       </ul>
     </section>
 
-    <section class="mt-8" aria-labelledby="contact" data-sec>
+    <section class="mt-8" aria-labelledby="contact">
       <h2 id="contact" class="sec-label">Contact</h2>
       <div class="mt-3 border-t border-line pt-4">
         <PinContacts />

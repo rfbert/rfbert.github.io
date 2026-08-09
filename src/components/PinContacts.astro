@@ -26,18 +26,22 @@ import { crc8 } from '../lib/crc8';
             <span class="font-mono">{i + 1}</span>
             <span>{c.label}</span>
           </span>
+          {/* The copy control and its live region exist only on the pin that
+              copies — the other three have nothing to announce. */}
           {c.href.startsWith('mailto:') && (
-            <button
-              type="button"
-              class="js-copy-email inline-flex min-h-6 min-w-[4.6rem] shrink-0 cursor-pointer items-center justify-center border border-line bg-transparent px-2 font-mono text-[0.68rem] leading-none text-muted hover:border-gold hover:text-ink"
-              data-value={c.value}
-              aria-label={`Copy email address ${c.value}`}
-              hidden
-            >
-              copy
-            </button>
+            <>
+              <button
+                type="button"
+                class="js-copy-email inline-flex min-h-6 min-w-[4.6rem] shrink-0 cursor-pointer items-center justify-center border border-line bg-transparent px-2 font-mono text-[0.68rem] leading-none text-muted hover:border-gold hover:text-ink"
+                data-value={c.value}
+                aria-label={`Copy email address ${c.value}`}
+                hidden
+              >
+                copy
+              </button>
+              <span class="js-copy-status sr-only" role="status" />
+            </>
           )}
-          <span class="js-copy-status sr-only" role="status" />
         </div>
         {/* Baseline alignment: the link's build-time CRC rides an ::after, so a
             centered flex row would float it off the text baseline. */}

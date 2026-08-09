@@ -20,6 +20,7 @@ const rendered = await Promise.all(
   title="Research — Rodrigo Flores Bertolotti"
   description="LLM fault-resilience research at the TRUE (Trustworthy and Responsible) AI Lab, Oregon State University: bit-flip attacks on LLM inference and speculative-decoding-based defenses."
   ogImage="/og/research.png"
+  ogAlt="Research card for Rodrigo Flores Bertolotti with a caught-bit mark in the SEC-DED site style."
 >
   <SiteShell>
     <PageIntro
@@ -35,7 +36,7 @@ const rendered = await Promise.all(
     <ul class="list-none p-0 m-0 space-y-0" role="list">
       {
         rendered.map(({ entry, Content }) => (
-          <li class="border-t border-line py-7" data-sec>
+          <li class="border-t border-line py-7">
             <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-0.5">
               <h2 class="max-w-[56ch] text-[1.35rem] leading-snug font-semibold">
                 {entry.data.title}

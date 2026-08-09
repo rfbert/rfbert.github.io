@@ -28,6 +28,7 @@ const coord = (location: string) =>
   title="Experience — Rodrigo Flores Bertolotti"
   description="Experience: AI intern at Mibanco (Credicorp), undergraduate researcher at OSU’s TRUE AI Lab, digital technology assistant at the OSU Foundation."
   ogImage="/og/experience.png"
+  ogAlt="Experience card for Rodrigo Flores Bertolotti with a caught-bit mark in the SEC-DED site style."
 >
   <SiteShell>
     <PageIntro title="Experience" />
@@ -35,7 +36,7 @@ const coord = (location: string) =>
     <ul class="list-none p-0 m-0 space-y-0" role="list">
       {
         rendered.map(({ entry, Content }) => (
-          <li class="border-t border-line py-7 md:grid md:grid-cols-[9.5rem_1fr] md:gap-8" data-sec>
+          <li class="border-t border-line py-7 md:grid md:grid-cols-[9.5rem_1fr] md:gap-8">
             <!-- Address column: the date range is the region's address in the map -->
             <p class="m-0 font-mono text-xs leading-relaxed text-muted">
               {fmt(entry.data.start)}<br />

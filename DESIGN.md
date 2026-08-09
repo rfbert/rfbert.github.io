@@ -20,9 +20,12 @@ Gold is split: `gold` for graphics (≥3:1), `gold-text` for text (AA). Never bo
 
 ## Mechanisms (all real, none decorative)
 
-- `SiteShell.astro` — parity rail (desktop): live hex scroll
-  offset, fault ledger mirrored in the footer. One-shot SEU engine: a single XOR bit flip in
-  `[data-seu]` prose per page view, corrected in ~420ms, ledger ticks. Scan path never eligible.
+- `SiteShell.astro` — parity rail (`lg`-up only, `aria-hidden`: decorative monitoring chrome
+  whose readouts are real): live hex scroll offset plus the det/cor fault ledger. The footer
+  carries an "Updated <date>" freshness line (last-commit date, `src/lib/updated.ts`), not a
+  ledger mirror — a recruiter reading the footer wants currency, not a fault tally; monitoring
+  stays in the rail. One-shot SEU engine: a single XOR bit flip in `[data-seu]` prose per page
+  view, corrected in ~420ms, ledger ticks. Scan path never eligible.
 - `EccWord.astro` — operable signature strip: one byte plus a real even-parity check bit, with
   `single fault` / `double fault` controls and a live parity readout. Single → parity disagrees,
   caught and corrected (ledger ticks). Double → parity agrees again, so it goes undetected and the

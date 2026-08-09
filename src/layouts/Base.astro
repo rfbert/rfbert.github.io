@@ -21,26 +21,26 @@ interface Props {
   description?: string;
   /** Path of the OG image for this page, e.g. "/og/home.png" */
   ogImage?: string;
+  /** Accessible description of the OG card — per-page, like title/description */
+  ogAlt?: string;
   /** Keep the page out of search indexes (404) */
   noindex?: boolean;
-  /** Kept for design-variant routes; chrome now lives in SiteShell */
-  bare?: boolean;
 }
 
 const {
   title = site.title,
   description = site.description,
   ogImage = '/og/home.png',
+  ogAlt = 'Card with the name Rodrigo Flores Bertolotti and a caught-bit mark in the SEC-DED site style.',
   noindex = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImageAbs = new URL(ogImage, Astro.site);
-const ogAlt =
-  'Card with the name Rodrigo Flores Bertolotti and a caught-bit mark in the SEC-DED site style.';
-const isHome = Astro.url.pathname === '/';
+// Person schema on the two pages a name-search lands on (home + about):
+// recruiter/PI disambiguation.
+const hasPersonLd = Astro.url.pathname === '/' || Astro.url.pathname === '/about/';
 
-// Person schema (home only): recruiter/PI name-search disambiguation.
 const personLd = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -75,8 +75,12 @@ const personLd = JSON.stringify({
     <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=5" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
+    {/* Browser-chrome tint = the page background tokens (global.css). The pair
+        follows the system scheme; a manual in-page override can't reach it. */}
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f9f8" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f231b" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Rodrigo Flores Bertolotti" />
+    <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     {!noindex && <meta property="og:url" content={canonical} />}
@@ -90,10 +94,10 @@ const personLd = JSON.stringify({
     <meta name="twitter:image" content={ogImageAbs} />
     <meta name="twitter:image:alt" content={ogAlt} />
     {noindex && <meta name="robots" content="noindex" />}
-    {isHome && <script type="application/ld+json" set:html={personLd} />}
+    {hasPersonLd && <script type="application/ld+json" is:inline set:html={personLd} />}
     <script is:inline>
       // Theme: system default + manual override persisted in localStorage. Runs before paint.
-      // ?theme=light|dark wins for the session (used by automated screenshots/tests).
+      // ?theme=light|dark wins for that page load only (used by automated screenshots/tests).
       // Storage can throw when blocked (hardened/private modes) — fall through to system.
       (() => {
         const q = new URLSearchParams(location.search).get('theme');

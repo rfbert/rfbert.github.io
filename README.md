@@ -17,8 +17,9 @@ npm run check      # astro check (types)
 
 - `src/data/site.ts` — name, contacts (the only four), education lines, awards, nav
 - `src/content/{experience,projects,research}/` — content collections (schemas in `src/content.config.ts`)
-- `src/styles/global.css` — Silicon Ochre tokens (`THEME.md`), light + dark via `.dark`
-- `src/components/BitSignature.astro` — the site signature ("a flipped bit, caught")
+- `src/styles/global.css` — SEC-DED tokens (`THEME.md`), light + dark via `.dark`
+- `src/components/EccWord.astro` — the operable signature strip (one ECC word, single/double
+  fault controls); the per-view SEU flip and parity rail live in `src/components/SiteShell.astro`
 - `src/lib/og.ts` + `src/pages/og/[slug].png.ts` — build-time OG images (`design/og-philosophy.md`)
 - `public/resume.pdf` — copied from `~/Repositories/resume/resume.pdf`; re-copy after resume updates
 - `PRODUCT.md` / `DESIGN.md` — design-system context (impeccable)

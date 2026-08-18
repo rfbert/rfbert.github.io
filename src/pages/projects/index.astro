@@ -24,9 +24,10 @@ const fmt = (d: Date) =>
 // project write-up, surfaced as artifact evidence beside the architecture.
 const scoutEvidence = [
   'Idempotent pipeline runs',
-  'Vitest unit + Playwright end-to-end tests in CI',
-  'Runs daily via GitHub Actions',
+  'Vitest unit + integration and Playwright end-to-end tests gate CI',
+  'Deterministic rules run before any model call',
   'LLM scores must cite verbatim posting text',
+  'A person accepts every result before it counts',
 ];
 ---
 
@@ -79,17 +80,17 @@ const scoutEvidence = [
             {entry.data.featured && (
               <div class="mt-5">
                 {/* Architecture, not decoration: the real data flow — multi-source
-                    scrape, the dedupe/rules/LLM pipeline, Postgres, and the ranked
+                    collection, the dedupe/rules/LLM pipeline, Postgres, and the ranked
                     kanban board — drawn in the site's schematic grammar. */}
                 <figure class="schematic max-w-lg text-muted">
                   <svg viewBox="0 0 360 116" class="w-full" role="img" aria-labelledby="scout-arch-title">
                     <title id="scout-arch-title">
-                      Architecture: a daily GitHub Actions job scrapes multiple sources, runs them
+                      Architecture: the pipeline collects postings from multiple sources, runs them
                       through dedupe, an eligibility rules engine, and LLM scoring that cites verbatim
                       posting text, writes to Postgres, and surfaces ranked results on a kanban board.
                     </title>
                     <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor">
-                      <text x="180" y="18" text-anchor="middle">GitHub Actions · every morning</text>
+                      <text x="180" y="18" text-anchor="middle">deterministic gates before any model call</text>
                     </g>
                     <g fill="none" stroke="currentColor" stroke-width="1.5">
                       <rect x="6" y="46" width="58" height="40" />

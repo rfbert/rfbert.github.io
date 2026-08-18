@@ -21,7 +21,8 @@ npm run check      # astro check (types)
 - `src/components/EccWord.astro` — the operable signature strip (one ECC word, single/double
   fault controls); the per-view SEU flip and parity rail live in `src/components/SiteShell.astro`
 - `src/lib/og.ts` + `src/pages/og/[slug].png.ts` — build-time OG images (`design/og-philosophy.md`)
-- `public/resume.pdf` — copied from `~/Repositories/resume/resume.pdf`; re-copy after resume updates
+- `public/resume.pdf` — copied from `~/Documents/Applications-Summer2027/_MASTER/resume-master-general.pdf`;
+  re-copy after resume updates
 - `PRODUCT.md` / `DESIGN.md` — design-system context (impeccable)
 
 ## Deploy (first time)
@@ -37,7 +38,7 @@ Site: https://rfbert.me
 ## Content maintenance
 
 - New project/research/experience → add a `.md` under `src/content/…` (schema-typed).
-- Updated resume → `cp ~/Repositories/resume/resume.pdf public/resume.pdf`.
+- Updated resume → `cp ~/Documents/Applications-Summer2027/_MASTER/resume-master-general.pdf public/resume.pdf`.
 - **TODO after Summer 2026** — add one quantified-results bullet to
   `src/content/experience/mibanco.md` (audio volume processed, runtime before→after
   parallelization, the shipped use case) and fold the figure into its `summary.result`.

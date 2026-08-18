@@ -65,50 +65,6 @@ const rendered = await Promise.all(
               </Prose>
             </div>
 
-            {entry.id === 'targeted-bitflip-defense' && (
-              <figure class="schematic mt-5 max-w-md text-muted">
-                <svg viewBox="0 0 360 130" class="w-full" role="img" aria-labelledby="bitflip-schematic-title">
-                  <title id="bitflip-schematic-title">
-                    Schematic: an attacker flips a handful of chosen weight bits, the model’s
-                    output still looks plausible, and the open question is when monitoring can
-                    catch it.
-                  </title>
-                  <g fill="none" stroke="currentColor" stroke-width="1.5">
-                    <rect x="10" y="40" width="112" height="44" />
-                    <rect x="196" y="40" width="92" height="44" />
-                    <path d="M122 62 H 188" />
-                    <path d="M188 58 l 8 4 -8 4 z" fill="currentColor" stroke="none" />
-                    <path d="M288 62 H 340" />
-                    <circle cx="346" cy="62" r="3.5" />
-                  </g>
-                  {/* The weight word: one bit was hit; the strike records it, per site grammar */}
-                  <g>
-                    {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
-                      <rect
-                        x={23 + i * 11}
-                        y="50"
-                        width="9"
-                        height="9"
-                        fill={i === 5 ? 'var(--c-gold)' : 'none'}
-                        stroke={i === 5 ? 'var(--c-gold)' : 'currentColor'}
-                        stroke-width="1.5"
-                      />
-                    ))}
-                    <line x1="74" y1="63" x2="91" y2="46" stroke="var(--c-bg)" stroke-width="4.5" />
-                    <line x1="74" y1="63" x2="91" y2="46" stroke="var(--c-red)" stroke-width="1.5" />
-                  </g>
-                  <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor">
-                    <text x="66" y="76" text-anchor="middle">weights</text>
-                    <text x="242" y="58" text-anchor="middle">LLM</text>
-                    <text x="242" y="72" text-anchor="middle">inference</text>
-                    <text x="180" y="34" text-anchor="middle">a handful of bits flipped</text>
-                    <text x="352" y="96" text-anchor="end">output still looks plausible</text>
-                    <text x="180" y="118" text-anchor="middle" fill="var(--c-gold-text)">when can monitoring catch it?</text>
-                  </g>
-                </svg>
-              </figure>
-            )}
-
             {entry.id === 'cross-scale-resilience' && (
               <figure class="schematic mt-5 max-w-md text-muted">
                 <svg viewBox="0 0 360 130" class="w-full" role="img" aria-labelledby="schematic-title">
@@ -147,7 +103,7 @@ const rendered = await Promise.all(
     </ul>
 
     <p class="mt-4 max-w-[68ch] border-t border-line pt-4 font-sans text-sm text-muted">
-      Code for both directions is lab-owned and private until publication.
+      Code for this work is lab-owned and private until publication.
     </p>
 
     <div class="mt-10">

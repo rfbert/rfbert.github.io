@@ -6,7 +6,7 @@ start: 2025-11-01
 statusLabel: Manuscript under review
 summary:
   problem: "Bit flips in GPU memory can silently corrupt LLM inference, and the risk shifts with model scale."
-  built: "A speculative-decoding defense: a small draft model and the large target model cross-check, so verification doubles as fault detection and correction."
+  built: "Robustness experiments and fault-mitigation implementations supporting a speculative-decoding defense, where draft and target models cross-check each other."
   result: "Mitigation implementations and the accuracy / fault-tolerance trade-off analysis; manuscript under review."
 order: 1
 ---

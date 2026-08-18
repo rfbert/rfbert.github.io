@@ -74,8 +74,8 @@ const coord = (location: string) =>
               )}
               {entry.id === 'mibanco' && (
                 <PipelineTrace
-                  caption="recorded audio to production, parallelized on Databricks"
-                  stages={['audio', 'ingest', 'speech-to-text', 'LLM interpretation', 'production']}
+                  caption="the four-stage Databricks workflow, parallelized"
+                  stages={['audio', 'transcription', 'encryption', 'LLM feedback (prototype)', 'email delivery']}
                   ariaLabel="Speech-to-text pipeline"
                 />
               )}

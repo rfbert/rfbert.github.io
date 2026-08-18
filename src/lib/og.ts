@@ -150,7 +150,7 @@ export async function renderOg(label: string): Promise<Buffer> {
           lineHeight: 1.15,
         }),
         text(
-          'Building production AI — speech-to-text at Mibanco (Credicorp) · LLM-reliability research at OSU',
+          'Building AI systems — speech-to-text at Mibanco (Credicorp) · LLM-reliability research at OSU',
           { fontFamily: 'IBM Plex Sans', fontSize: 26, color: C.muted, lineHeight: 1.4 }
         ),
       ],

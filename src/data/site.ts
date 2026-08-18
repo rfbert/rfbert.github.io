@@ -2,16 +2,16 @@ export const site = {
   name: 'Rodrigo Flores Bertolotti',
   title: 'Rodrigo Flores Bertolotti — AI Systems',
   description:
-    'CS undergraduate at Oregon State University building production AI: a speech-to-text pipeline at Mibanco (Credicorp), LLM-reliability research at the TRUE AI Lab, and self-built tools.',
+    'CS undergraduate at Oregon State University building AI systems: a speech-to-text pipeline at Mibanco (Credicorp), LLM-reliability research at the TRUE AI Lab, and tools of my own.',
   // Recruiter-first lead: the positioning line the 30-second scan lands on
   // before any coursework metadata. Kept defensible verbatim.
-  positioning: 'AI systems builder — production pipelines and LLM reliability.',
+  positioning: 'AI systems builder — data pipelines and LLM reliability.',
   focus:
-    "CS undergraduate building production AI: a speech-to-text pipeline at Mibanco (Credicorp), LLM-reliability research at OSU’s TRUE AI Lab, and tools of my own.",
+    "CS undergraduate building AI systems: a speech-to-text pipeline at Mibanco (Credicorp), LLM-reliability research at OSU’s TRUE AI Lab, and tools of my own.",
   education: {
     line: 'B.S. Computer Science, Oregon State University — expected June 2028. GPA 4.0, Honors College.',
     coursework:
-      'Coursework: Calculus I–III, Linear Algebra, Probability, Discrete Mathematics, Statistics, Data Structures, Algorithms · Fall 2026: Intro to AI, Computer Networks, Software Engineering I.',
+      'Coursework: Calculus I–III, Linear Algebra, Probability, Discrete Mathematics, Statistics, Data Structures, Algorithms · Fall 2026: Intro to AI, Intro to Databases, Software Engineering I.',
   },
   contacts: [
     { label: 'Email', value: 'rf.bertolotti@gmail.com', href: 'mailto:rf.bertolotti@gmail.com' },

@@ -17,7 +17,6 @@ function must<T>(value: T | undefined, id: string): T {
   if (!value) throw new Error(`Home page: required content entry "${id}" is missing`);
   return value;
 }
-const bitflip = must(research.find((r) => r.id === 'targeted-bitflip-defense'), 'research/targeted-bitflip-defense');
 const crossScale = must(research.find((r) => r.id === 'cross-scale-resilience'), 'research/cross-scale-resilience');
 const mibanco = must(experience.find((e) => e.id === 'mibanco'), 'experience/mibanco');
 const scout = must(projects.find((p) => p.id === 'internship-scout'), 'projects/internship-scout');
@@ -136,7 +135,7 @@ const scoutMetrics = [
               <span class="ml-auto font-mono text-xs text-muted">Summer 2026</span>
             </div>
             <p class="mt-1 max-w-[68ch] text-base text-muted">
-              Parallelized speech-to-text and LLM-interpretation pipeline for production workflows
+              Parallelized speech-to-text pipeline, and a prototype LLM-interpretation layer above it,
               at Peru’s largest microfinance bank.
             </p>
             <p class="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-muted">
@@ -169,7 +168,6 @@ const scoutMetrics = [
             </p>
             <p class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
               <StatusStamp label={crossScale.data.statusLabel} />
-              <StatusStamp label={bitflip.data.statusLabel} />
               <span class="flex flex-wrap gap-x-4 font-mono text-xs text-muted">
                 <span>PyTorch</span><span>Hugging Face</span><span>Slurm</span>
               </span>

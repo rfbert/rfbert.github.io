@@ -5,10 +5,12 @@
  *
  * Two faults are injectable, and the difference between them is the whole point
  * of the theme:
- *   single — parity disagrees, the fault is caught and corrected.
- *   double — parity agrees again, so one check bit cannot see it. The word is
- *            wrong and looks fine. Real ECC spends extra check bits precisely to
- *            catch this case, and it is the failure mode my research studies.
+ *   single — parity disagrees, so the fault is caught. One check bit detects a
+ *            flip but cannot locate it, so it cannot correct it either.
+ *   double — parity agrees again, so one check bit cannot see it at all. The word
+ *            is wrong and looks fine. Real ECC spends extra check bits on that
+ *            case; the faults that still get past it are the ones my research
+ *            catches, at the model's output rather than in the word.
  *
  * The word itself is a graphic (aria-hidden); the readout carries the state as
  * text. Ships as a static figure — a recorded, corrected hit — so the no-JS
@@ -43,7 +45,7 @@ const HIT = 3;
 
   <p class="ecc-read" role="status">
     <span class="ecc-word-id">'R' = 0x52</span>
-    <span class="js-ecc-msg">bit {7 - HIT} — flipped, corrected</span>
+    <span class="js-ecc-msg">bit {7 - HIT} — flipped, caught by parity</span>
   </p>
 
   <div class="ecc-controls">
@@ -229,9 +231,11 @@ const HIT = 3;
 
       const settle = () => {
         if (n === 1) {
-          // Caught: restore the true value and leave the record mark.
+          // Caught: parity flags the word. Restore the true value and leave the
+          // record mark — the restore is the demo resetting, not the check bit
+          // correcting; one check bit cannot locate the flip.
           paint(stored, [], hit);
-          setVerdict(`bit ${names} — corrected`, 'caught');
+          setVerdict(`bit ${names} — caught by parity`, 'caught');
           bump('.js-ledger-cor');
         } else {
           // Nothing detected it, so nothing was corrected — scrub back clean.

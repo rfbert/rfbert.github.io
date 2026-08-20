@@ -113,8 +113,10 @@ const scoutMetrics = [
             <summary aria-label="What this strip means"><span aria-hidden="true">ⓘ</span></summary>
             <p class="ecc-note-body">
               One byte plus a single check bit. Flip one bit and the parity disagrees, so the
-              fault is caught and corrected. Flip two and the parity agrees again — the word is
-              wrong and still looks fine. Catching that case is what my research is about.
+              fault is caught — one check bit can see a flip but not locate it, and correcting
+              needs locating. Flip two and the parity agrees again: the word is wrong and still
+              looks fine. Real memory ECC spends extra bits on that case; my research catches
+              what still gets past it, at the model's output.
             </p>
           </details>
         </EccWord>
@@ -155,8 +157,8 @@ const scoutMetrics = [
               <span class="ml-auto font-mono text-xs text-muted">2025–present</span>
             </div>
             <p class="mt-1 max-w-[68ch] text-base text-muted">
-              Contributed data and benchmarks to defenses against LLM bit-flip attacks;
-              co-author on a cross-scale resilience paper.
+              Co-author on a cross-scale resilience paper, now under review. Separately,
+              benchmarked defenses against LLM bit-flip attacks:
             </p>
             <p class="metrics">
               {researchMetrics.map((m) => (

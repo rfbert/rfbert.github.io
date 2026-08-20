@@ -87,7 +87,7 @@ const text = (
 
 export async function renderOg(label: string): Promise<Buffer> {
   // The same ECC word the site's signature strip carries: 'R' = 0x52 =
-  // 01010010, bit 3 caught and corrected. True data, not texture.
+  // 01010010, bit 3 caught by the check bit. True data, not texture.
   const word = [
     ...['0', '1', '0'].map((b) => bit(b)),
     bit('1', { caught: true }),

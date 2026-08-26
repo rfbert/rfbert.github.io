@@ -9,9 +9,9 @@ export const site = {
   focus:
     "CS undergraduate building AI systems: a speech-to-text pipeline at Mibanco (Credicorp), LLM-reliability research at OSU’s TRUE AI Lab, and tools of my own.",
   education: {
-    line: 'B.S. Computer Science, Oregon State University — expected June 2028. GPA 4.0, Honors College.',
+    line: 'B.S. Computer Science (Applied Computer Science option), Oregon State University — completes June 2028. GPA 4.0, Honors Scholar Track B. Admitted to OSU’s Accelerated Master’s Program.',
     coursework:
-      'Coursework: Calculus I–III, Linear Algebra, Probability, Discrete Mathematics, Statistics, Data Structures, Algorithms · Fall 2026: Intro to AI, Intro to Databases, Software Engineering I.',
+      'Coursework: Computer Architecture & Assembly Language, Data Structures, Algorithms, Calculus I–III, Linear Algebra, Discrete Mathematics, Statistics · Fall 2026: Intro to AI, Intro to Databases, Software Engineering I, Web Development · Graduate coursework via AMP: Machine Learning, Deep Learning, Computer Vision, Parallel Programming.',
   },
   contacts: [
     { label: 'Email', value: 'rf.bertolotti@gmail.com', href: 'mailto:rf.bertolotti@gmail.com' },
@@ -21,10 +21,13 @@ export const site = {
   ],
   awards: [
     { title: 'URSA Engage Undergraduate Research Award', detail: "OSU’s competitive, stipend-funded undergraduate research program — TRUE AI Lab (2025)" },
-    { title: 'Vice President, Alpha Lambda Delta National Honor Society', detail: 'OSU chapter (2025)' },
+    { title: 'Vice President, Alpha Lambda Delta National Honor Society', detail: 'OSU chapter (since September 2025)' },
+    { title: 'LEAP — Leadership, Empowerment & Purpose Program', detail: 'OSU College of Engineering, completed 2025–26; project brought technology and AI tools into university classrooms in Peru' },
+    { title: 'Academic Excellence Award, Universidad de San Martín de Porres', detail: 'Top student for grades and class contribution' },
     { title: "Dean’s List, College of Engineering", detail: 'Five terms — Winter, Spring & Fall 2025; Winter & Spring 2026' },
     { title: 'Diploma in Artificial Intelligence, USMP', detail: 'Final grade 98%; 100% in Fundamentals, Generative AI, and Applications (2025)' },
     { title: 'AI Fluency for Nonprofits', detail: 'Anthropic (2026)' },
+    { title: 'Conflicts of Interest in Research Training', detail: 'CITI Program (2026–2029)' },
     { title: 'Google: Artificial Intelligence & Productivity', detail: 'Santander Open Academy (2026)' },
     { title: 'Volunteer Organizer, community donation & food drives', detail: '65+ children and families, Peru (2023)' },
   ],

@@ -11,7 +11,7 @@ export const site = {
   education: {
     line: 'B.S. Computer Science (Applied Computer Science option), Oregon State University — completes June 2028. GPA 4.0, Honors Scholar Track B. Admitted to OSU’s Accelerated Master’s Program.',
     coursework:
-      'Coursework: Computer Architecture & Assembly Language, Data Structures, Algorithms, Calculus I–III, Linear Algebra, Discrete Mathematics, Statistics · Fall 2026: Intro to AI, Intro to Databases, Software Engineering I, Web Development · Graduate coursework via AMP: Machine Learning, Deep Learning, Computer Vision, Parallel Programming.',
+      'Coursework: Computer Architecture & Assembly Language, Data Structures, Algorithms, Calculus I–III, Linear Algebra, Discrete Mathematics, Statistics · Fall 2026: Intro to AI, Intro to Databases, Software Engineering I, Web Development · Graduate coursework via the Accelerated Master\u2019s Program: Machine Learning, Deep Learning, Computer Vision, Parallel Programming.',
   },
   contacts: [
     { label: 'Email', value: 'rf.bertolotti@gmail.com', href: 'mailto:rf.bertolotti@gmail.com' },

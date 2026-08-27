@@ -22,7 +22,7 @@ export const site = {
   awards: [
     { title: 'URSA Engage Undergraduate Research Award', detail: "OSU’s competitive, stipend-funded undergraduate research program — TRUE AI Lab (2025)" },
     { title: 'Vice President, Alpha Lambda Delta National Honor Society', detail: 'OSU chapter (since September 2025)' },
-    { title: 'LEAP — Leadership, Empowerment & Purpose Program', detail: 'OSU College of Engineering, completed 2025–26; project brought technology and AI tools into university classrooms in Peru' },
+    { title: 'LEAP — Leadership, Empowerment & Purpose Program', detail: 'OSU College of Engineering, completed 2025–26; helped two professors in Peru bring technology and AI tools into their university classrooms' },
     { title: 'Academic Excellence Award, Universidad de San Martín de Porres', detail: 'Top student for grades and class contribution' },
     { title: "Dean’s List, College of Engineering", detail: 'Five terms — Winter, Spring & Fall 2025; Winter & Spring 2026' },
     { title: 'Diploma in Artificial Intelligence, USMP', detail: 'Final grade 98%; 100% in Fundamentals, Generative AI, and Applications (2025)' },

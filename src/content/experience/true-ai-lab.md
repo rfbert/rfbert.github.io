@@ -13,5 +13,5 @@ order: 2
 ---
 
 - Evaluate robustness of Llama-3-8B to hardware bit-flip faults using the lab's fault-injection harness (PyTorch, Hugging Face), run at scale on an A40 Slurm HPC cluster
-- Benchmarked 7 fault-tolerance defense methods against 2 classes of adversarial bit-flip attacks (stealth and damage) across GSM8K, DROP and TriviaQA
+- Benchmarked 7 fault-tolerance defense configurations against 2 classes of adversarial bit-flip attacks (stealth and damage) across GSM8K, DROP and TriviaQA
 - Co-authored manuscript on cross-scale model resilience across 8B–32B target models, now under review; contributed experiments, benchmarks and the accuracy-versus-fault-tolerance trade-off analysis

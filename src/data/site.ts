@@ -9,9 +9,9 @@ export const site = {
   focus:
     "CS undergraduate building AI systems: a speech-to-text pipeline at Mibanco (Credicorp), LLM-reliability research at OSU’s TRUE AI Lab, and tools of my own.",
   education: {
-    line: 'B.S. Computer Science (Applied Computer Science option), Oregon State University — completes June 2028. GPA 4.0, Honors Scholar Track B. Admitted to OSU’s Accelerated Master’s Program.',
+    line: 'B.S. Computer Science, Oregon State University — completes June 2028. GPA 4.0, Honors Scholar Track B. Area of Specialization: Artificial Intelligence and Scalable Computing, an approved 34-credit custom area taken through OSU’s Accelerated Master’s Program.',
     coursework:
-      'Coursework: Computer Architecture & Assembly Language, Data Structures, Algorithms, Calculus I–III, Linear Algebra, Discrete Mathematics, Statistics · Fall 2026: Intro to AI, Intro to Databases, Software Engineering I, Web Development · Graduate coursework via the Accelerated Master\u2019s Program: Machine Learning, Deep Learning, Computer Vision, Parallel Programming.',
+      'Specialization — Artificial Intelligence and Scalable Computing: Machine Learning, Deep Learning, Computer Vision I, Big Ideas in AI, Algorithms (Design, Analysis and Implementation), Parallel Programming, Cloud Application Development, Intro to Artificial Intelligence · Also: Computer Architecture & Assembly Language, Data Structures, Algorithms, Calculus I–III, Linear Algebra, Discrete Mathematics, Statistics · Fall 2026: Intro to AI, Intro to Databases, Software Engineering I, Web Development.',
   },
   contacts: [
     { label: 'Email', value: 'rf.bertolotti@gmail.com', href: 'mailto:rf.bertolotti@gmail.com' },

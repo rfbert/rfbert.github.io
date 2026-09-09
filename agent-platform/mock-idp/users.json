@@ -1,0 +1,23 @@
+[
+  {
+    "id": "ada",
+    "tid": "8f2a1c34-5b7e-4d19-9c60-3a1f7b2e4d88",
+    "oid": "b1d4f0a2-6c93-4e57-8a21-9f3c5d7e1b04",
+    "name": "Ada Lovelace",
+    "email": "ada.lovelace@contoso.onmicrosoft.com"
+  },
+  {
+    "id": "grace",
+    "tid": "8f2a1c34-5b7e-4d19-9c60-3a1f7b2e4d88",
+    "oid": "c7e2b915-48d3-4f6a-b0c8-2e91d4a6f375",
+    "name": "Grace Hopper",
+    "email": "grace.hopper@contoso.onmicrosoft.com"
+  },
+  {
+    "id": "alan",
+    "tid": "d3c9e470-21ab-4f85-96d2-7e0b5c8a1f63",
+    "oid": "f5a83b2c-9d14-4e70-a6b9-08c2e7d31946",
+    "name": "Alan Turing",
+    "email": "alan.turing@fabrikam.onmicrosoft.com"
+  }
+]

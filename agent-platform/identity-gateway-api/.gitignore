@@ -1,0 +1,14 @@
+node_modules/
+dist/
+*.tsbuildinfo
+
+# DATABASE A. Generated at runtime by TypeORM synchronize. Never committed,
+# and never merged with agent-workspace-api/workspace.db (DATABASE B).
+gateway.db
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+.env
+!.env.example

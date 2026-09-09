@@ -1,0 +1,16 @@
+{
+  "name": "mock-idp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local stand-in for Microsoft Entra ID: OIDC discovery, JWKS, /authorize and /token.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "keys": "node generate-keys.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "jose": "^5.9.6"
+  }
+}

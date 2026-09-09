@@ -1,0 +1,56 @@
+# ---------------------------------------------------------------------------
+# Node
+# ---------------------------------------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# ---------------------------------------------------------------------------
+# Build output
+# ---------------------------------------------------------------------------
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+
+# ---------------------------------------------------------------------------
+# SQLite - DATABASE A (gateway.db) and DATABASE B (workspace.db)
+# They are generated at runtime by TypeORM synchronize. Two separate files, on
+# purpose: never commit either, and never merge them into one.
+# ---------------------------------------------------------------------------
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# ---------------------------------------------------------------------------
+# Environment files. .env.example is the committed source of truth.
+# ---------------------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# ---------------------------------------------------------------------------
+# Python (agent-api)
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# ---------------------------------------------------------------------------
+# Editor / OS
+# ---------------------------------------------------------------------------
+.DS_Store
+.idea/
+*.swp
+
+# ---------------------------------------------------------------------------
+# mock-idp signing keys are deliberately NOT committed.
+# They are a throwaway localhost-only RSA keypair, but a private key in a
+# repository trips secret scanners and teaches the wrong habit. Generate
+# them per clone with:  cd mock-idp && npm run keys
+# (mock-idp/.gitignore already excludes them; this is just the rationale.)

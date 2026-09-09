@@ -1,0 +1,35 @@
+{
+  "name": "identity-gateway-api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "NestJS 1 (port 4000) - validates the Entra JWT, JIT-provisions the (tid, oid) identity into DATABASE A (gateway.db), serves user-scoped conversations.",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "start:dev": "nest start --watch",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@nestjs/passport": "^11.0.0",
+    "@nestjs/platform-express": "^11.0.0",
+    "@nestjs/typeorm": "^11.0.0",
+    "better-sqlite3": "^11.0.0",
+    "dotenv": "^16.4.5",
+    "jwks-rsa": "^3.1.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "typeorm": "^0.3.20"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.0",
+    "@types/better-sqlite3": "^7.6.11",
+    "@types/node": "^22.10.0",
+    "@types/passport-jwt": "^4.0.1",
+    "typescript": "^5.7.0"
+  }
+}

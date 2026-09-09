@@ -1,0 +1,55 @@
+{
+  "folders": [
+    {
+      "name": "mock-idp (:5000 - stand-in for Entra ID)",
+      "path": "mock-idp"
+    },
+    {
+      "name": "identity-gateway-web (:3000 - Next.js 1)",
+      "path": "identity-gateway-web"
+    },
+    {
+      "name": "identity-gateway-api (:4000 - NestJS 1 - DB A)",
+      "path": "identity-gateway-api"
+    },
+    {
+      "name": "agent-workspace-web (:3001 - Next.js 2)",
+      "path": "agent-workspace-web"
+    },
+    {
+      "name": "agent-workspace-api (:4001 - NestJS 2 - DB B)",
+      "path": "agent-workspace-api"
+    },
+    {
+      "name": "agent-api (:8000 - FastAPI, internal only)",
+      "path": "agent-api"
+    },
+    {
+      "name": "proof (acceptance evidence)",
+      "path": "proof"
+    }
+  ],
+  "settings": {
+    "files.eol": "\n",
+    "editor.tabSize": 2,
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/.next": true,
+      "**/dist": true,
+      "**/.venv": true
+    },
+    "files.watcherExclude": {
+      "**/node_modules/**": true,
+      "**/.next/**": true,
+      "**/dist/**": true,
+      "**/.venv/**": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "ms-python.python"
+    ]
+  }
+}

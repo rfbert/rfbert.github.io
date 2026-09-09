@@ -1,0 +1,607 @@
+================================================================================
+BUILD BRIEF - "AGENT PLATFORM" LOCAL SCAFFOLD
+================================================================================
+
+NOTE TO THE AGENT READING THIS
+------------------------------
+You are receiving this document instead of a diagram. The original input was an
+architecture image. It has been fully transcribed below (Sections 1 and 2). You
+do NOT need the image. Everything it contained is in this document.
+
+YOUR JOB: generate a runnable local monorepo that matches this architecture. It
+is a structural proof, not a production system. Prefer the smallest code that
+makes the wiring provably correct.
+
+
+================================================================================
+SECTION 0 - THE IDEA IN FOUR SENTENCES
+================================================================================
+
+1. One Microsoft Entra ID (Azure AD) login issues ONE JWT.
+
+2. TWO COMPLETELY INDEPENDENT APPLICATIONS accept that same JWT. There is no
+   token exchange, no shared session store, no second login.
+
+3. Each application has ITS OWN DATABASE, each with ITS OWN users table. They
+   are correlated only by the claim pair "tid + oid" carried in the token.
+
+4. The second application is embedded in the first via an IFRAME, and receives
+   the token through postMessage. It can also run standalone with its own login
+   - the backend code is identical either way.
+
+Tagline from the source diagram (verbatim Spanish):
+   "Una identidad Microsoft - Dos aplicaciones independientes -
+    Dos bases independientes - Datos aislados por usuario"
+Translation:
+   "One Microsoft identity - Two independent applications -
+    Two independent databases - Data isolated per user"
+
+
+================================================================================
+SECTION 1 - THE DIAGRAM, REDRAWN
+================================================================================
+
+The source image is a 5-column landscape diagram. Columns left to right:
+  1  Identidad externa   (External identity)
+  2  Identity Gateway
+  3  Integracion         (Integration)
+  4  Agent Workspace
+  5  Servicio AI         (AI service)
+
+Circled numbers 1-7 mark the runtime sequence. Rendered below as (1)...(7).
+
+
+ +--1 EXTERNAL IDENTITY-+ +--2 IDENTITY GATEWAY--+ +-3 INTEGRATION-+ +--4 AGENT WORKSPACE---+ +-5 AI SERVICE-+
+ |                      | |                      | |               | |                      | |              |
+ |       [ User ]       | | +------------------+ | |               | | +------------------+ | |              |
+ |          |           | | |identity-gateway- | | |               | | | agent-workspace- | | |              |
+ |          v           | | |       web        |-+-+---------------+-+>|       web        | | |              |
+ |  Microsoft Entra ID  |-+>|    Next.js 1     | | |  < iframe >   | | |    Next.js 2     | | |              |
+ |          |           | | | login / session  | | |               | | | iframe OR alone  | | |              |
+ |          v           | | |   / renewal      | | |               | | +------------------+ | |              |
+ |   OAuth 2.0 + OIDC   | | +------------------+ | | --AUTH_TOKEN->| |          |           | |              |
+ |          |           | |          | (3)Bearer | |               | |          | (6)Bearer | |              |
+ |          v           | |          v           | | <-TOKEN_REQD- | |          v           | | +----------+ |
+ |    JWT validated     | | +------------------+ | |               | | +------------------+ | | |agent-api | |
+ |          | (1)       | | |identity-gateway- | | | --AUTH_TOKEN->| | | agent-workspace- | | | | FastAPI  | |
+ |          v           | | |       api        | | |   (renewed)   | | |       api        |<+-+>|          | |
+ | #################### | | |    NestJS 1      | | |               | | |    NestJS 2      | | | | internal | |
+ | # (2) STABLE      # <+-+-|  validates JWT   | | |   ONE LOGIN   | | | validates SAME   | | | | AI mock  | |
+ | #  IDENTITY       #  | | +------------------+ | |     ONLY      | | |       JWT        | | | +----------+ |
+ | #   tid + oid     #  | |          |           | |               | | +------------------+ | |      ^       |
+ | #################### | |          v           | |               | |          |           | |      |       |
+ |    |    |    |       | | +------------------+ | |               | |          v           | |  internal    |
+ |    v    v    v       | | | (4) JIT: find or |<+-+-- same tid+oid+-+>| (7) JIT: find or | | |  call only   |
+ |  App   Shared  scope | | |     create user  | | |   both sides  | | |     create user  | | |              |
+ |  Reg.  audience  =   | | +------------------+ | |               | | +------------------+ | |              |
+ |        access_as_user| |          | rd/write  | |               | |          | rd/write  | |              |
+ |                      | |          v           | |               | |          v           | |              |
+ |                      | |  ..................  | |               | |  ..................  | |              |
+ |                      | |  :  DATABASE A    :  | |               | |  :  DATABASE B    :  | |              |
+ |                      | |  :  users         :  | |               | |  :  users         :  | |              |
+ |                      | |  :  conversations :  | |               | |  :  document_     :  | |              |
+ |                      | |  ..................  | |               | |  :   analyses     :  | |              |
+ |          :           | |                      | |               | |  ..................  | |              |
+ |          :           | |                      | |               | |          ^           | |              |
+ |          :.......... standalone mode: workspace does its own login ..........:           | |              |
+ +----------------------+ +----------------------+ +---------------+ +----------------------+ +--------------+
+
+ LEGEND (from source image):
+   --->   execution flow
+   ...>   configuration / identity
+   ===>   token hand-off
+   :...:  independent persistence
+
+
+BOXES, WITH VERBATIM LABELS FROM THE IMAGE
+-------------------------------------------
+
+COLUMN 1 - EXTERNAL IDENTITY
+  * "Usuario"                              -> a human user
+  * "Microsoft Entra ID"                   -> the identity provider
+  * "OAuth 2.0 + OIDC"                     -> authorization code flow
+  * "JWT validado"                         -> validated JWT
+  * "Identidad estable: tid + oid"         -> THE JOIN KEY OF THE WHOLE SYSTEM
+  * "identity-gateway-api App Registration"-> ONE app registration only
+  * "Audience compartida"                  -> shared audience
+  * "Scope: access_as_user"                -> the required scope
+
+COLUMN 2 - IDENTITY GATEWAY
+  * "identity-gateway-web / Next.js 1 / Login, sesion y renovacion"
+        -> frontend: login, session, renewal
+  * "identity-gateway-api / NestJS 1 / Validacion JWT"
+        -> backend: JWT validation
+  * "JIT: buscar o crear usuario"
+        -> just-in-time find-or-create
+  * "Database A: users, conversations / Datos del usuario A"
+        -> independent database
+
+COLUMN 3 - INTEGRATION
+  * "iframe / postMessage: AUTH_TOKEN"     -> parent to child token push
+  * "TOKEN_REQUIRED"                       -> child to parent request
+  * "AUTH_TOKEN renovado"                  -> renewed token push
+  * "Un solo login"                        -> one login only
+
+COLUMN 4 - AGENT WORKSPACE
+  * "agent-workspace-web / Next.js 2 / Modo iframe o independiente"
+        -> frontend: iframe or standalone mode
+  * "agent-workspace-api / NestJS 2 / Valida el mismo JWT"
+        -> backend: validates THE SAME JWT
+  * "JIT: buscar o crear usuario"
+        -> its own find-or-create
+  * "Database B: users, document_analyses / Analisis AI mock"
+        -> independent database
+
+COLUMN 5 - AI SERVICE
+  * "agent-api / FastAPI / Servicio interno / AI mock"
+        -> internal only, never user-facing
+  * "Llamada interna"
+        -> internal call from NestJS 2
+
+
+================================================================================
+SECTION 2 - THE NUMBERED RUNTIME SEQUENCE (1 ... 7)
+================================================================================
+
+These circled markers appear in the image. Reproduce this behaviour exactly.
+
+(1) User authenticates against Entra ID via OAuth 2.0 + OIDC. A JWT is issued
+    and validated.
+
+(2) The token's "tid" (tenant id) + "oid" (object id) form the STABLE IDENTITY.
+    Not email, not name, not sub. This pair is the correlation key across both
+    applications.
+
+(3) identity-gateway-web calls identity-gateway-api with the header
+    Authorization: Bearer <jwt>
+
+(4) identity-gateway-api validates the JWT, then performs a JIT find-or-create
+    of a user row in DATABASE A, keyed on (tid, oid). All subsequent queries are
+    scoped to that local user id.
+
+(5) [unnumbered in the image, column 3] agent-workspace-web loads inside an
+    iframe hosted by identity-gateway-web. It sends TOKEN_REQUIRED up; the
+    parent replies with AUTH_TOKEN. On expiry the handshake repeats and the
+    parent sends AUTH_TOKEN renovado (renewed).
+
+(6) agent-workspace-web calls agent-workspace-api with the SAME
+    Authorization: Bearer <jwt>
+
+(7) agent-workspace-api validates that same JWT using the SAME issuer, audience
+    and JWKS, then performs ITS OWN JIT find-or-create in DATABASE B, keyed on
+    the same (tid, oid). Two user rows now exist, in two databases, never joined
+    at the database level.
+
+    Finally, agent-workspace-api makes a SERVER-TO-SERVER internal call to
+    agent-api (FastAPI). The user's JWT is NEVER forwarded there.
+
+STANDALONE MODE
+    Shown as the dashed line along the bottom of the image, labelled
+    "Modo independiente: login propio". When agent-workspace-web is NOT in an
+    iframe, it performs its own OAuth login directly against Entra ID and writes
+    to Database B as usual. The backend is unchanged - same guard, same
+    audience.
+
+
+================================================================================
+SECTION 3 - REPOSITORY LAYOUT TO GENERATE
+================================================================================
+
+Single root folder, six services, multi-root VS Code workspace.
+
+    agent-platform/
+    |
+    +-- agent-platform.code-workspace
+    +-- .env.example
+    +-- package.json                 root: "dev" script running all 6 at once
+    +-- README.md
+    |
+    +-- mock-idp/                    port 5000   local stand-in for Entra ID
+    +-- identity-gateway-web/        port 3000   Next.js 1
+    +-- identity-gateway-api/        port 4000   NestJS 1  -> gateway.db   (DB A)
+    +-- agent-workspace-web/         port 3001   Next.js 2
+    +-- agent-workspace-api/         port 4001   NestJS 2  -> workspace.db (DB B)
+    +-- agent-api/                   port 8000   FastAPI
+
+PORTS ARE FIXED. They are baked into CORS rules, CSP frame-ancestors, and
+postMessage target origins. Do not renumber them.
+
+PERSISTENCE: SQLite files, one per API (gateway.db, workspace.db). They must be
+genuinely separate database files - that is the point of the design. Do NOT use
+one file with two schemas. TypeORM with synchronize: true is acceptable here.
+
+
+================================================================================
+SECTION 4 - FILE-BY-FILE SPECIFICATION
+================================================================================
+
+--------------------------------------------------------------------------------
+4.1  mock-idp/          - stands in for Microsoft Entra ID
+--------------------------------------------------------------------------------
+Why it exists: it lets the whole flow run offline, and lets you set a very short
+token lifetime so the renewal handshake is actually observable. The APIs must
+not know it is a mock - they only see standard OIDC discovery plus JWKS.
+
+  package.json
+      Dependencies: express, jose
+
+  keys/private.pem, keys/public.pem
+      RSA keypair, generated once at setup. Private key signs, public key is
+      published via JWKS.
+
+  users.json
+      Three fixture users: { tid, oid, name, email }. Use two distinct tid
+      values so tenant isolation is testable.
+
+  server.js
+      The entire IdP. Four routes:
+
+      GET  /.well-known/openid-configuration
+           Returns { issuer, authorization_endpoint, token_endpoint, jwks_uri }
+
+      GET  /jwks.json
+           Public key in JWK form. BOTH NestJS APIs fetch this.
+
+      GET  /authorize?redirect_uri=&state=
+           Renders a plain HTML list of users.json. Clicking a user redirects to
+           redirect_uri?code=<userId>&state=<state>
+
+      POST /token
+           Exchanges code for an RS256 JWT with claims:
+           iss, aud, sub, tid, oid, name, preferred_username,
+           scp: "access_as_user", iat, exp
+
+      SET exp TO 120 SECONDS. Short expiry is required so acceptance test 6
+      (renewal) can be observed without waiting.
+
+--------------------------------------------------------------------------------
+4.2  identity-gateway-web/     - Next.js 1, port 3000
+--------------------------------------------------------------------------------
+  .env.local
+      IDP_ISSUER, CLIENT_ID, API_AUDIENCE,
+      NEXT_PUBLIC_GATEWAY_API=http://localhost:4000
+      NEXT_PUBLIC_WORKSPACE_ORIGIN=http://localhost:3001
+
+  app/layout.tsx
+      Application shell.
+
+  app/page.tsx
+      "Login with Microsoft" button. When logged in, shows the user name and a
+      link to /workspace.
+
+  app/api/auth/login/route.ts
+      302 redirect to ${IDP_ISSUER}/authorize?...
+
+  app/api/auth/callback/route.ts
+      Receive code -> POST /token -> store JWT in an httpOnly cookie ->
+      redirect to /workspace
+
+  app/api/auth/token/route.ts
+      Read the cookie, return { access_token }. THIS IS THE RENEWAL SOURCE that
+      the iframe relay calls.
+
+  app/api/auth/logout/route.ts
+      Clear the cookie.
+
+  app/workspace/page.tsx
+      Renders <WorkspaceFrame />
+
+  components/WorkspaceFrame.tsx
+      The parent half of the bridge.
+      <iframe src={WORKSPACE_ORIGIN}> plus
+      window.addEventListener("message", ...).
+      On TOKEN_REQUIRED - and only if event.origin === WORKSPACE_ORIGIN -
+      fetch /api/auth/token, then
+      iframe.contentWindow.postMessage(
+          { type: "AUTH_TOKEN", token }, WORKSPACE_ORIGIN )
+
+  lib/api.ts
+      fetch wrapper adding Authorization: Bearer for calls to gateway-api.
+
+  NOTE: token lives in an httpOnly cookie and is handed out through
+  /api/auth/token. Do NOT put it in localStorage.
+
+--------------------------------------------------------------------------------
+4.3  identity-gateway-api/     - NestJS 1, port 4000, DATABASE A
+--------------------------------------------------------------------------------
+  .env
+      JWKS_URI, ISSUER, AUDIENCE, DB_PATH=./gateway.db,
+      CORS_ORIGIN=http://localhost:3000
+
+  src/main.ts
+      Bootstrap. app.enableCors({ origin: CORS_ORIGIN, credentials: true }).
+      Listen on 4000.
+
+  src/app.module.ts
+      Wires TypeORM (sqlite) + AuthModule + UsersModule + ConversationsModule.
+
+  src/auth/jwt.strategy.ts
+      passport-jwt plus jwks-rsa. Verify signature via JWKS_URI; check issuer;
+      check audience; reject unless scp contains "access_as_user".
+      Return { tid, oid, name }.
+
+  src/auth/jwt-auth.guard.ts
+      AuthGuard('jwt') wrapper.
+
+  src/auth/current-user.decorator.ts
+      @CurrentUser() parameter decorator.
+
+  src/users/user.entity.ts
+      Columns: id, tid, oid, displayName, createdAt.
+      UNIQUE COMPOSITE INDEX ON (tid, oid).
+
+  src/users/users.service.ts
+      findOrCreate(tid, oid, name) - this is step (4).
+
+  src/conversations/conversation.entity.ts
+      Columns: id, userId (FK), title, createdAt.
+
+  src/conversations/conversations.controller.ts
+      GET /conversations, POST /conversations. Guarded.
+      EVERY query scoped: where userId = <resolved local id>.
+
+  src/conversations/conversations.service.ts
+      Business logic.
+
+  src/database/data-source.ts
+      SQLite configuration.
+
+--------------------------------------------------------------------------------
+4.4  agent-workspace-web/      - Next.js 2, port 3001
+--------------------------------------------------------------------------------
+  .env.local
+      NEXT_PUBLIC_GATEWAY_ORIGIN=http://localhost:3000
+      NEXT_PUBLIC_WORKSPACE_API=http://localhost:4001
+      plus IdP variables for standalone mode
+
+  app/layout.tsx
+      Application shell.
+
+  app/page.tsx
+      On mount: await getToken(), then list and create analyses.
+
+  lib/token.ts
+      THE CHILD HALF OF THE BRIDGE.
+      Detect mode with: window.self !== window.top
+
+      IFRAME MODE:
+          window.parent.postMessage({ type: "TOKEN_REQUIRED" }, GATEWAY_ORIGIN)
+          Resolve a Promise when an AUTH_TOKEN message arrives from
+          GATEWAY_ORIGIN.
+
+      STANDALONE MODE:
+          Run its own login via app/api/auth/*
+
+      Token is held IN MEMORY ONLY.
+
+  lib/api.ts
+      fetch wrapper: attach Bearer. ON HTTP 401 -> call getToken() again ->
+      retry the request once. This is the renewal loop.
+
+  app/api/auth/login|callback|token|logout/route.ts
+      Same four routes as gateway-web. Used ONLY in standalone mode.
+
+  next.config.js
+      Response header:
+      Content-Security-Policy: frame-ancestors http://localhost:3000
+
+--------------------------------------------------------------------------------
+4.5  agent-workspace-api/      - NestJS 2, port 4001, DATABASE B
+--------------------------------------------------------------------------------
+  .env
+      JWKS_URI / ISSUER / AUDIENCE  -- IDENTICAL to gateway-api
+      DB_PATH=./workspace.db
+      CORS_ORIGIN=http://localhost:3001
+      AGENT_API_URL=http://localhost:8000
+      INTERNAL_SECRET=dev-secret
+
+  src/auth/*
+      THE SAME FOUR FILES AS gateway-api, UNCHANGED. Copy them verbatim.
+      Their working without modification is a deliverable, not an accident.
+
+  src/users/user.entity.ts
+      Its own users table. Same (tid, oid) unique index. Different database
+      file.
+
+  src/users/users.service.ts
+      Its own findOrCreate - this is step (7).
+
+  src/analyses/analysis.entity.ts
+      Columns: id, userId (FK), inputText, result (json), createdAt.
+
+  src/analyses/analyses.controller.ts
+      POST /analyses, GET /analyses. Guarded. User-scoped.
+
+  src/analyses/analyses.service.ts
+      Call AgentClient, persist result against the local user.
+
+  src/agent/agent.client.ts
+      POST ${AGENT_API_URL}/analyze with header X-Internal-Secret.
+      MUST NOT forward the user JWT.
+
+--------------------------------------------------------------------------------
+4.6  agent-api/                - FastAPI, port 8000
+--------------------------------------------------------------------------------
+  requirements.txt
+      fastapi, uvicorn, pydantic
+
+  .env
+      INTERNAL_SECRET=dev-secret
+
+  main.py
+      App plus include router. NO CORS MIDDLEWARE - nothing in a browser may
+      reach this service.
+
+  security.py
+      Dependency returning 403 unless header X-Internal-Secret matches.
+
+  models.py
+      AnalyzeRequest  { text }
+      AnalyzeResponse { summary, sentiment, tokens }
+
+  routers/analyze.py
+      POST /analyze returning a deterministic mock response.
+
+
+================================================================================
+SECTION 5 - THE CONTRACTS (THE ONLY COUPLING BETWEEN SERVICES)
+================================================================================
+
+5.1  SHARED CONFIG - put in root .env.example, copy into each service
+---------------------------------------------------------------------
+  ISSUER            = http://localhost:5000
+                      consumed by: both webs, BOTH APIs
+  JWKS_URI          = http://localhost:5000/jwks.json
+                      consumed by: BOTH APIs
+  AUDIENCE          = api://agent-platform
+                      consumed by: both webs, BOTH APIs
+  GATEWAY_ORIGIN    = http://localhost:3000
+                      consumed by: workspace-web (postMessage target, CSP)
+  WORKSPACE_ORIGIN  = http://localhost:3001
+                      consumed by: gateway-web (iframe src, postMessage target)
+  INTERNAL_SECRET   = dev-secret
+                      consumed by: workspace-api + agent-api
+
+  ISSUER, JWKS_URI and AUDIENCE MUST BE BYTE-IDENTICAL IN BOTH APIs.
+  If they drift, one app returns 401 and the other does not - which is precisely
+  the failure this scaffold exists to surface.
+
+
+5.2  JWT CLAIM CONTRACT
+------------------------
+  {
+    "iss":  "http://localhost:5000",
+    "aud":  "api://agent-platform",
+    "sub":  "<idp subject>",
+    "tid":  "<tenant id>",          <-- join key part 1
+    "oid":  "<object id>",          <-- join key part 2
+    "name": "Ada Lovelace",
+    "scp":  "access_as_user",       <-- both APIs must require this
+    "iat":  1700000000,
+    "exp":  1700000120              <-- 120 seconds locally, on purpose
+  }
+
+
+5.3  POSTMESSAGE CONTRACT (the entire cross-app protocol)
+----------------------------------------------------------
+  child  -> parent :  { type: "TOKEN_REQUIRED" }
+  parent -> child  :  { type: "AUTH_TOKEN", token: "<jwt>" }
+
+  Rules, non-negotiable:
+    - Sender always passes an explicit targetOrigin. NEVER "*".
+    - Receiver always checks event.origin against the expected origin before
+      reading event.data.
+    - The same two messages serve both initial acquisition and renewal. There is
+      no third message type.
+
+
+5.4  INTERNAL CALL CONTRACT
+----------------------------
+  agent-workspace-api -> agent-api
+  Header: X-Internal-Secret: <INTERNAL_SECRET>
+  No user identity crosses this boundary.
+
+
+================================================================================
+SECTION 6 - GENERATION ORDER
+================================================================================
+
+Build and verify one layer at a time. Do not scaffold everything then debug.
+
+  1. Root files: agent-platform.code-workspace, .env.example, root package.json
+     with a "dev" script (use concurrently), README.md
+
+  2. mock-idp
+     Verify /jwks.json serves a key and /token returns a decodable JWT BEFORE
+     writing any consumer.
+
+  3. identity-gateway-api
+     Verify a hand-pasted token gets a 200 and creates a row in gateway.db.
+
+  4. identity-gateway-web
+     Full login round trip. Cookie set. /api/auth/token returns the JWT.
+
+  5. agent-api
+     Verify POST /analyze with the secret header.
+
+  6. agent-workspace-api
+     Copy the auth folder unchanged. Verify the SAME token from step 3 gets a
+     200 here and creates a row in workspace.db.
+
+  7. agent-workspace-web
+     Standalone mode first (simpler), then iframe mode.
+
+  8. Wire the iframe into identity-gateway-web/app/workspace/page.tsx last.
+
+
+================================================================================
+SECTION 7 - ACCEPTANCE TESTS (THE DEFINITION OF DONE)
+================================================================================
+
+Run these in order. All eight must pass.
+
+  [ ] 1. GET http://localhost:5000/jwks.json returns a public key.
+
+  [ ] 2. Log in at :3000, choose a fixture user. Cookie is set.
+         /api/auth/token returns a JWT whose decoded claims include
+         tid, oid, aud, scp.
+
+  [ ] 3. GET :4000/conversations with that Bearer returns 200, and a row
+         appears in gateway.db users table.   (JIT step 4 fired.)
+
+  [ ] 4. Navigate to /workspace. The iframe loads. The browser console shows
+         TOKEN_REQUIRED followed by AUTH_TOKEN.
+
+  [ ] 5. *** THE CRITICAL TEST ***
+         The workspace calls :4001/analyses with the SAME token, returns 200,
+         and a row appears in workspace.db users with the SAME tid + oid as the
+         row in gateway.db.
+         Two databases, two rows, one identity, one login.  (JIT step 7 fired.)
+
+  [ ] 6. Wait past the 120 second expiry, then click something. Expect:
+         401 -> TOKEN_REQUIRED -> AUTH_TOKEN -> retry -> 200,
+         with no visible interruption and no second login screen.
+
+  [ ] 7. Open http://localhost:3001 directly. Standalone login works, and :4001
+         accepts it with ZERO backend changes.
+
+  [ ] 8. Log in as a second fixture user. They see none of the first user's
+         conversations or analyses in either application.
+
+
+================================================================================
+SECTION 8 - CONSTRAINTS
+================================================================================
+
+DO:
+  - Keep the two APIs' src/auth/ folders identical.
+  - Scope every data query by the locally-resolved user id, never by a claim
+    directly.
+  - Keep agent-api unreachable from a browser (no CORS, secret header required).
+
+DO NOT:
+  - Do not create a second App Registration or second audience. One only.
+  - Do not share a database, a users table, or a foreign key between the two
+    applications.
+  - Do not forward the user JWT to agent-api.
+  - Do not use postMessage(..., "*") or skip the event.origin check.
+  - Do not store the token in localStorage or sessionStorage.
+  - Do not use email or sub as the user key. Only tid + oid.
+  - Do not renumber the ports.
+
+KNOWN LOCAL PITFALLS - handle these up front:
+  - Cookies inside an iframe: keep the gateway cookie SameSite=Lax, and make
+    sure the workspace never depends on cookies while framed - memory only.
+    This is exactly why the postMessage relay exists.
+  - CSP: without "frame-ancestors http://localhost:3000" on :3001, the iframe
+    renders blank with a console error and nothing else looks wrong.
+  - CORS: :4000 allows only :3000. :4001 allows only :3001.
+
+DELIVERABLE:
+  The folder tree in Section 3, runnable with one "npm run dev" at root plus
+  uvicorn for the Python service, with a README.md that lists the eight
+  acceptance tests as a checklist.
+
+================================================================================
+END OF BRIEF
+================================================================================

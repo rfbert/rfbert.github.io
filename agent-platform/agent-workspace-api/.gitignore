@@ -1,0 +1,14 @@
+node_modules/
+dist/
+*.tsbuildinfo
+
+# DATABASE B. Generated at runtime by TypeORM synchronize. Never committed,
+# and never merged with identity-gateway-api/gateway.db (DATABASE A).
+workspace.db
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+.env
+!.env.example

@@ -1,0 +1,15 @@
+{
+  "name": "agent-platform-proof",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Acceptance harness: proves the eight claims in SPEC.txt Section 7 against the running system.",
+  "scripts": {
+    "proof": "node run-proof.mjs",
+    "proof:fast": "TOKEN_TTL_SECONDS=25 node run-proof.mjs"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.5.0",
+    "playwright": "^1.48.0"
+  }
+}

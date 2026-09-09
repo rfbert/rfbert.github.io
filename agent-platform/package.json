@@ -1,0 +1,23 @@
+{
+  "name": "agent-platform",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Local scaffold proving: one Microsoft identity, two independent applications, two independent databases, data isolated per user.",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "concurrently --kill-others-on-fail --names \"IDP,GW-API,GW-WEB,WS-API,WS-WEB\" --prefix-colors \"magenta.bold,blue.bold,cyan.bold,green.bold,yellow.bold\" \"npm:dev:idp\" \"npm:dev:gw-api\" \"npm:dev:gw-web\" \"npm:dev:ws-api\" \"npm:dev:ws-web\"",
+    "dev:idp": "npm --prefix ./mock-idp run dev",
+    "dev:gw-api": "npm --prefix ./identity-gateway-api run start:dev",
+    "dev:gw-web": "npm --prefix ./identity-gateway-web run dev",
+    "dev:ws-api": "npm --prefix ./agent-workspace-api run start:dev",
+    "dev:ws-web": "npm --prefix ./agent-workspace-web run dev",
+    "install:all": "npm --prefix ./mock-idp install && npm --prefix ./identity-gateway-api install && npm --prefix ./identity-gateway-web install && npm --prefix ./agent-workspace-api install && npm --prefix ./agent-workspace-web install",
+    "agent-api": "echo '' && echo 'agent-api is the FastAPI service on port 8000. It is Python, so it is NOT started by \"npm run dev\".' && echo 'Start it yourself in a separate terminal:' && echo '' && echo '  cd agent-api' && echo '  python3 -m venv .venv && . .venv/bin/activate' && echo '  pip install -r requirements.txt' && echo '  uvicorn main:app --reload --port 8000' && echo ''"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

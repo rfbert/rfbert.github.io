@@ -1,0 +1,13 @@
+# agent-api  (SPEC.txt Section 4.6) - FastAPI, port 8000, INTERNAL ONLY.
+#
+#   python3 -m venv .venv && . .venv/bin/activate
+#   pip install -r requirements.txt
+#   uvicorn main:app --reload --port 8000
+#
+# Deliberately tiny. There is no HTTP client here: agent-api never calls out,
+# it is only ever called by agent-workspace-api over the internal boundary.
+
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30,<1.0
+pydantic>=2.8,<3.0
+python-dotenv>=1.0,<2.0

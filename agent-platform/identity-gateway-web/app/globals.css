@@ -1,0 +1,414 @@
+/*
+ * Plain CSS, system font stack only -- next/font is deliberately not used
+ * (it needs the network at build time).
+ */
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --ink: #16181d;
+  --muted: #5c6370;
+  --line: #dcdfe5;
+  --accent: #0067b8; /* the Microsoft sign-in blue, since that is the story */
+  --accent-ink: #ffffff;
+  --good: #1a7f4b;
+  --bad: #b3261e;
+  --term-bg: #10131a;
+  --term-ink: #d7dbe3;
+  --term-in: #7fd1ff;
+  --term-out: #9ae6a0;
+  --term-info: #8b93a3;
+  --term-bad: #ff9f9f;
+
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    'Noto Sans', sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --ink: #e6e8ec;
+    --muted: #9aa4b2;
+    --line: #2a313c;
+    --accent: #4aa3ff;
+    --accent-ink: #06121f;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  background: color-mix(in srgb, var(--line) 45%, transparent);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+a {
+  color: var(--accent);
+}
+
+/* ------------------------------------------------------------------ chrome */
+
+.site-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-weight: 650;
+  font-family: var(--mono);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.brand .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.site-head nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.site-head nav a {
+  text-decoration: none;
+}
+
+.port {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.05rem 0.5rem;
+}
+
+.site-main {
+  max-width: 74rem;
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem 3rem;
+}
+
+.site-foot {
+  max-width: 74rem;
+  margin: 0 auto;
+  padding: 0 1.5rem 2.5rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* ------------------------------------------------------------------ blocks */
+
+.stack {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.card,
+.frame-panel,
+.log-panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1.1rem 1.25rem;
+}
+
+.panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin: 0 0 0.35rem;
+}
+
+h2 {
+  font-size: 1.02rem;
+  margin: 0 0 0.2rem;
+}
+
+p {
+  margin: 0.35rem 0;
+}
+
+.lede {
+  color: var(--muted);
+  max-width: 62ch;
+  margin-bottom: 1.25rem;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 0.87rem;
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------ inputs */
+
+button,
+.primary,
+.ghost {
+  font: inherit;
+  border-radius: 7px;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+  display: inline-block;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.row {
+  display: flex;
+  gap: 0.6rem;
+  margin: 0.75rem 0 1rem;
+}
+
+input[type='text'],
+input:not([type]) {
+  flex: 1;
+  font: inherit;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* -------------------------------------------------------------- data lists */
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.6rem 1.5rem;
+  margin: 0;
+}
+
+.facts div {
+  border-top: 1px solid var(--line);
+  padding-top: 0.45rem;
+}
+
+.facts dt {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.facts dd {
+  margin: 0.1rem 0 0;
+  word-break: break-all;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.list .title {
+  font-weight: 550;
+}
+
+.list .meta {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-family: var(--mono);
+  white-space: nowrap;
+}
+
+.alert {
+  border-left: 3px solid var(--bad);
+  background: color-mix(in srgb, var(--bad) 8%, transparent);
+  padding: 0.6rem 0.85rem;
+  border-radius: 0 7px 7px 0;
+  font-size: 0.9rem;
+}
+
+.note {
+  border-left: 3px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  padding: 0.6rem 0.85rem;
+  border-radius: 0 7px 7px 0;
+  font-size: 0.9rem;
+}
+
+/* --------------------------------------------------------------- the bridge */
+
+.bridge {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  align-items: start;
+}
+
+@media (max-width: 1050px) {
+  .bridge {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.workspace-frame {
+  width: 100%;
+  height: 34rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.handshake-log {
+  list-style: none;
+  margin: 0;
+  padding: 0.75rem;
+  background: var(--term-bg);
+  color: var(--term-ink);
+  border-radius: 8px;
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  line-height: 1.6;
+  max-height: 30rem;
+  overflow: auto;
+}
+
+.handshake-entry {
+  display: grid;
+  grid-template-columns: 6.5rem 9.5rem minmax(0, 1fr);
+  gap: 0.5rem;
+  padding: 0.1rem 0;
+  word-break: break-word;
+}
+
+@media (max-width: 640px) {
+  .handshake-entry {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #222833;
+  }
+}
+
+.handshake-entry .ts {
+  color: var(--term-info);
+}
+
+.handshake-entry .dir {
+  white-space: pre;
+}
+
+.dir-in .dir,
+.dir-in .msg {
+  color: var(--term-in);
+}
+
+.dir-out .dir,
+.dir-out .msg {
+  color: var(--term-out);
+}
+
+.dir-info .dir,
+.dir-info .msg {
+  color: var(--term-info);
+}
+
+.dir-error .dir,
+.dir-error .msg {
+  color: var(--term-bad);
+}
+
+.handshake-empty {
+  color: var(--term-info);
+  font-family: var(--mono);
+  font-size: 0.76rem;
+}
+
+.badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.05rem 0.55rem;
+  color: var(--muted);
+}
+
+.badge.live {
+  color: var(--good);
+  border-color: color-mix(in srgb, var(--good) 45%, var(--line));
+}
+
+.badge.stale {
+  color: var(--bad);
+  border-color: color-mix(in srgb, var(--bad) 45%, var(--line));
+}

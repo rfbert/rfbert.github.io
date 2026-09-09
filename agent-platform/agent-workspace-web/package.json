@@ -1,0 +1,23 @@
+{
+  "name": "agent-workspace-web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Next.js 2 (port 3001). Iframe child of identity-gateway-web AND a standalone app. One codebase, both modes.",
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "^15.1.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "typescript": "^5.7.3"
+  }
+}

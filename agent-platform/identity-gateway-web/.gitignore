@@ -1,0 +1,8 @@
+node_modules/
+.next/
+out/
+next-env.d.ts.timestamp
+*.tsbuildinfo
+.DS_Store
+# .env.local is intentionally COMMITTED here: this is a local scaffold with no
+# secrets, and the six shared contract values must be reproducible verbatim.

@@ -1,0 +1,25 @@
+{
+  "name": "identity-gateway-web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Next.js 1 (port 3000) - login, session and renewal. Owns the httpOnly cookie and the PARENT half of the postMessage bridge that feeds the agent-workspace-web iframe.",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "jose": "^5.9.6",
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.7.0"
+  }
+}
